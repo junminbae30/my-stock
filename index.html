@@ -108,24 +108,32 @@
     </section>
 
     <!-- 메인 네비게이션 탭 -->
-    <nav class="flex gap-2 overflow-x-auto pb-1 no-scrollbar" aria-label="대시보드 섹션">
-      <button type="button" data-tab="briefing" class="tab-btn tab-active inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+    <nav class="flex flex-wrap gap-1.5 pb-1" aria-label="대시보드 섹션">
+      <button type="button" data-tab="briefing" class="tab-btn tab-active inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
         <i data-lucide="sparkles" class="h-4 w-4"></i>
-        <span>⑩ AI 관점 브리핑</span>
+        <span>AI 관점 브리핑</span>
       </button>
-      <button type="button" data-tab="news" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+      <button type="button" data-tab="tech" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
+        <i data-lucide="activity" class="h-4 w-4"></i>
+        <span>시장국면 · 5대지표</span>
+      </button>
+      <button type="button" data-tab="news" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
         <i data-lucide="rss" class="h-4 w-4"></i>
         <span>실시간 뉴스 브리핑</span>
       </button>
-      <button type="button" data-tab="portfolio" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+      <button type="button" data-tab="portfolio" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
         <i data-lucide="pie-chart" class="h-4 w-4"></i>
-        <span>② 보유종목 · ③ 관심종목</span>
+        <span>보유종목 · 관심종목</span>
       </button>
-      <button type="button" data-tab="chart" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+      <button type="button" data-tab="chart" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
         <i data-lucide="candlestick-chart" class="h-4 w-4"></i>
         <span>실시간 차트 · RSI</span>
       </button>
-      <button type="button" data-tab="memo" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+      <button type="button" data-tab="smc" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
+        <i data-lucide="zap" class="h-4 w-4"></i>
+        <span>SMC (OB·FVG)</span>
+      </button>
+      <button type="button" data-tab="memo" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
         <i data-lucide="file-text" class="h-4 w-4"></i>
         <span>공시 링크 · 종목 메모</span>
       </button>
@@ -136,8 +144,8 @@
       <div class="glass-card rounded-2xl p-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 class="text-sm font-bold text-white">⑩ AI 관점 요약 브리핑 (평일 07·10·12·14·16시경 자동 갱신)</h2>
-            <p id="briefingUpdatedText" class="text-xs text-slate-400">기준 시각: 2026-11-21 19:58 · 구글 시트 '⑩ AI 관점 브리핑' 탭 자동 연동</p>
+            <h2 class="text-sm font-bold text-white">AI 관점 브리핑 (평일 07·10·12·14·16시경 프로 5단계 자동 갱신)</h2>
+            <p id="briefingUpdatedText" class="text-xs text-slate-400">구글 시트 '⑦ AI 관점 브리핑' 탭 자동 연동</p>
           </div>
           <div class="flex gap-1.5">
             <button type="button" data-bfilter="ALL" class="brief-filter-btn rounded-full bg-sky-500 px-3 py-1 text-xs font-bold text-slate-950">전체</button>
@@ -147,6 +155,30 @@
         </div>
       </div>
       <div id="briefingCards" class="grid gap-3 md:grid-cols-2"></div>
+    </section>
+
+    <!-- 탭 0.5: ⑥ 시장 국면 필터 & 5대 보조지표 100점 점수 -->
+    <section id="panel-tech" class="hidden space-y-4">
+      <div class="glass-card rounded-2xl p-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-sm font-bold text-white">🌐 시장 국면 필터 &amp; 5대 보조지표 100점 판정</h2>
+            <p class="text-xs text-slate-400">구글 시트 '⑥ 기술적 진입 판정' 탭의 코스피200·나스닥100·환율 및 5대 지표 점수를 연동합니다.</p>
+          </div>
+          <span id="regimeBadge" class="rounded-full border border-amber-500/40 bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-200">시트 동기화 시 자동 판정</span>
+        </div>
+        <div id="techScoreList" class="mt-4 grid gap-3 md:grid-cols-2"></div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-sm font-bold text-white">🔥 8대 주요 섹터 ETF 강약 레이더</h2>
+            <p class="text-xs text-slate-400">거래량 상위 섹터 ETF의 20일선 이격도·등락률·거래량 비율로 현재 강한 섹터와 약한 섹터를 구분합니다.</p>
+          </div>
+        </div>
+        <div id="sectorEtfList" class="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4"></div>
+      </div>
     </section>
 
     <!-- 탭 1: 실시간 뉴스 브리핑 -->
@@ -170,7 +202,7 @@
         <div class="glass-card rounded-2xl p-4 lg:col-span-2">
           <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h2 class="text-sm font-bold text-white">② 보유종목 및 리밸런싱 현황</h2>
+              <h2 class="text-sm font-bold text-white">보유종목 및 리밸런싱 현황</h2>
               <p class="text-xs text-slate-400">내 구글 시트 `② 보유종목` 탭과 연동됩니다.</p>
             </div>
             <div class="flex flex-wrap gap-2">
@@ -206,8 +238,8 @@
 
         <div class="glass-card flex flex-col justify-between rounded-2xl p-4">
           <div>
-            <h2 class="text-sm font-bold text-white">보유종목 평가 비중</h2>
-            <p class="text-xs text-slate-400">현재 평가금액 기준</p>
+            <h2 class="text-sm font-bold text-white">전체 자산(주식+현금) 비중</h2>
+            <p class="text-xs text-slate-400">가용 현금(예수금) 포함 총자산 대비 비중</p>
           </div>
           <div class="relative mt-4 h-60 w-full">
             <canvas id="allocationChart"></canvas>
@@ -222,7 +254,7 @@
       <div class="glass-card rounded-2xl p-4">
         <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 class="text-sm font-bold text-white">③ 관심종목 진입 대기 레이더 (Watchlist)</h2>
+            <h2 class="text-sm font-bold text-white">관심종목 진입 대기 레이더 (Watchlist)</h2>
             <p class="text-xs text-slate-400">목표 매수가 · 익절가 · 손절가 및 예상 손익비(R:R) 추적</p>
           </div>
         </div>
@@ -241,14 +273,150 @@
           <div class="flex flex-wrap items-center gap-2">
             <select id="chartTickerSelect" class="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none"></select>
             <select id="chartIntervalSelect" class="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none">
-              <option value="D">일봉 (1D)</option>
+              <option value="1">1분봉 (1m · 스캘핑)</option>
+              <option value="5">5분봉 (5m · 데이)</option>
+              <option value="15">15분봉 (15m · 데이)</option>
               <option value="60">60분봉 (1H)</option>
-              <option value="15">15분봉 (15m)</option>
+              <option value="D" selected>일봉 (1D)</option>
               <option value="W">주봉 (1W)</option>
             </select>
           </div>
         </div>
         <div id="tvChartContainer" class="mt-4 h-[460px] w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950"></div>
+      </div>
+    </section>
+
+    <!-- 탭 3.5: 데이트레이딩 SMC (오더블럭 · FVG 계산기 & 체크리스트) -->
+    <section id="panel-smc" class="hidden space-y-4">
+      <div class="grid gap-4 lg:grid-cols-3">
+        <!-- 좌측: OB/FVG 진입·손절·수량 계산기 -->
+        <div class="glass-card rounded-2xl p-4 lg:col-span-2 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="text-sm font-bold text-white">⚡ 데이트레이딩 SMC (오더블럭 · FVG) 타점 계산기</h2>
+              <p class="text-xs text-slate-400">OB·FVG 구간 상단/하단만 입력하면 50% 눌림(CE) 진입가·손절가·손익비·적정 수량을 자동 계산합니다.</p>
+            </div>
+            <a id="smcTvLink" href="https://www.tradingview.com/chart/?symbol=KRX:005930" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg border border-sky-500/40 bg-sky-500/15 px-3 py-1.5 text-xs font-semibold text-sky-200 hover:bg-sky-500/25">
+              <span>TradingView에서 OB·FVG 켜기 ↗</span>
+            </a>
+          </div>
+
+          <!-- 종목 및 분봉 선택 + 방향 -->
+          <div class="grid gap-2.5 sm:grid-cols-3">
+            <div>
+              <label for="smcTickerSelect" class="block text-[11px] font-semibold text-slate-400">종목 선택</label>
+              <select id="smcTickerSelect" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none"></select>
+            </div>
+            <div>
+              <label for="smcZoneType" class="block text-[11px] font-semibold text-slate-400">SMC 구조</label>
+              <select id="smcZoneType" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none">
+                <option value="OB+FVG">OB + FVG 중첩 (최상)</option>
+                <option value="OB">오더블럭 (Order Block)</option>
+                <option value="FVG">FVG (Fair Value Gap)</option>
+              </select>
+            </div>
+            <div>
+              <label for="smcDirection" class="block text-[11px] font-semibold text-slate-400">매매 방향</label>
+              <select id="smcDirection" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none">
+                <option value="LONG">🟢 강세 (매수 / Long)</option>
+                <option value="SHORT">🔴 약세 (매도 / Short)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 가격 입력 -->
+          <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <div>
+              <label for="smcZoneHigh" class="block text-[11px] font-semibold text-slate-400">구간 상단 (High)</label>
+              <input id="smcZoneHigh" type="number" step="any" value="185000" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs font-bold text-white focus:border-sky-400 focus:outline-none" />
+            </div>
+            <div>
+              <label for="smcZoneLow" class="block text-[11px] font-semibold text-slate-400">구간 하단 (Low)</label>
+              <input id="smcZoneLow" type="number" step="any" value="180000" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs font-bold text-white focus:border-sky-400 focus:outline-none" />
+            </div>
+            <div>
+              <label for="smcTpPrice" class="block text-[11px] font-semibold text-slate-400">목표 익절가 (TP)</label>
+              <input id="smcTpPrice" type="number" step="any" value="196000" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs font-bold text-white focus:border-sky-400 focus:outline-none" />
+            </div>
+            <div>
+              <label for="smcRiskPct" class="block text-[11px] font-semibold text-slate-400">1회 손실 한도 (%)</label>
+              <input id="smcRiskPct" type="number" step="0.1" min="0.1" max="5" value="1.5" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs font-bold text-white focus:border-sky-400 focus:outline-none" />
+            </div>
+          </div>
+
+          <!-- 자동 계산 결과 카드 -->
+          <div class="grid grid-cols-2 gap-2.5 rounded-xl border border-slate-800 bg-slate-950/80 p-3.5 sm:grid-cols-4">
+            <div>
+              <div class="text-[11px] text-slate-400">권장 진입가 (50% CE)</div>
+              <div id="smcResEntry" class="mt-1 text-base font-extrabold text-sky-300">-</div>
+              <div id="smcResTouch" class="text-[10px] text-slate-500">터치 진입: -</div>
+            </div>
+            <div>
+              <div class="text-[11px] text-slate-400">손절가 (구간 이탈)</div>
+              <div id="smcResSl" class="mt-1 text-base font-extrabold text-rose-400">-</div>
+              <div id="smcResRiskPerShare" class="text-[10px] text-slate-500">주당 리스크: -</div>
+            </div>
+            <div>
+              <div class="text-[11px] text-slate-400">예상 손익비 (R:R)</div>
+              <div id="smcResRr" class="mt-1 text-base font-extrabold text-emerald-300">-</div>
+              <div id="smcResVerdict" class="text-[10px] font-semibold text-slate-400">-</div>
+            </div>
+            <div>
+              <div class="text-[11px] text-slate-400">적정 수량 (1회 한도)</div>
+              <div id="smcResQty" class="mt-1 text-base font-extrabold text-white">-</div>
+              <div id="smcResTotal" class="text-[10px] text-slate-500">총 투입: -</div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" data-tf="1" class="smc-tf-btn rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-200 hover:bg-slate-700">1분봉 차트 ↗</button>
+              <button type="button" data-tf="5" class="smc-tf-btn rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-200 hover:bg-slate-700">5분봉 차트 ↗</button>
+              <button type="button" data-tf="15" class="smc-tf-btn rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-200 hover:bg-slate-700">15분봉 차트 ↗</button>
+            </div>
+            <button id="saveSmcSetupBtn" type="button" class="rounded-lg bg-sky-500 px-3.5 py-2 text-xs font-bold text-slate-950 hover:bg-sky-400">오늘의 SMC 시나리오 저장</button>
+          </div>
+        </div>
+
+        <!-- 우측: SMC 진입 전 4단계 체크리스트 + 가이드 -->
+        <div class="glass-card flex flex-col justify-between rounded-2xl p-4 space-y-3">
+          <div>
+            <div class="flex items-center justify-between gap-2">
+              <h3 class="text-sm font-bold text-white">진입 전 4단계 체크</h3>
+              <span id="smcCheckBadge" class="rounded-full bg-slate-800 px-2.5 py-0.5 text-[11px] font-bold text-amber-300">0/4 체크</span>
+            </div>
+            <div class="mt-3 space-y-2 text-xs text-slate-200">
+              <label class="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-800 bg-slate-900/70 p-2.5">
+                <input type="checkbox" class="smc-chk mt-0.5 accent-emerald-400" />
+                <span><strong>상위 추세 일치</strong> (1H/일봉 추세 방향과 같은 OB·FVG)</span>
+              </label>
+              <label class="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-800 bg-slate-900/70 p-2.5">
+                <input type="checkbox" class="smc-chk mt-0.5 accent-emerald-400" />
+                <span><strong>구조 돌파(BOS) / 유동성 스윕</strong> 확인됨</span>
+              </label>
+              <label class="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-800 bg-slate-900/70 p-2.5">
+                <input type="checkbox" class="smc-chk mt-0.5 accent-emerald-400" />
+                <span><strong>미채움(Unmitigated) 구간</strong> 첫 리테스트 진입</span>
+              </label>
+              <label class="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-800 bg-slate-900/70 p-2.5">
+                <input type="checkbox" class="smc-chk mt-0.5 accent-emerald-400" />
+                <span><strong>손익비 1:2.5 이상</strong> &amp; 1회 손실 1.5% 이내 준수</span>
+              </label>
+            </div>
+          </div>
+          <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-[11px] leading-relaxed text-slate-400">
+            <strong class="text-sky-300">TradingView 설정 팁:</strong> 차트 상단 <code>지표(Indicators)</code>에서 <code>Smart Money Concepts [LuxAlgo]</code> 또는 <code>Fair Value Gap</code>을 검색해 켜면 5분·15분봉에 OB/FVG 박스가 자동 표시됩니다.
+          </div>
+        </div>
+      </div>
+
+      <!-- 저장된 오늘의 SMC 시나리오 목록 -->
+      <div class="glass-card rounded-2xl p-4">
+        <div class="mb-2 flex items-center justify-between">
+          <h3 class="text-sm font-bold text-white">저장된 SMC 데이트레이딩 시나리오</h3>
+          <button id="clearSmcListBtn" type="button" class="text-xs font-semibold text-slate-400 hover:text-rose-400">전체 비우기</button>
+        </div>
+        <div id="smcSavedList" class="space-y-2"></div>
       </div>
     </section>
 
@@ -390,6 +558,7 @@
     const STORAGE_KEY_WATCHLIST = "my_trading_sys_watchlist_v2";
     const STORAGE_KEY_SHEET_URL = "my_trading_sys_sheet_url_v2";
     const STORAGE_KEY_MEMOS = "my_trading_sys_memos_v2";
+    const STORAGE_KEY_SMC = "my_trading_sys_smc_setups_v1";
 
     // 사용자 구글 시트(② 보유종목) 실제 데이터 스냅샷
     const INITIAL_HOLDINGS = [
@@ -406,12 +575,23 @@
     ];
 
     const INITIAL_BRIEFINGS = [
-      { updated: "2026-11-21 19:58", group: "보유", name: "삼성전자", summary: "애널리스트 35명 컨센서스 적극 매수(평균 목표가 471,857원, 최저 29만 원)이나 최근 단기 급락(-7.11%)과 글로벌 반도체 비중 축소 경계감 공존", action: "20일선(208,065원) 회복 전까지 추가 매수 없이 보유 유지", source: "https://kr.investing.com/equities/samsung-electronics-co-ltd-consensus-estimates" },
-      { updated: "2026-11-21 19:58", group: "보유", name: "SOL 글로벌DRAM반도체플러스", summary: "20일선(7,179원) 하회 및 역배열 약세 구간, 기관 순매수 유입이나 변동성 확대 주의", action: "목표 비중(5%) 이상 확대 금지, 반등 시 분할매도 검토", source: "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" },
-      { updated: "2026-11-21 19:58", group: "보유", name: "KODEX 200", summary: "지수 단기 급락(-5.48%)으로 20일선(84,886원) 하회, 목표 비중(25%) 대비 현재 21.4%로 비중 부족", action: "야간선물 확인 후 계획대로 소액 분할(1주)만 기계적 대응", source: "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" },
-      { updated: "2026-11-21 19:58", group: "관심", name: "NAVER", summary: "2027년 플랫폼 성장 둔화(+8.6%) 반영 목표가 30만 원 하향·매수 유지, 신한투자증권은 AI 위협·기회 관점에서 보수적 시각 제시", action: "목표 매수가(185,000원) 하회했으나 20일선 하회 중이라 바닥 확인 후 분할 접근", source: "https://m.newspim.com/news/view/20261116000781" },
-      { updated: "2026-11-21 19:58", group: "관심", name: "현대차", summary: "내년 영업이익 13조 470억 원(+27.3%) 회복 전망, 목표가 62만→54만 원 하향했으나 중장기 여력 유지", action: "외인·기관 쌍끌이 유입 중이나 목표 매수가(230,000원) 도달 전 대기 유지", source: "https://www.mk.co.kr/news/stock/12168864" },
-      { updated: "2026-11-21 19:58", group: "관심", name: "알테오젠", summary: "하나증권 연간 영업이익 3,000억 원 이상 전망, 신한투자증권 노바티스 4.4조 기술이전 근거 목표가 54만 원 제시", action: "시트 현재가(372,000원)와 최신 시세(173,600원) 괴리 점검 후 재판단", source: "https://www.newspim.com/news/view/20261104000279" }
+      { updated: "2026-11-22 22:45", group: "보유", name: "삼성전자", verdict: "🟡 보유 유지 (20일선 하회, 추격매수 금지)", pros: "애널리스트 35명 적극 매수 컨센서스(평균 목표가 471,857원, 최저 29만 원), 외국인 수급 유입 및 중장기 실적 모멘텀 견조", cons: "단기 급락(-7.11%)으로 20일선(208,065원) 이탈, 글로벌 펀드 반도체 비중 축소 경계감 상존", action: "20일선 회복 전까지 추가 매수 없이 보유 유지", source: "https://kr.investing.com/equities/samsung-electronics-co-ltd-consensus-estimates" },
+      { updated: "2026-11-22 22:45", group: "보유", name: "SOL 글로벌DRAM반도체플러스", verdict: "🔴 진입 금지 / 비중 축소 경계 (역배열·20일선 하회)", pros: "메모리 반도체 중장기 수요 스토리 및 기관 저가 순매수 유입", cons: "20일선(7,179원) 하회·역배열 약세 추세, 평가손실(-35.0%) 및 높은 단기 변동성", action: "목표 비중(5%) 이상 확대 금지, 반등 시 분할매도 검토", source: "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" },
+      { updated: "2026-11-22 22:45", group: "보유", name: "KODEX 200", verdict: "🟡 눌림 분할 (목표비중 부족분 1주 기계적 대응)", pros: "대표 지수 분산 효과, 목표 비중(25%) 대비 현재 21.4%로 기계적 분할 매수 명분 존재", cons: "단기 급락(-5.48%)으로 20일선(84,886원) 하회, 지수 변동성 확대 구간", action: "야간선물 확인 후 계획대로 소액 분할(1주)만 기계적 대응", source: "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" },
+      { updated: "2026-11-22 22:45", group: "관심", name: "NAVER", verdict: "🟡 바닥 확인 후 분할 (목표가 도달했으나 20일선 하회)", pros: "시트 목표 매수가(185,000원) 하회로 밸류에이션 부담 완화, 증권사 매수 의견(목표가 30만 원) 유지", cons: "2027년 플랫폼 성장 둔화(+8.6%) 우려, 신한투자증권의 보수적 AI 시각 및 개인 위주 수급·20일선 하회", action: "단기 급락 진정 및 지지선 확인 후 소액 분할 접근", source: "https://m.newspim.com/news/view/20261116000781" },
+      { updated: "2026-11-22 22:45", group: "관심", name: "현대차", verdict: "🟡 눌림 대기 (외인·기관 쌍끌이나 목표매수가 미도달)", pros: "내년 영업이익 13조 470억 원(+27.3%) 회복 전망, 외인·기관 쌍끌이 수급 유입 및 배당 매력", cons: "증권사 목표가 하향(62만→54만 원) 및 아직 목표 매수가(230,000원) 대비 높은 가격대", action: "목표 매수가(230,000원) 부근 눌림목 도달 전까지 대기 유지", source: "https://www.mk.co.kr/news/stock/12168864" },
+      { updated: "2026-11-22 22:45", group: "관심", name: "알테오젠", verdict: "🟡 관망 (실시간 시세·기준가 재점검 후 판단)", pros: "하나증권 연간 영업이익 3,000억 원 이상 전망, 노바티스 4.4조 기술이전 등 강력한 빅파마 레퍼런스", cons: "바이오 섹터 특유의 높은 변동성 및 단기 주가 약세(173,600원대) 구간", action: "시트 실시간 시세 기준으로 목표매수·손절가 재설정 후 진입 검토", source: "https://www.newspim.com/news/view/20261104000279" }
+    ];
+
+    const INITIAL_SECTOR_ETFS = [
+      { sector: "국내 반도체", etf: "KODEX 반도체", ticker: "KRX:091160", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
+      { sector: "미국 반도체", etf: "TIGER 미국필라델피아반도체나스닥", ticker: "KRX:381180", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
+      { sector: "2차전지", etf: "KODEX 2차전지산업", ticker: "KRX:305720", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
+      { sector: "자동차", etf: "KODEX 자동차", ticker: "KRX:091180", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
+      { sector: "은행/금융", etf: "KODEX 은행", ticker: "KRX:091170", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
+      { sector: "바이오", etf: "KODEX 바이오", ticker: "KRX:244580", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
+      { sector: "조선", etf: "SOL 조선TOP3플러스", ticker: "KRX:466920", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
+      { sector: "건설/인프라", etf: "KODEX 건설", ticker: "KRX:117700", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" }
     ];
 
     let state = {
@@ -421,6 +601,10 @@
       watchlist: [],
       briefings: INITIAL_BRIEFINGS.map(x => ({ ...x })),
       briefingFilter: "ALL",
+      marketRegime: "시트 동기화 대기 (공유 뷰어 설정 시 자동 표시)",
+      techScores: [],
+      sectorEtfs: INITIAL_SECTOR_ETFS.map(x => ({ ...x })),
+      smcSetups: [],
       sheetUrl: DEFAULT_SHEET_URL,
       isLiveSynced: false,
       memos: {},
@@ -503,6 +687,7 @@
       state.watchlist = safeStorageGet(STORAGE_KEY_WATCHLIST, null) || INITIAL_WATCHLIST.map(x => ({ ...x }));
       state.sheetUrl = safeStorageGet(STORAGE_KEY_SHEET_URL, DEFAULT_SHEET_URL);
       state.memos = safeStorageGet(STORAGE_KEY_MEMOS, {});
+      state.smcSetups = safeStorageGet(STORAGE_KEY_SMC, []);
       if (state.portfolio.length > 0) {
         state.selectedChartSymbol = state.portfolio[0].symbol;
       }
@@ -776,7 +961,7 @@
         style: "1",
         locale: "kr",
         allow_symbol_change: true,
-        studies: ["STD;RSI", "STD;SMA"],
+        studies: ["STD;RSI", "STD;SMA", "STD;MACD", "STD;Bollinger_Bands"],
         support_host: "https://www.tradingview.com"
       });
       wrapper.appendChild(inner);
@@ -887,6 +1072,10 @@
           values.push(Math.round(val));
         }
       });
+      if ((Number(state.cash) || 0) > 0) {
+        labels.push("가용 현금(예수금)");
+        values.push(Math.round(Number(state.cash)));
+      }
 
       allocationChartInstance = new Chart(ctx, {
         type: "doughnut",
@@ -1085,7 +1274,10 @@
       const iTime = col(["시각", "일시", "날짜"]);
       const iGrp = col(["구분"]);
       const iName = col(["종목명"]);
-      const iSum = col(["관점", "요약"]);
+      const iVerdict = col(["기술적", "판정"]);
+      const iPros = col(["괜찮은", "강점"]);
+      const iCons = col(["별로인", "리스크"]);
+      const iSum = col(["핵심 관점", "요약"]);
       const iAct = col(["대응", "포인트"]);
       const iSrc = col(["출처", "링크"]);
 
@@ -1093,13 +1285,16 @@
       for (let i = headerIdx + 1; i < rows.length; i++) {
         const r = rows[i];
         const name = (iName >= 0 ? r[iName] : "") || "";
-        const summary = (iSum >= 0 ? r[iSum] : "") || "";
-        if (!name || !summary) continue;
+        const pros = (iPros >= 0 ? r[iPros] : (iSum >= 0 ? r[iSum] : "")) || "";
+        const cons = (iCons >= 0 ? r[iCons] : "") || "";
+        if (!name || (!pros && !cons)) continue;
         parsed.push({
           updated: iTime >= 0 ? r[iTime] : "",
           group: iGrp >= 0 ? r[iGrp] : "종목",
           name,
-          summary,
+          verdict: iVerdict >= 0 ? r[iVerdict] : "",
+          pros,
+          cons,
           action: iAct >= 0 ? r[iAct] : "",
           source: iSrc >= 0 ? r[iSrc] : ""
         });
@@ -1107,11 +1302,151 @@
       return parsed;
     }
 
+    function parseTechCsv(csvText) {
+      const rows = parseCsvRows(csvText);
+      // 시장 국면 종합 판정 추출
+      for (const r of rows.slice(0, 9)) {
+        const found = r.find(c => c.includes("상승장") || c.includes("혼조장") || c.includes("약세장"));
+        if (found) {
+          state.marketRegime = found;
+          break;
+        }
+      }
+      const headerIdx = rows.findIndex(r => r.some(c => c.includes("종목명")) && r.some(c => c.includes("RSI") || c.includes("점수")));
+      if (headerIdx < 0) return [];
+      const h = rows[headerIdx];
+      const col = (keys) => h.findIndex(c => keys.some(k => c.includes(k)));
+      const iGrp = col(["구분"]);
+      const iName = col(["종목명"]);
+      const iSym = col(["티커"]);
+      const iPrice = col(["현재가"]);
+      const iTrend = col(["추세"]);
+      const iRsi = col(["RSI"]);
+      const iBb = col(["볼린저", "%B"]);
+      const iVol = col(["거래량"]);
+      const iScore = col(["점수"]);
+      const iFinal = col(["최종"]);
+
+      const parsed = [];
+      for (let i = headerIdx + 1; i < rows.length; i++) {
+        const r = rows[i];
+        const name = (iName >= 0 ? r[iName] : "") || "";
+        const sym = (iSym >= 0 ? r[iSym] : "") || "";
+        if (!name || !sym || name.includes("요약") || name.includes("평균")) continue;
+        parsed.push({
+          group: iGrp >= 0 ? r[iGrp] : "",
+          name,
+          symbol: sym,
+          price: iPrice >= 0 ? r[iPrice] : "",
+          trend: iTrend >= 0 ? r[iTrend] : "",
+          rsi: iRsi >= 0 ? r[iRsi] : "",
+          bb: iBb >= 0 ? r[iBb] : "",
+          vol: iVol >= 0 ? r[iVol] : "",
+          score: iScore >= 0 ? r[iScore] : "",
+          verdict: iFinal >= 0 ? r[iFinal] : ""
+        });
+      }
+      // 하단 8대 섹터 ETF 강약 레이더 파싱
+      const secHeaderIdx = rows.findIndex(r => r.some(c => c.includes("섹터명")) && r.some(c => c.includes("대표 ETF") || c.includes("ETF")));
+      if (secHeaderIdx >= 0) {
+        const sh = rows[secHeaderIdx];
+        const scol = (keys) => sh.findIndex(c => keys.some(k => c.includes(k)));
+        const siSec = scol(["섹터"]);
+        const siEtf = scol(["대표 ETF", "ETF"]);
+        const siTic = scol(["티커"]);
+        const siPrc = scol(["현재가"]);
+        const siChg = scol(["전일대비"]);
+        const siGap = scol(["이격도"]);
+        const siVol = scol(["거래량"]);
+        const siSt = scol(["강도", "판정"]);
+        const etfs = [];
+        for (let i = secHeaderIdx + 1; i < rows.length; i++) {
+          const r = rows[i];
+          const sec = (siSec >= 0 ? r[siSec] : "") || "";
+          const etf = (siEtf >= 0 ? r[siEtf] : "") || "";
+          if (!sec || !etf) continue;
+          etfs.push({
+            sector: sec,
+            etf,
+            ticker: siTic >= 0 ? r[siTic] : "",
+            price: siPrc >= 0 ? r[siPrc] : "-",
+            change: siChg >= 0 ? r[siChg] : "-",
+            gap: siGap >= 0 ? r[siGap] : "-",
+            vol: siVol >= 0 ? r[siVol] : "-",
+            status: siSt >= 0 ? r[siSt] : "-"
+          });
+        }
+        if (etfs.length) state.sectorEtfs = etfs;
+      }
+      return parsed;
+    }
+
+    function renderTechScores() {
+      const badge = document.getElementById("regimeBadge");
+      badge.textContent = state.marketRegime;
+      const box = document.getElementById("techScoreList");
+      renderSectorEtfs();
+      if (!state.techScores.length) {
+        box.innerHTML = `<div class="col-span-2 rounded-xl border border-slate-800 bg-slate-900/70 p-5 text-center text-xs text-slate-400">구글 시트 공유 설정(링크가 있는 모든 사용자 · 뷰어) 후 상단 <strong>새로고침</strong>을 누르면 <code>⑥ 기술적 진입 판정</code>의 5대 보조지표 100점 점수가 여기에 실시간으로 표시됩니다.</div>`;
+        return;
+      }
+      box.innerHTML = state.techScores.map(t => `
+        <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3.5">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <span class="mr-1.5 rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-bold text-sky-300">${escapeHtml(t.group)}</span>
+              <span class="text-sm font-bold text-white">${escapeHtml(t.name)}</span>
+              <span class="ml-1 text-[11px] text-slate-400">${escapeHtml(t.price)}</span>
+            </div>
+            <span class="rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-extrabold text-white">${escapeHtml(t.score)}점</span>
+          </div>
+          <div class="mt-2 text-xs font-semibold text-emerald-300">${escapeHtml(t.verdict)}</div>
+          <div class="mt-2.5 grid grid-cols-2 gap-1.5 rounded-lg bg-slate-950/70 p-2 text-[11px] text-slate-300 sm:grid-cols-4">
+            <div><span class="text-slate-500">추세</span><div class="font-semibold">${escapeHtml(t.trend || "-")}</div></div>
+            <div><span class="text-slate-500">RSI(14)</span><div class="font-semibold">${escapeHtml(t.rsi || "-")}</div></div>
+            <div><span class="text-slate-500">BB %B</span><div class="font-semibold">${escapeHtml(t.bb || "-")}</div></div>
+            <div><span class="text-slate-500">거래량</span><div class="font-semibold">${escapeHtml(t.vol || "-")}</div></div>
+          </div>
+        </div>
+      `).join("");
+      renderSectorEtfs();
+    }
+
+    function renderSectorEtfs() {
+      const box = document.getElementById("sectorEtfList");
+      if (!box) return;
+      box.innerHTML = state.sectorEtfs.map(s => {
+        const st = s.status || "";
+        const stCls = st.includes("주도") || st.includes("강세")
+          ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300"
+          : st.includes("약세")
+            ? "border-rose-500/40 bg-rose-500/15 text-rose-300"
+            : "border-slate-700 bg-slate-800 text-slate-300";
+        return `
+          <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3">
+            <div class="flex items-center justify-between gap-1.5">
+              <span class="text-xs font-extrabold text-white">${escapeHtml(s.sector)}</span>
+              <span class="rounded-full border px-2 py-0.5 text-[10px] font-bold ${stCls}">${escapeHtml(st)}</span>
+            </div>
+            <div class="mt-1 truncate text-[11px] text-slate-400" title="${escapeHtml(s.etf)}">${escapeHtml(s.etf)}</div>
+            <div class="mt-2 flex items-baseline justify-between text-xs">
+              <span class="font-bold text-slate-100">${escapeHtml(s.price)}</span>
+              <span class="text-[11px] text-slate-300">20일선 ${escapeHtml(s.gap)}</span>
+            </div>
+            <div class="mt-1 flex justify-between text-[10px] text-slate-500">
+              <span>등락 ${escapeHtml(s.change)}</span>
+              <span>거래량 ${escapeHtml(s.vol)}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
     function renderBriefings() {
       const box = document.getElementById("briefingCards");
       const list = state.briefings.filter(b => state.briefingFilter === "ALL" || (b.group || "").includes(state.briefingFilter));
       if (state.briefings.length && state.briefings[0].updated) {
-        document.getElementById("briefingUpdatedText").textContent = `마지막 브리핑 시각: ${state.briefings[0].updated} · 구글 시트 '⑩ AI 관점 브리핑' 자동 연동`;
+        document.getElementById("briefingUpdatedText").textContent = `마지막 브리핑 시각: ${state.briefings[0].updated} · 구글 시트 '⑦ AI 관점 브리핑' 자동 연동`;
       }
       if (!list.length) {
         box.innerHTML = `<div class="col-span-2 glass-card rounded-2xl p-6 text-center text-xs text-slate-400">표시할 AI 관점 브리핑이 없습니다.</div>`;
@@ -1122,6 +1457,9 @@
         const badgeCls = isHold
           ? "bg-sky-500/20 text-sky-300 border-sky-500/40"
           : "bg-amber-500/20 text-amber-300 border-amber-500/40";
+        const verdictHtml = b.verdict
+          ? `<div class="mt-2 inline-block rounded-lg border border-slate-700 bg-slate-900/90 px-2.5 py-1 text-[11px] font-bold text-slate-100">${escapeHtml(b.verdict)}</div>`
+          : "";
         const srcHtml = b.source && b.source.startsWith("http")
           ? `<a href="${escapeHtml(b.source)}" target="_blank" rel="noopener noreferrer" class="text-[11px] font-semibold text-sky-400 hover:underline">출처 원문 보기 ↗</a>`
           : "";
@@ -1135,7 +1473,15 @@
                 </div>
                 <span class="text-[11px] text-slate-500">${escapeHtml(b.updated || "")}</span>
               </div>
-              <p class="mt-2.5 text-xs leading-relaxed text-slate-200">${escapeHtml(b.summary)}</p>
+              ${verdictHtml}
+              <div class="mt-2.5 space-y-1.5 text-xs leading-relaxed">
+                <div class="rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-2 text-emerald-100">
+                  <span class="font-bold text-emerald-300">✅ 괜찮은 관점:</span> ${escapeHtml(b.pros || b.summary || "")}
+                </div>
+                ${b.cons ? `<div class="rounded-lg border border-rose-500/25 bg-rose-500/10 px-2.5 py-2 text-rose-100">
+                  <span class="font-bold text-rose-300">⚠️ 별로인 관점:</span> ${escapeHtml(b.cons)}
+                </div>` : ""}
+              </div>
             </div>
             <div class="space-y-2 border-t border-slate-800 pt-2.5">
               <div class="rounded-lg bg-slate-900/90 px-3 py-2 text-xs text-emerald-300">
@@ -1152,11 +1498,12 @@
       const sheetId = extractSheetId(rawUrl);
       const holdingsUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("② 보유종목")}`;
       const watchlistUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("③ 관심종목")}`;
-      const briefingUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("⑩ AI 관점 브리핑")}`;
+      const techUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("⑥ 기술적 진입 판정")}`;
+      const briefingUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("⑦ AI 관점 브리핑")}`;
 
-      if (!silent) showToast("내 구글 시트(보유·관심·AI 브리핑) 동기화 중...");
+      if (!silent) showToast("내 구글 시트(보유·관심·기술판정·AI 브리핑) 동기화 중...");
       try {
-        const [resH, resW, resB] = await Promise.all([fetch(holdingsUrl), fetch(watchlistUrl), fetch(briefingUrl)]);
+        const [resH, resW, resT, resB] = await Promise.all([fetch(holdingsUrl), fetch(watchlistUrl), fetch(techUrl), fetch(briefingUrl)]);
         if (!resH.ok) throw new Error("시트 접근 권한 없음");
         const csvH = await resH.text();
         const holdings = parseHoldingsCsv(csvH);
@@ -1167,6 +1514,11 @@
           const csvW = await resW.text();
           const wl = parseWatchlistCsv(csvW);
           if (wl.length) state.watchlist = wl;
+        }
+        if (resT.ok) {
+          const csvT = await resT.text();
+          const ts = parseTechCsv(csvT);
+          if (ts.length) state.techScores = ts;
         }
         if (resB.ok) {
           const csvB = await resB.text();
@@ -1246,7 +1598,7 @@
 
     function switchTab(tabName) {
       state.activeTab = tabName;
-      ["briefing", "news", "portfolio", "chart", "memo"].forEach(t => {
+      ["briefing", "tech", "news", "portfolio", "chart", "smc", "memo"].forEach(t => {
         document.getElementById(`panel-${t}`).classList.toggle("hidden", t !== tabName);
       });
       document.querySelectorAll(".tab-btn").forEach(btn => {
@@ -1264,6 +1616,10 @@
     function renderAllUI() {
       renderKpis();
       renderBriefings();
+      renderTechScores();
+      renderSmcSelectors();
+      calcSmcSetup();
+      renderSmcSavedList();
       renderNewsPills();
       renderNewsList();
       renderChartSelectors();
@@ -1273,6 +1629,132 @@
       if (state.activeTab === "chart") {
         renderTradingViewChart();
       }
+    }
+
+    function renderSmcSelectors() {
+      const sel = document.getElementById("smcTickerSelect");
+      if (!sel) return;
+      const prev = sel.value;
+      const all = getAllTrackedStocks();
+      sel.innerHTML = all.map(s =>
+        `<option value="${escapeHtml(s.symbol)}">[${s.group}] ${escapeHtml(s.name)} (${escapeHtml(s.symbol)})</option>`
+      ).join("");
+      if (prev && all.some(s => s.symbol === prev)) sel.value = prev;
+      autofillSmcFromStock(false);
+    }
+
+    function updateSmcTvLink() {
+      const sym = document.getElementById("smcTickerSelect")?.value || "KRX:005930";
+      const link = document.getElementById("smcTvLink");
+      if (link) link.href = `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(sym)}`;
+    }
+
+    function autofillSmcFromStock(showNotify = false) {
+      const sym = document.getElementById("smcTickerSelect")?.value;
+      if (!sym) return;
+      updateSmcTvLink();
+
+      const wl = state.watchlist.find(w => w.symbol === sym);
+      if (wl && (Number(wl.entryPrice) > 0 || Number(wl.price) > 0)) {
+        const high = Number(wl.entryPrice) || Math.round(Number(wl.price) * 1.01);
+        const low = Number(wl.slPrice) && Number(wl.slPrice) < high ? Number(wl.slPrice) : Math.round(high * 0.96);
+        const tp = Number(wl.tpPrice) || Math.round(high * 1.12);
+        document.getElementById("smcZoneHigh").value = high;
+        document.getElementById("smcZoneLow").value = low;
+        document.getElementById("smcTpPrice").value = tp;
+        calcSmcSetup();
+        if (showNotify) showToast(`${wl.name} 관심종목 목표가·손절가·익절가를 자동 반영했습니다.`);
+        return;
+      }
+
+      const hold = state.portfolio.find(h => h.symbol === sym);
+      if (hold && Number(hold.price) > 0) {
+        const cur = Number(hold.price);
+        document.getElementById("smcZoneHigh").value = Math.round(cur * 1.015);
+        document.getElementById("smcZoneLow").value = Math.round(cur * 0.985);
+        document.getElementById("smcTpPrice").value = Math.round(cur * 1.08);
+        calcSmcSetup();
+        if (showNotify) showToast(`${hold.name} 현재가 기준으로 OB/FVG 구간을 자동 세팅했습니다.`);
+      }
+    }
+
+    function calcSmcSetup() {
+      const high = Number(document.getElementById("smcZoneHigh")?.value) || 0;
+      const low = Number(document.getElementById("smcZoneLow")?.value) || 0;
+      const tp = Number(document.getElementById("smcTpPrice")?.value) || 0;
+      const riskPct = Number(document.getElementById("smcRiskPct")?.value) || 1.5;
+      const dir = document.getElementById("smcDirection")?.value || "LONG";
+
+      if (high <= 0 || low <= 0 || high <= low) {
+        document.getElementById("smcResEntry").textContent = "구간 오류";
+        document.getElementById("smcResSl").textContent = "-";
+        document.getElementById("smcResRr").textContent = "-";
+        document.getElementById("smcResQty").textContent = "-";
+        return null;
+      }
+
+      const ceEntry = (high + low) / 2;
+      const touchEntry = dir === "LONG" ? high : low;
+      const sl = dir === "LONG" ? Math.round(low * 0.997) : Math.round(high * 1.003);
+      const riskPerShare = Math.abs(ceEntry - sl);
+      const rewardPerShare = dir === "LONG" ? (tp - ceEntry) : (ceEntry - tp);
+      const rr = riskPerShare > 0 ? rewardPerShare / riskPerShare : 0;
+
+      const maxRiskAmt = (state.budget || 2451691) * (riskPct / 100);
+      const qty = riskPerShare > 0 ? Math.max(0, Math.floor(maxRiskAmt / riskPerShare)) : 0;
+      const totalAmt = qty * ceEntry;
+
+      document.getElementById("smcResEntry").textContent = fmtMoney(ceEntry, "KRW");
+      document.getElementById("smcResTouch").textContent = `터치 진입: ${fmtMoney(touchEntry, "KRW")}`;
+      document.getElementById("smcResSl").textContent = fmtMoney(sl, "KRW");
+      document.getElementById("smcResRiskPerShare").textContent = `주당 리스크: ${fmtMoney(riskPerShare, "KRW")}`;
+      document.getElementById("smcResRr").textContent = rr > 0 ? `1 : ${rr.toFixed(2)}` : "역전/미달";
+
+      const vEl = document.getElementById("smcResVerdict");
+      if (rr >= 2.5) {
+        vEl.textContent = "🟢 원칙 충족 (1:2.5 이상)";
+        vEl.className = "text-[10px] font-bold text-emerald-400";
+      } else if (rr >= 1.8) {
+        vEl.textContent = "🟡 보통 (목표가 재검토)";
+        vEl.className = "text-[10px] font-bold text-amber-300";
+      } else {
+        vEl.textContent = "🔴 손익비 미달 (진입 금지)";
+        vEl.className = "text-[10px] font-bold text-rose-400";
+      }
+
+      document.getElementById("smcResQty").textContent = `${qty.toLocaleString()}주`;
+      document.getElementById("smcResTotal").textContent = `총 투입: ${fmtMoney(totalAmt, "KRW")}`;
+      return { ceEntry, sl, tp, rr, qty, totalAmt, dir };
+    }
+
+    function renderSmcSavedList() {
+      const box = document.getElementById("smcSavedList");
+      if (!box) return;
+      if (!state.smcSetups.length) {
+        box.innerHTML = `<div class="text-xs text-slate-500">저장된 SMC 시나리오가 없습니다. 위 계산기에서 구간을 입력하고 저장해 보세요.</div>`;
+        return;
+      }
+      box.innerHTML = state.smcSetups.map(it => `
+        <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-800 bg-slate-900/70 px-3 py-2.5 text-xs">
+          <div>
+            <span class="mr-1.5 rounded bg-sky-500/20 px-1.5 py-0.5 text-[10px] font-bold text-sky-300">${escapeHtml(it.zoneType)}</span>
+            <strong class="text-white">${escapeHtml(it.label)}</strong>
+            <span class="ml-1 text-slate-400">(${it.dir === "LONG" ? "매수" : "매도"})</span>
+            <div class="mt-1 text-[11px] text-slate-300">
+              진입(CE): <strong>${fmtMoney(it.ceEntry, "KRW")}</strong> · 손절: <span class="text-rose-400">${fmtMoney(it.sl, "KRW")}</span> · 익절: <span class="text-emerald-300">${fmtMoney(it.tp, "KRW")}</span> · R:R <strong>1:${Number(it.rr).toFixed(2)}</strong> · ${it.qty}주
+            </div>
+          </div>
+          <button type="button" data-delsmc="${escapeHtml(it.id)}" class="del-smc-btn rounded px-2 py-1 text-[11px] font-semibold text-rose-300 hover:bg-slate-800">삭제</button>
+        </div>
+      `).join("");
+
+      box.querySelectorAll(".del-smc-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.smcSetups = state.smcSetups.filter(x => x.id !== btn.dataset.delsmc);
+          safeStorageSet(STORAGE_KEY_SMC, state.smcSetups);
+          renderSmcSavedList();
+        });
+      });
     }
 
     function bindEvents() {
@@ -1400,6 +1882,60 @@
         showToast(document.getElementById("autoRefresh30m").checked ? "30분 자동 새로고침을 켰습니다." : "30분 자동 새로고침을 껐습니다.");
       });
       setupAutoRefresh();
+
+      ["smcZoneHigh", "smcZoneLow", "smcTpPrice", "smcRiskPct", "smcDirection", "smcZoneType"].forEach(id => {
+        document.getElementById(id).addEventListener("input", calcSmcSetup);
+        document.getElementById(id).addEventListener("change", calcSmcSetup);
+      });
+      document.getElementById("smcTickerSelect").addEventListener("change", () => autofillSmcFromStock(true));
+
+      document.querySelectorAll(".smc-tf-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.selectedChartSymbol = document.getElementById("smcTickerSelect").value || "KRX:005930";
+          state.selectedInterval = btn.dataset.tf;
+          document.getElementById("chartTickerSelect").value = state.selectedChartSymbol;
+          document.getElementById("chartIntervalSelect").value = state.selectedInterval;
+          switchTab("chart");
+          showToast(`${btn.dataset.tf}분봉 차트로 이동했습니다.`);
+        });
+      });
+
+      document.querySelectorAll(".smc-chk").forEach(chk => {
+        chk.addEventListener("change", () => {
+          const cnt = document.querySelectorAll(".smc-chk:checked").length;
+          const badge = document.getElementById("smcCheckBadge");
+          badge.textContent = cnt === 4 ? "4/4 진입 준비 완료 🟢" : `${cnt}/4 체크`;
+          badge.className = cnt === 4
+            ? "rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-[11px] font-bold text-emerald-300"
+            : "rounded-full bg-slate-800 px-2.5 py-0.5 text-[11px] font-bold text-amber-300";
+        });
+      });
+
+      document.getElementById("saveSmcSetupBtn").addEventListener("click", () => {
+        const res = calcSmcSetup();
+        if (!res) {
+          showToast("구간 상단이 하단보다 크게 입력해 주세요.");
+          return;
+        }
+        const sel = document.getElementById("smcTickerSelect");
+        const label = sel.options[sel.selectedIndex]?.text || sel.value;
+        state.smcSetups.unshift({
+          id: "smc_" + Date.now(),
+          label,
+          zoneType: document.getElementById("smcZoneType").value,
+          ...res
+        });
+        safeStorageSet(STORAGE_KEY_SMC, state.smcSetups);
+        renderSmcSavedList();
+        showToast("SMC 데이트레이딩 시나리오를 저장했습니다.");
+      });
+
+      document.getElementById("clearSmcListBtn").addEventListener("click", () => {
+        state.smcSetups = [];
+        safeStorageSet(STORAGE_KEY_SMC, []);
+        renderSmcSavedList();
+        showToast("저장된 시나리오를 비웠습니다.");
+      });
 
       document.getElementById("refreshAllBtn").addEventListener("click", () => {
         syncGoogleSheet(state.sheetUrl, false);
