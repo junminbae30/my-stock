@@ -601,57 +601,138 @@
       `).join("");
     }
 
+    function parseRssXmlInBrowser(xmlText, trackedStocks) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(xmlText, "text/xml");
+      const items = Array.from(doc.querySelectorAll("item"));
+      const results = [];
+      items.forEach(item => {
+        const rawTitle = (item.querySelector("title")?.textContent || "").trim();
+        const link = (item.querySelector("link")?.textContent || "#").trim();
+        const pubRaw = (item.querySelector("pubDate")?.textContent || "").trim();
+        const sourceTag = (item.querySelector("source")?.textContent || "").trim();
+        const parts = rawTitle.split(" - ");
+        const source = sourceTag || (parts.length > 1 ? parts.pop().trim() : "Google News");
+        const cleanTitle = sourceTag
+          ? rawTitle.replace(new RegExp("\\s*-\\s*" + sourceTag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$"), "").trim()
+          : (parts.join(" - ").trim() || rawTitle);
+
+        let matchedStock = "주요 증시";
+        for (const st of trackedStocks) {
+          const kw = st.name.includes("SOL ") ? "반도체" : st.name;
+          if (cleanTitle.toLowerCase().includes(kw.toLowerCase())) {
+            matchedStock = st.name;
+            break;
+          }
+        }
+        const dt = pubRaw ? new Date(pubRaw) : null;
+        const ts = dt && !isNaN(dt.getTime()) ? dt.getTime() : 0;
+        const pubDate = ts
+          ? dt.toLocaleString("ko-KR", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })
+          : "";
+        if (cleanTitle) {
+          results.push({ query: matchedStock, title: cleanTitle, source, link, pubDate, ts });
+        }
+      });
+      return results;
+    }
+
+    async function fetchRssWithFallback(rssUrl, trackedStocks) {
+      // 1순위: allorigins.win (XML 직접 파싱)
+      try {
+        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.contents && data.contents.includes("<item")) {
+            const parsed = parseRssXmlInBrowser(data.contents, trackedStocks);
+            if (parsed.length) return parsed;
+          }
+        }
+      } catch (e) {}
+
+      // 2순위: codetabs.com CORS 프록시 (XML 직접 파싱)
+      try {
+        const res = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rssUrl)}`);
+        if (res.ok) {
+          const xml = await res.text();
+          if (xml && xml.includes("<item")) {
+            const parsed = parseRssXmlInBrowser(xml, trackedStocks);
+            if (parsed.length) return parsed;
+          }
+        }
+      } catch (e) {}
+
+      // 3순위: rss2json.com
+      try {
+        const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.status === "ok" && Array.isArray(data.items)) {
+            return data.items.map(item => {
+              const rawTitle = item.title || "";
+              const parts = rawTitle.split(" - ");
+              const source = parts.length > 1 ? parts.pop().trim() : (item.author || "Google News");
+              const cleanTitle = parts.join(" - ").trim() || rawTitle;
+              let matchedStock = "주요 증시";
+              for (const st of trackedStocks) {
+                const kw = st.name.includes("SOL ") ? "반도체" : st.name;
+                if (cleanTitle.toLowerCase().includes(kw.toLowerCase())) {
+                  matchedStock = st.name;
+                  break;
+                }
+              }
+              return {
+                query: matchedStock,
+                title: cleanTitle,
+                source,
+                link: item.link || "#",
+                pubDate: item.pubDate ? item.pubDate.slice(0, 16) : "",
+                ts: item.pubDate ? new Date(item.pubDate.replace(" ", "T") + "Z").getTime() || 0 : 0
+              };
+            });
+          }
+        }
+      } catch (e) {}
+
+      return [];
+    }
+
     async function fetchLiveNews() {
       const statusEl = document.getElementById("kpiNewsStatus");
       const alertBox = document.getElementById("newsAlertBox");
       statusEl.textContent = "뉴스 불러오는 중...";
       alertBox.classList.add("hidden");
 
-      const targets = getAllTrackedStocks().slice(0, 6);
+      const tracked = getAllTrackedStocks().slice(0, 8);
+      const terms = tracked.map(s => (s.name.includes("SOL ") ? "반도체 DRAM" : s.name));
+      // 6개 동시 호출 대신 2개 묶음 쿼리로 호출해 무료 API 호출 제한(429) 회피
+      const mid = Math.ceil(terms.length / 2);
+      const groups = [terms.slice(0, mid), terms.slice(mid)].filter(g => g.length > 0);
+
       const collected = [];
       const seen = new Set();
-      let failed = 0;
 
-      await Promise.all(targets.map(async (stock) => {
-        const searchTerm = stock.name.includes("SOL ") ? "반도체 DRAM ETF" : stock.name;
-        const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchTerm + " 주식 OR 증시 OR 실적")}&hl=ko&gl=KR&ceid=KR:ko`;
-        const bridgeUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-        try {
-          const res = await fetch(bridgeUrl);
-          if (!res.ok) throw new Error("HTTP " + res.status);
-          const data = await res.json();
-          if (data.status !== "ok" || !Array.isArray(data.items)) throw new Error("RSS 오류");
-          data.items.slice(0, 6).forEach(item => {
-            const rawTitle = item.title || "";
-            const parts = rawTitle.split(" - ");
-            const source = parts.length > 1 ? parts.pop().trim() : (item.author || "Google News");
-            const cleanTitle = parts.join(" - ").trim() || rawTitle;
-            const dedupKey = cleanTitle.replace(/\s+/g, "").slice(0, 40);
-            if (!seen.has(dedupKey)) {
-              seen.add(dedupKey);
-              collected.push({
-                query: stock.name,
-                title: cleanTitle,
-                source,
-                link: item.link || "#",
-                pubDate: item.pubDate ? item.pubDate.slice(0, 16) : "",
-                ts: item.pubDate ? new Date(item.pubDate.replace(" ", "T") + "Z").getTime() || 0 : 0
-              });
-            }
-          });
-        } catch (err) {
-          failed++;
-        }
-      }));
+      for (const grp of groups) {
+        const qStr = grp.map(t => `"${t}"`).join(" OR ");
+        const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(qStr)}&hl=ko&gl=KR&ceid=KR:ko`;
+        const items = await fetchRssWithFallback(rssUrl, tracked);
+        items.forEach(art => {
+          const dedupKey = art.title.replace(/\s+/g, "").slice(0, 40);
+          if (!seen.has(dedupKey)) {
+            seen.add(dedupKey);
+            collected.push(art);
+          }
+        });
+      }
 
       collected.sort((a, b) => b.ts - a.ts);
-      state.newsArticles = collected;
+      state.newsArticles = collected.slice(0, 40);
       renderKpis();
       renderNewsPills();
       renderNewsList();
 
       const nowStr = new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
-      if (failed > 0 && collected.length === 0) {
+      if (state.newsArticles.length === 0) {
         statusEl.textContent = "일시적 RSS 지연";
         alertBox.textContent = "외부 뉴스 피드 응답이 일시적으로 지연되었습니다. 잠시 후 새로고침하거나 아래 종목별 뉴스 바로가기를 이용해 주세요.";
         alertBox.classList.remove("hidden");
