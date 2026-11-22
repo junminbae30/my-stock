@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MY STOCK TRADING SYSTEM · 뉴스 &amp; 구글 시트 연동 대시보드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <style>
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Pretendard", "Malgun Gothic", sans-serif;
+      background-color: #0b1120;
+      color: #f1f5f9;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.72);
+      border: 1px solid rgba(71, 85, 105, 0.55);
+      backdrop-filter: blur(8px);
+    }
+    .tab-active {
+      background-color: #0284c7;
+      color: #ffffff;
+    }
+    .tab-inactive {
+      background-color: rgba(30, 41, 59, 0.8);
+      color: #94a3b8;
+    }
+    .tab-inactive:hover {
+      color: #f8fafc;
+      background-color: rgba(51, 65, 85, 0.8);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden antialiased selection:bg-sky-500/30">
+  <!-- 상단 헤더 -->
+  <header class="sticky top-0 z-30 border-b border-slate-800/90 bg-slate-950/90 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3.5">
+      <div class="flex items-center gap-2.5">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/20 text-sky-400 ring-1 ring-sky-400/30">
+          <i data-lucide="newspaper" class="h-5 w-5"></i>
+        </div>
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-base font-bold tracking-tight text-white sm:text-lg">MY STOCK TRADING SYSTEM</h1>
+            <span class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-300">
+              내 구글 시트 연동 · 읽기 전용
+            </span>
+          </div>
+          <p id="lastSyncText" class="text-xs text-slate-400">주식 포트폴리오 및 추세 보조지표 대시보드 연결됨</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-700/80 bg-slate-900 px-2.5 py-2 text-[11px] font-medium text-slate-300">
+          <input id="autoRefresh30m" type="checkbox" checked class="accent-sky-400" />
+          <span>30분 자동갱신</span>
+        </label>
+        <a href="https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" target="_blank" rel="noopener noreferrer" class="hidden items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:inline-flex">
+          <i data-lucide="external-link" class="h-3.5 w-3.5"></i>
+          <span>시트 열기</span>
+        </a>
+        <button id="openSheetModalBtn" type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 px-3 py-2 text-xs font-semibold text-emerald-200 transition hover:bg-emerald-500/25">
+          <i data-lucide="sheet" class="h-4 w-4"></i>
+          <span>시트 동기화 설정</span>
+        </button>
+        <button id="refreshAllBtn" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-sky-500 px-3 py-2 text-xs font-bold text-slate-950 transition hover:bg-sky-400">
+          <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+          <span>새로고침</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl space-y-5 px-4 py-5 pb-16">
+    <!-- 요약 KPI 카드 -->
+    <section class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div class="glass-card rounded-2xl p-4">
+        <div class="text-xs font-medium text-slate-400">보유 · 관심 종목</div>
+        <div id="kpiCount" class="mt-1.5 text-xl font-extrabold text-white sm:text-2xl">보유 3 · 관심 3</div>
+        <div id="kpiSourceBadge" class="mt-1 text-[11px] text-emerald-300">내 구글 시트 스냅샷 로드됨</div>
+      </div>
+      <div class="glass-card rounded-2xl p-4">
+        <div class="text-xs font-medium text-slate-400">보유주식 총 평가액</div>
+        <div id="kpiKrwVal" class="mt-1.5 text-xl font-extrabold text-white sm:text-2xl">1,022,770원</div>
+        <div id="kpiKrwPnl" class="mt-1 text-xs font-semibold text-rose-400">손익 +41,387원 (+4.2%)</div>
+      </div>
+      <div class="glass-card rounded-2xl p-4">
+        <div class="text-xs font-medium text-slate-400">가용 현금 (예수금)</div>
+        <div id="kpiCashVal" class="mt-1.5 text-xl font-extrabold text-white sm:text-2xl">1,470,308원</div>
+        <div id="kpiBudgetText" class="mt-1 text-[11px] text-slate-400">총 예산 2,451,691원 기준</div>
+      </div>
+      <div class="glass-card rounded-2xl p-4">
+        <div class="text-xs font-medium text-slate-400">수집된 최신 뉴스</div>
+        <div id="kpiNewsCount" class="mt-1.5 text-2xl font-extrabold text-white">0건</div>
+        <div id="kpiNewsStatus" class="mt-1 text-[11px] text-slate-400">Google News RSS</div>
+      </div>
+    </section>
+
+    <!-- 메인 네비게이션 탭 -->
+    <nav class="flex gap-2 overflow-x-auto pb-1 no-scrollbar" aria-label="대시보드 섹션">
+      <button type="button" data-tab="briefing" class="tab-btn tab-active inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+        <i data-lucide="sparkles" class="h-4 w-4"></i>
+        <span>⑩ AI 관점 브리핑</span>
+      </button>
+      <button type="button" data-tab="news" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+        <i data-lucide="rss" class="h-4 w-4"></i>
+        <span>실시간 뉴스 브리핑</span>
+      </button>
+      <button type="button" data-tab="portfolio" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+        <i data-lucide="pie-chart" class="h-4 w-4"></i>
+        <span>② 보유종목 · ③ 관심종목</span>
+      </button>
+      <button type="button" data-tab="chart" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+        <i data-lucide="candlestick-chart" class="h-4 w-4"></i>
+        <span>실시간 차트 · RSI</span>
+      </button>
+      <button type="button" data-tab="memo" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-bold transition sm:text-sm">
+        <i data-lucide="file-text" class="h-4 w-4"></i>
+        <span>공시 링크 · 종목 메모</span>
+      </button>
+    </nav>
+
+    <!-- 탭 0: ⑩ AI 관점 브리핑 (구글 시트 자동 연동) -->
+    <section id="panel-briefing" class="space-y-4">
+      <div class="glass-card rounded-2xl p-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-sm font-bold text-white">⑩ AI 관점 요약 브리핑 (평일 07·10·12·14·16시경 자동 갱신)</h2>
+            <p id="briefingUpdatedText" class="text-xs text-slate-400">기준 시각: 2026-11-21 19:58 · 구글 시트 '⑩ AI 관점 브리핑' 탭 자동 연동</p>
+          </div>
+          <div class="flex gap-1.5">
+            <button type="button" data-bfilter="ALL" class="brief-filter-btn rounded-full bg-sky-500 px-3 py-1 text-xs font-bold text-slate-950">전체</button>
+            <button type="button" data-bfilter="보유" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300 hover:bg-slate-700">보유종목</button>
+            <button type="button" data-bfilter="관심" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300 hover:bg-slate-700">관심종목</button>
+          </div>
+        </div>
+      </div>
+      <div id="briefingCards" class="grid gap-3 md:grid-cols-2"></div>
+    </section>
+
+    <!-- 탭 1: 실시간 뉴스 브리핑 -->
+    <section id="panel-news" class="hidden space-y-4">
+      <div class="glass-card rounded-2xl p-4">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div id="newsTickerPills" class="flex flex-wrap gap-1.5"></div>
+          <div class="flex items-center gap-2">
+            <input id="newsSearchInput" type="text" placeholder="뉴스 제목·언론사 검색..." class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:border-sky-400 focus:outline-none sm:w-56" />
+          </div>
+        </div>
+      </div>
+
+      <div id="newsAlertBox" class="hidden rounded-xl border border-amber-500/40 bg-amber-500/10 p-3.5 text-xs text-amber-200"></div>
+      <div id="newsList" class="space-y-2.5"></div>
+    </section>
+
+    <!-- 탭 2: ② 보유종목 & ③ 관심종목 레이더 -->
+    <section id="panel-portfolio" class="hidden space-y-5">
+      <div class="grid gap-4 lg:grid-cols-3">
+        <div class="glass-card rounded-2xl p-4 lg:col-span-2">
+          <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="text-sm font-bold text-white">② 보유종목 및 리밸런싱 현황</h2>
+              <p class="text-xs text-slate-400">내 구글 시트 `② 보유종목` 탭과 연동됩니다.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button id="addStockBtn" type="button" class="inline-flex items-center gap-1 rounded-lg bg-sky-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-sky-400">
+                <i data-lucide="plus" class="h-3.5 w-3.5"></i>
+                <span>보유종목 추가</span>
+              </button>
+              <button id="downloadCsvBtn" type="button" class="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-700">
+                <i data-lucide="download" class="h-3.5 w-3.5"></i>
+                <span>CSV 내보내기</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[660px] text-left text-xs">
+              <thead>
+                <tr class="border-b border-slate-700/80 text-slate-400">
+                  <th class="py-2.5 pr-3 font-semibold">종목명 / 섹터</th>
+                  <th class="px-2 py-2.5 font-semibold">티커</th>
+                  <th class="px-2 py-2.5 text-right font-semibold">수량</th>
+                  <th class="px-2 py-2.5 text-right font-semibold">평단가</th>
+                  <th class="px-2 py-2.5 text-right font-semibold">현재가</th>
+                  <th class="px-2 py-2.5 text-right font-semibold">수익률</th>
+                  <th class="px-2 py-2.5 text-right font-semibold">리밸런싱</th>
+                  <th class="py-2.5 pl-2 text-right font-semibold">관리</th>
+                </tr>
+              </thead>
+              <tbody id="portfolioTableBody" class="divide-y divide-slate-800/80"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="glass-card flex flex-col justify-between rounded-2xl p-4">
+          <div>
+            <h2 class="text-sm font-bold text-white">보유종목 평가 비중</h2>
+            <p class="text-xs text-slate-400">현재 평가금액 기준</p>
+          </div>
+          <div class="relative mt-4 h-60 w-full">
+            <canvas id="allocationChart"></canvas>
+          </div>
+          <div class="mt-3 rounded-xl border border-slate-800 bg-slate-900/70 p-3 text-[11px] text-slate-400">
+            구글 시트에서 수량·평단가를 수정한 뒤 상단 <strong class="text-sky-300">새로고침</strong>을 누르면 최신 시세와 리밸런싱 수량이 그대로 반영됩니다.
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ 관심종목 진입 대기 레이더 -->
+      <div class="glass-card rounded-2xl p-4">
+        <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-sm font-bold text-white">③ 관심종목 진입 대기 레이더 (Watchlist)</h2>
+            <p class="text-xs text-slate-400">목표 매수가 · 익절가 · 손절가 및 예상 손익비(R:R) 추적</p>
+          </div>
+        </div>
+        <div id="watchlistCards" class="grid gap-3 md:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- 탭 3: 실시간 차트 및 보조지표 (TradingView 위젯) -->
+    <section id="panel-chart" class="hidden space-y-4">
+      <div class="glass-card rounded-2xl p-4">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 class="text-sm font-bold text-white">TradingView 실시간 차트 (이동평균선 · RSI 포함)</h2>
+            <p class="text-xs text-slate-400">보유종목과 관심종목의 실시간 차트를 바로 확인합니다.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="chartTickerSelect" class="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none"></select>
+            <select id="chartIntervalSelect" class="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none">
+              <option value="D">일봉 (1D)</option>
+              <option value="60">60분봉 (1H)</option>
+              <option value="15">15분봉 (15m)</option>
+              <option value="W">주봉 (1W)</option>
+            </select>
+          </div>
+        </div>
+        <div id="tvChartContainer" class="mt-4 h-[460px] w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950"></div>
+      </div>
+    </section>
+
+    <!-- 탭 4: 공시 바로가기 & 종목 메모 -->
+    <section id="panel-memo" class="hidden space-y-4">
+      <div class="grid gap-4 md:grid-cols-2">
+        <div class="glass-card rounded-2xl p-4">
+          <h2 class="text-sm font-bold text-white">보유·관심 종목 공시 및 뉴스 원클릭 조회</h2>
+          <p class="mt-1 text-xs text-slate-400">금감원 전자공시(DART), 네이버 증권, 구글 뉴스 검색을 바로 엽니다.</p>
+          <div id="quickLinksList" class="mt-3 space-y-2"></div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <h2 class="text-sm font-bold text-white">내 투자 메모장</h2>
+              <p class="text-xs text-slate-400">브라우저에 자동 저장됩니다.</p>
+            </div>
+            <select id="memoTickerSelect" class="rounded-lg border border-slate-700 bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none"></select>
+          </div>
+          <textarea id="memoTextarea" rows="9" placeholder="매수 근거, 체크할 뉴스 포인트, 목표가 등을 적어두세요..." class="mt-3 w-full rounded-xl border border-slate-700 bg-slate-900/90 p-3 text-xs leading-relaxed text-slate-100 placeholder-slate-500 focus:border-sky-400 focus:outline-none"></textarea>
+          <div class="mt-2 flex items-center justify-between">
+            <span id="memoSavedHint" class="text-[11px] text-emerald-400"></span>
+            <button id="saveMemoBtn" type="button" class="rounded-lg bg-sky-500 px-3.5 py-1.5 text-xs font-bold text-slate-950 hover:bg-sky-400">메모 저장</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 구글 시트 연동 모달 -->
+  <div id="sheetModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm">
+    <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-5 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold text-white">내 구글 시트 실시간 동기화</h3>
+        <button id="closeSheetModalBtn" type="button" class="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+
+      <div class="mt-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs text-emerald-100">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span><strong>주식 포트폴리오 및 추세 보조지표 대시보드</strong>가 연결되어 있어요!</span>
+          <a href="https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-emerald-500 px-2.5 py-1 font-bold text-slate-950 hover:bg-emerald-400">내 시트 열기 ↗</a>
+        </div>
+      </div>
+
+      <ol class="mt-3 space-y-1.5 rounded-xl border border-slate-800 bg-slate-950/70 p-3.5 text-xs text-slate-300">
+        <li>1. 내 시트 오른쪽 위 <strong>공유 → 일반 액세스: 링크가 있는 모든 사용자(뷰어)</strong>로 설정해 주세요.</li>
+        <li>2. 아래 <strong>지금 동기화</strong>를 누르면 시트의 <code>② 보유종목</code>과 <code>③ 관심종목</code> 탭을 자동으로 읽어옵니다.</li>
+        <li>3. 시트를 비공개로 두고 싶다면 시트에서 CSV로 내려받은 뒤 아래 <strong>로컬 CSV 불러오기</strong>를 써도 됩니다.</li>
+      </ol>
+
+      <div class="mt-4 space-y-3">
+        <div>
+          <label for="sheetUrlInput" class="block text-xs font-semibold text-slate-300">연동할 구글 시트 URL</label>
+          <input id="sheetUrlInput" type="url" class="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 focus:outline-none" />
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 border-t border-slate-800 pt-3">
+          <label class="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-700">
+            <i data-lucide="upload" class="h-3.5 w-3.5"></i>
+            <span>로컬 CSV 불러오기</span>
+            <input id="csvFileInput" type="file" accept=".csv,text/csv" class="hidden" />
+          </label>
+          <div class="flex gap-2">
+            <button id="disconnectSheetBtn" type="button" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-800">초기화</button>
+            <button id="syncSheetBtn" type="button" class="rounded-lg bg-emerald-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-emerald-400">지금 동기화</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 종목 추가/수정 모달 -->
+  <div id="stockModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm">
+    <div class="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900 p-5 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h3 id="stockModalTitle" class="text-base font-bold text-white">보유종목 추가</h3>
+        <button id="closeStockModalBtn" type="button" class="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+      <form id="stockForm" class="mt-4 space-y-3">
+        <input id="editStockId" type="hidden" />
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label for="fName" class="block text-xs font-semibold text-slate-300">종목명</label>
+            <input id="fName" required placeholder="예: 삼성전자" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white focus:border-sky-400 focus:outline-none" />
+          </div>
+          <div>
+            <label for="fSector" class="block text-xs font-semibold text-slate-300">섹터/업종</label>
+            <input id="fSector" placeholder="예: 반도체" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white focus:border-sky-400 focus:outline-none" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label for="fSymbol" class="block text-xs font-semibold text-slate-300">티커 (KRX:코드)</label>
+            <input id="fSymbol" required placeholder="예: KRX:005930" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white focus:border-sky-400 focus:outline-none" />
+          </div>
+          <div>
+            <label for="fCurrency" class="block text-xs font-semibold text-slate-300">통화</label>
+            <select id="fCurrency" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white focus:border-sky-400 focus:outline-none">
+              <option value="KRW">KRW (원)</option>
+              <option value="USD">USD (달러)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label for="fQty" class="block text-xs font-semibold text-slate-300">보유 수량</label>
+            <input id="fQty" type="number" step="any" min="0" value="0" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white focus:border-sky-400 focus:outline-none" />
+          </div>
+          <div>
+            <label for="fAvg" class="block text-xs font-semibold text-slate-300">매수 평단가</label>
+            <input id="fAvg" type="number" step="any" min="0" value="0" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white focus:border-sky-400 focus:outline-none" />
+          </div>
+          <div>
+            <label for="fPrice" class="block text-xs font-semibold text-slate-300">현재가</label>
+            <input id="fPrice" type="number" step="any" min="0" value="0" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white focus:border-sky-400 focus:outline-none" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button id="cancelStockBtn" type="button" class="rounded-lg border border-slate-700 px-3.5 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-800">취소</button>
+          <button type="submit" class="rounded-lg bg-sky-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-sky-400">저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 토스트 알림 -->
+  <div id="toast" class="pointer-events-none fixed bottom-5 right-5 z-50 translate-y-4 rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white opacity-0 shadow-xl transition-all duration-200"></div>
+
+  <script>
+    const TARGET_SHEET_ID = "1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs";
+    const DEFAULT_SHEET_URL = `https://docs.google.com/spreadsheets/d/${TARGET_SHEET_ID}/edit`;
+
+    const STORAGE_KEY_PORTFOLIO = "my_trading_sys_holdings_v2";
+    const STORAGE_KEY_WATCHLIST = "my_trading_sys_watchlist_v2";
+    const STORAGE_KEY_SHEET_URL = "my_trading_sys_sheet_url_v2";
+    const STORAGE_KEY_MEMOS = "my_trading_sys_memos_v2";
+
+    // 사용자 구글 시트(② 보유종목) 실제 데이터 스냅샷
+    const INITIAL_HOLDINGS = [
+      { id: "h1", assetType: "개별주 알파", sector: "반도체", name: "삼성전자", symbol: "KRX:005930", qty: 2, avgPrice: 73750, price: 183100, targetWeight: 0.15, rebalanceQty: 0, currency: "KRW" },
+      { id: "h2", assetType: "테마 스윙", sector: "메모리 반도체 ETF", name: "SOL 글로벌DRAM반도체플러스", symbol: "KRX:0246X0", qty: 20, avgPrice: 9470, price: 6155, targetWeight: 0.05, rebalanceQty: 0, currency: "KRW" },
+      { id: "h3", assetType: "국내 지수", sector: "코스피200 지수", name: "KODEX 200", symbol: "KRX:069500", qty: 7, avgPrice: 92069, price: 76210, targetWeight: 0.25, rebalanceQty: 1, currency: "KRW" }
+    ];
+
+    // 사용자 구글 시트(③ 관심종목) 실제 데이터 스냅샷
+    const INITIAL_WATCHLIST = [
+      { id: "w1", sector: "자동차 / 모빌리티", name: "현대차", symbol: "KRX:005380", price: 255000, entryPrice: 230000, tpPrice: 270000, slPrice: 218000, rr: 3.33, gapPct: 0.1087, status: "⏳ 대기중", idea: "인도 법인 상장 모멘텀 및 안정적 배당 매력, 20일선 눌림목 지지 시 분할 매수" },
+      { id: "w2", sector: "인터넷 / AI플랫폼", name: "NAVER", symbol: "KRX:035420", price: 161600, entryPrice: 185000, tpPrice: 220000, slPrice: 175000, rr: 3.5, gapPct: -0.1265, status: "🎯 매수 진입권", idea: "생성형 AI 검색 광고 수익화 기대 및 밸류에이션 바닥 확인 후 반등 진입" },
+      { id: "w3", sector: "바이오 / 제약", name: "알테오젠", symbol: "KRX:196170", price: 372000, entryPrice: 360000, tpPrice: 450000, slPrice: 330000, rr: 3.0, gapPct: 0.0333, status: "👀 근접 관망", idea: "SC제형 플랫폼 독점 기술수출 모멘텀 지속, 주봉 전고점 돌파 후 리테스트 공략" }
+    ];
+
+    const INITIAL_BRIEFINGS = [
+      { updated: "2026-11-21 19:58", group: "보유", name: "삼성전자", summary: "애널리스트 35명 컨센서스 적극 매수(평균 목표가 471,857원, 최저 29만 원)이나 최근 단기 급락(-7.11%)과 글로벌 반도체 비중 축소 경계감 공존", action: "20일선(208,065원) 회복 전까지 추가 매수 없이 보유 유지", source: "https://kr.investing.com/equities/samsung-electronics-co-ltd-consensus-estimates" },
+      { updated: "2026-11-21 19:58", group: "보유", name: "SOL 글로벌DRAM반도체플러스", summary: "20일선(7,179원) 하회 및 역배열 약세 구간, 기관 순매수 유입이나 변동성 확대 주의", action: "목표 비중(5%) 이상 확대 금지, 반등 시 분할매도 검토", source: "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" },
+      { updated: "2026-11-21 19:58", group: "보유", name: "KODEX 200", summary: "지수 단기 급락(-5.48%)으로 20일선(84,886원) 하회, 목표 비중(25%) 대비 현재 21.4%로 비중 부족", action: "야간선물 확인 후 계획대로 소액 분할(1주)만 기계적 대응", source: "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" },
+      { updated: "2026-11-21 19:58", group: "관심", name: "NAVER", summary: "2027년 플랫폼 성장 둔화(+8.6%) 반영 목표가 30만 원 하향·매수 유지, 신한투자증권은 AI 위협·기회 관점에서 보수적 시각 제시", action: "목표 매수가(185,000원) 하회했으나 20일선 하회 중이라 바닥 확인 후 분할 접근", source: "https://m.newspim.com/news/view/20261116000781" },
+      { updated: "2026-11-21 19:58", group: "관심", name: "현대차", summary: "내년 영업이익 13조 470억 원(+27.3%) 회복 전망, 목표가 62만→54만 원 하향했으나 중장기 여력 유지", action: "외인·기관 쌍끌이 유입 중이나 목표 매수가(230,000원) 도달 전 대기 유지", source: "https://www.mk.co.kr/news/stock/12168864" },
+      { updated: "2026-11-21 19:58", group: "관심", name: "알테오젠", summary: "하나증권 연간 영업이익 3,000억 원 이상 전망, 신한투자증권 노바티스 4.4조 기술이전 근거 목표가 54만 원 제시", action: "시트 현재가(372,000원)와 최신 시세(173,600원) 괴리 점검 후 재판단", source: "https://www.newspim.com/news/view/20261104000279" }
+    ];
+
+    let state = {
+      budget: 2451691,
+      cash: 1470308,
+      portfolio: [],
+      watchlist: [],
+      briefings: INITIAL_BRIEFINGS.map(x => ({ ...x })),
+      briefingFilter: "ALL",
+      sheetUrl: DEFAULT_SHEET_URL,
+      isLiveSynced: false,
+      memos: {},
+      activeTab: "briefing",
+      selectedNewsFilter: "ALL",
+      newsArticles: [],
+      selectedChartSymbol: "KRX:005930",
+      selectedInterval: "D"
+    };
+    let autoRefreshTimer = null;
+
+    let allocationChartInstance = null;
+    let toastTimer = null;
+
+    function safeStorageGet(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    function safeStorageSet(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (e) {
+        // 스토리지 제한 환경에서는 메모리 상태 유지
+      }
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.remove("opacity-0", "translate-y-4");
+      el.classList.add("opacity-100", "translate-y-0");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.add("opacity-0", "translate-y-4");
+        el.classList.remove("opacity-100", "translate-y-0");
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function fmtMoney(val, currency) {
+      const n = Number(val) || 0;
+      if (currency === "USD") {
+        return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+      return Math.round(n).toLocaleString("ko-KR") + "원";
+    }
+
+    function getAllTrackedStocks() {
+      const map = new Map();
+      state.portfolio.forEach(s => map.set(s.symbol, { name: s.name, symbol: s.symbol, group: "보유" }));
+      state.watchlist.forEach(s => {
+        if (!map.has(s.symbol)) map.set(s.symbol, { name: s.name, symbol: s.symbol, group: "관심" });
+      });
+      return Array.from(map.values());
+    }
+
+    function extractSheetId(rawUrl) {
+      const u = (rawUrl || "").trim();
+      const m1 = u.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (m1) return m1[1];
+      const m2 = u.match(/[?&]id=([a-zA-Z0-9-_]+)/);
+      if (m2) return m2[1];
+      return TARGET_SHEET_ID;
+    }
+
+    function initState() {
+      state.portfolio = safeStorageGet(STORAGE_KEY_PORTFOLIO, null) || INITIAL_HOLDINGS.map(x => ({ ...x }));
+      state.watchlist = safeStorageGet(STORAGE_KEY_WATCHLIST, null) || INITIAL_WATCHLIST.map(x => ({ ...x }));
+      state.sheetUrl = safeStorageGet(STORAGE_KEY_SHEET_URL, DEFAULT_SHEET_URL);
+      state.memos = safeStorageGet(STORAGE_KEY_MEMOS, {});
+      if (state.portfolio.length > 0) {
+        state.selectedChartSymbol = state.portfolio[0].symbol;
+      }
+      document.getElementById("sheetUrlInput").value = state.sheetUrl;
+    }
+
+    function saveLocal() {
+      safeStorageSet(STORAGE_KEY_PORTFOLIO, state.portfolio);
+      safeStorageSet(STORAGE_KEY_WATCHLIST, state.watchlist);
+    }
+
+    function renderKpis() {
+      let totalVal = 0, totalCost = 0;
+      state.portfolio.forEach(item => {
+        const q = Number(item.qty) || 0;
+        const avg = Number(item.avgPrice) || 0;
+        const cur = Number(item.price) || avg;
+        totalVal += q * cur;
+        totalCost += q * avg;
+      });
+
+      const pnl = totalVal - totalCost;
+      const pct = totalCost > 0 ? (pnl / totalCost) * 100 : 0;
+
+      document.getElementById("kpiCount").textContent = `보유 ${state.portfolio.length} · 관심 ${state.watchlist.length}`;
+      document.getElementById("kpiSourceBadge").textContent = state.isLiveSynced
+        ? "구글 시트 실시간 동기화 완료"
+        : "내 구글 시트 데이터 로드됨";
+
+      document.getElementById("kpiKrwVal").textContent = fmtMoney(totalVal, "KRW");
+      const pnlEl = document.getElementById("kpiKrwPnl");
+      pnlEl.textContent = `손익 ${pnl >= 0 ? "+" : ""}${fmtMoney(pnl, "KRW")} (${pnl >= 0 ? "+" : ""}${pct.toFixed(1)}%)`;
+      pnlEl.className = `mt-1 text-xs font-semibold ${pnl > 0 ? "text-rose-400" : pnl < 0 ? "text-sky-400" : "text-slate-400"}`;
+
+      const estCash = Math.max(0, state.budget - totalCost);
+      document.getElementById("kpiCashVal").textContent = fmtMoney(state.cash || estCash, "KRW");
+      document.getElementById("kpiBudgetText").textContent = `총 예산 ${fmtMoney(state.budget, "KRW")} 기준`;
+      document.getElementById("kpiNewsCount").textContent = `${state.newsArticles.length}건`;
+    }
+
+    function renderNewsPills() {
+      const box = document.getElementById("newsTickerPills");
+      const allStocks = getAllTrackedStocks();
+      const items = [{ name: "ALL", label: "전체 종목" }, ...allStocks.map(s => ({ name: s.name, label: `${s.name}` }))];
+      box.innerHTML = items.map(it => {
+        const active = state.selectedNewsFilter === it.name;
+        return `<button type="button" data-filter="${escapeHtml(it.name)}" class="news-pill rounded-full px-3 py-1 text-xs font-semibold transition ${
+          active ? "bg-sky-500 text-slate-950" : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+        }">${escapeHtml(it.label)}</button>`;
+      }).join("");
+
+      box.querySelectorAll(".news-pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.selectedNewsFilter = btn.dataset.filter;
+          renderNewsPills();
+          renderNewsList();
+        });
+      });
+    }
+
+    function renderNewsList() {
+      const kw = (document.getElementById("newsSearchInput").value || "").trim().toLowerCase();
+      const filtered = state.newsArticles.filter(art => {
+        const matchTicker = state.selectedNewsFilter === "ALL" || art.query === state.selectedNewsFilter;
+        const matchKw = !kw || `${art.title} ${art.source} ${art.query}`.toLowerCase().includes(kw);
+        return matchTicker && matchKw;
+      });
+
+      const listEl = document.getElementById("newsList");
+      if (!filtered.length) {
+        const tracked = getAllTrackedStocks();
+        listEl.innerHTML = `
+          <div class="glass-card rounded-2xl p-6 text-center text-xs text-slate-400">
+            표시할 뉴스가 없습니다. 아래 버튼으로 구글 뉴스에서 바로 확인하거나 새로고침해 보세요.
+            <div class="mt-3 flex flex-wrap justify-center gap-2">
+              ${tracked.slice(0, 6).map(s =>
+                `<a href="https://news.google.com/search?q=${encodeURIComponent(s.name + " 주식")}&hl=ko&gl=KR&ceid=KR:ko" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 font-semibold text-sky-300 hover:bg-slate-700">${escapeHtml(s.name)} 뉴스 열기 ↗</a>`
+              ).join("")}
+            </div>
+          </div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(art => `
+        <article class="glass-card rounded-xl p-4 transition hover:border-sky-500/50">
+          <a href="${escapeHtml(art.link)}" target="_blank" rel="noopener noreferrer" class="block text-sm font-semibold leading-snug text-slate-100 hover:text-sky-300">
+            ${escapeHtml(art.title)}
+          </a>
+          <div class="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
+            <span class="rounded-full bg-sky-500/15 px-2 py-0.5 font-semibold text-sky-300">${escapeHtml(art.query)}</span>
+            <span>${escapeHtml(art.source)}</span>
+            <span>·</span>
+            <span>${escapeHtml(art.pubDate)}</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    async function fetchLiveNews() {
+      const statusEl = document.getElementById("kpiNewsStatus");
+      const alertBox = document.getElementById("newsAlertBox");
+      statusEl.textContent = "뉴스 불러오는 중...";
+      alertBox.classList.add("hidden");
+
+      const targets = getAllTrackedStocks().slice(0, 6);
+      const collected = [];
+      const seen = new Set();
+      let failed = 0;
+
+      await Promise.all(targets.map(async (stock) => {
+        const searchTerm = stock.name.includes("SOL ") ? "반도체 DRAM ETF" : stock.name;
+        const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchTerm + " 주식 OR 증시 OR 실적")}&hl=ko&gl=KR&ceid=KR:ko`;
+        const bridgeUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+        try {
+          const res = await fetch(bridgeUrl);
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const data = await res.json();
+          if (data.status !== "ok" || !Array.isArray(data.items)) throw new Error("RSS 오류");
+          data.items.slice(0, 6).forEach(item => {
+            const rawTitle = item.title || "";
+            const parts = rawTitle.split(" - ");
+            const source = parts.length > 1 ? parts.pop().trim() : (item.author || "Google News");
+            const cleanTitle = parts.join(" - ").trim() || rawTitle;
+            const dedupKey = cleanTitle.replace(/\s+/g, "").slice(0, 40);
+            if (!seen.has(dedupKey)) {
+              seen.add(dedupKey);
+              collected.push({
+                query: stock.name,
+                title: cleanTitle,
+                source,
+                link: item.link || "#",
+                pubDate: item.pubDate ? item.pubDate.slice(0, 16) : "",
+                ts: item.pubDate ? new Date(item.pubDate.replace(" ", "T") + "Z").getTime() || 0 : 0
+              });
+            }
+          });
+        } catch (err) {
+          failed++;
+        }
+      }));
+
+      collected.sort((a, b) => b.ts - a.ts);
+      state.newsArticles = collected;
+      renderKpis();
+      renderNewsPills();
+      renderNewsList();
+
+      const nowStr = new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+      if (failed > 0 && collected.length === 0) {
+        statusEl.textContent = "일시적 RSS 지연";
+        alertBox.textContent = "외부 뉴스 피드 응답이 일시적으로 지연되었습니다. 잠시 후 새로고침하거나 아래 종목별 뉴스 바로가기를 이용해 주세요.";
+        alertBox.classList.remove("hidden");
+      } else {
+        statusEl.textContent = `Google News 실시간 (${nowStr})`;
+      }
+    }
+
+    function renderChartSelectors() {
+      const sel = document.getElementById("chartTickerSelect");
+      const allStocks = getAllTrackedStocks();
+      if (!allStocks.length) {
+        sel.innerHTML = `<option value="KRX:005930">삼성전자 (KRX:005930)</option>`;
+        return;
+      }
+      if (!allStocks.some(s => s.symbol === state.selectedChartSymbol)) {
+        state.selectedChartSymbol = allStocks[0].symbol;
+      }
+      sel.innerHTML = allStocks.map(s =>
+        `<option value="${escapeHtml(s.symbol)}" ${s.symbol === state.selectedChartSymbol ? "selected" : ""}>[${s.group}] ${escapeHtml(s.name)} (${escapeHtml(s.symbol)})</option>`
+      ).join("");
+    }
+
+    function renderTradingViewChart() {
+      const container = document.getElementById("tvChartContainer");
+      container.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.className = "tradingview-widget-container h-full w-full";
+      const inner = document.createElement("div");
+      inner.className = "tradingview-widget-container__widget h-full w-full";
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+      script.async = true;
+      script.text = JSON.stringify({
+        autosize: true,
+        symbol: state.selectedChartSymbol || "KRX:005930",
+        interval: state.selectedInterval || "D",
+        timezone: "Asia/Seoul",
+        theme: "dark",
+        style: "1",
+        locale: "kr",
+        allow_symbol_change: true,
+        studies: ["STD;RSI", "STD;SMA"],
+        support_host: "https://www.tradingview.com"
+      });
+      wrapper.appendChild(inner);
+      wrapper.appendChild(script);
+      container.appendChild(wrapper);
+    }
+
+    function renderPortfolioTable() {
+      const tbody = document.getElementById("portfolioTableBody");
+      if (!state.portfolio.length) {
+        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">보유종목이 없습니다.</td></tr>`;
+        renderAllocationChart();
+        return;
+      }
+
+      tbody.innerHTML = state.portfolio.map(item => {
+        const q = Number(item.qty) || 0;
+        const avg = Number(item.avgPrice) || 0;
+        const cur = Number(item.price) || avg;
+        const pct = avg > 0 ? ((cur - avg) / avg) * 100 : 0;
+        const pctClass = pct > 0 ? "text-rose-400" : pct < 0 ? "text-sky-400" : "text-slate-400";
+        const reb = Number(item.rebalanceQty) || 0;
+        const rebBadge = reb > 0
+          ? `<span class="rounded bg-rose-500/20 px-1.5 py-0.5 text-[11px] font-bold text-rose-300">+${reb}주 매수</span>`
+          : reb < 0
+            ? `<span class="rounded bg-sky-500/20 px-1.5 py-0.5 text-[11px] font-bold text-sky-300">${reb}주 매도</span>`
+            : `<span class="text-slate-500">유지</span>`;
+
+        return `
+          <tr class="hover:bg-slate-800/40">
+            <td class="py-2.5 pr-3">
+              <div class="font-semibold text-white">${escapeHtml(item.name)}</div>
+              <div class="text-[11px] text-slate-400">${escapeHtml(item.sector || item.assetType || "")}</div>
+            </td>
+            <td class="px-2 py-2.5 text-slate-400">${escapeHtml(item.symbol)}</td>
+            <td class="px-2 py-2.5 text-right text-slate-200">${q.toLocaleString()}주</td>
+            <td class="px-2 py-2.5 text-right text-slate-300">${fmtMoney(avg, item.currency)}</td>
+            <td class="px-2 py-2.5 text-right font-semibold text-white">${fmtMoney(cur, item.currency)}</td>
+            <td class="px-2 py-2.5 text-right font-bold ${pctClass}">${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%</td>
+            <td class="px-2 py-2.5 text-right">${rebBadge}</td>
+            <td class="py-2.5 pl-2 text-right">
+              <button type="button" data-edit="${escapeHtml(item.id)}" class="edit-stock-btn mr-1 rounded px-2 py-1 text-[11px] font-semibold text-sky-300 hover:bg-slate-800">수정</button>
+              <button type="button" data-del="${escapeHtml(item.id)}" class="del-stock-btn rounded px-2 py-1 text-[11px] font-semibold text-rose-300 hover:bg-slate-800">삭제</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      tbody.querySelectorAll(".edit-stock-btn").forEach(btn => {
+        btn.addEventListener("click", () => openStockModal(btn.dataset.edit));
+      });
+      tbody.querySelectorAll(".del-stock-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.portfolio = state.portfolio.filter(x => x.id !== btn.dataset.del);
+          saveLocal();
+          renderAllUI();
+          showToast("종목을 삭제했습니다.");
+        });
+      });
+
+      renderAllocationChart();
+    }
+
+    function renderWatchlistCards() {
+      const box = document.getElementById("watchlistCards");
+      if (!state.watchlist.length) {
+        box.innerHTML = `<div class="col-span-3 text-center text-xs text-slate-400 py-4">관심종목이 없습니다.</div>`;
+        return;
+      }
+      box.innerHTML = state.watchlist.map(w => {
+        const isBuyZone = (w.status || "").includes("진입");
+        const statusCls = isBuyZone
+          ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300"
+          : "border-slate-700 bg-slate-800 text-slate-300";
+        return `
+          <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3.5">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="text-sm font-bold text-white">${escapeHtml(w.name)}</div>
+                <div class="text-[11px] text-slate-400">${escapeHtml(w.symbol)} · ${escapeHtml(w.sector || "")}</div>
+              </div>
+              <span class="rounded-full border px-2 py-0.5 text-[11px] font-semibold ${statusCls}">${escapeHtml(w.status || "관망")}</span>
+            </div>
+            <div class="mt-3 grid grid-cols-2 gap-1.5 rounded-lg bg-slate-950/70 p-2.5 text-[11px]">
+              <div><span class="text-slate-400">현재가</span><div class="font-bold text-white">${fmtMoney(w.price, "KRW")}</div></div>
+              <div><span class="text-slate-400">목표 매수</span><div class="font-bold text-sky-300">${fmtMoney(w.entryPrice, "KRW")}</div></div>
+              <div><span class="text-slate-400">익절 / 손절</span><div class="font-semibold text-slate-200">${Math.round((w.tpPrice||0)/1000)}k / ${Math.round((w.slPrice||0)/1000)}k</div></div>
+              <div><span class="text-slate-400">손익비 (R:R)</span><div class="font-bold text-emerald-300">1 : ${(Number(w.rr)||0).toFixed(1)}</div></div>
+            </div>
+            <p class="mt-2.5 text-[11px] leading-relaxed text-slate-400">${escapeHtml(w.idea || "")}</p>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderAllocationChart() {
+      const ctx = document.getElementById("allocationChart");
+      if (!ctx || typeof Chart === "undefined") return;
+      if (allocationChartInstance) {
+        allocationChartInstance.destroy();
+      }
+      const labels = [];
+      const values = [];
+      state.portfolio.forEach(item => {
+        const val = (Number(item.qty) || 0) * (Number(item.price) || Number(item.avgPrice) || 0);
+        if (val > 0) {
+          labels.push(item.name);
+          values.push(Math.round(val));
+        }
+      });
+
+      allocationChartInstance = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: labels.length ? labels : ["데이터 없음"],
+          datasets: [{
+            data: values.length ? values : [1],
+            backgroundColor: ["#38bdf8", "#818cf8", "#34d399", "#fbbf24", "#fb7185", "#a78bfa"],
+            borderColor: "#0f172a",
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: { color: "#cbd5e1", font: { size: 11 }, boxWidth: 10, padding: 12 }
+            }
+          }
+        }
+      });
+    }
+
+    function renderQuickLinksAndMemo() {
+      const tracked = getAllTrackedStocks();
+      const box = document.getElementById("quickLinksList");
+      box.innerHTML = tracked.map(s => {
+        const isKrx = s.symbol.startsWith("KRX:");
+        const code = s.symbol.includes(":") ? s.symbol.split(":")[1] : s.symbol;
+        const dartUrl = isKrx
+          ? `https://dart.fss.or.kr/dsab007/main.do?option=corp&textCrpNm=${encodeURIComponent(s.name)}`
+          : `https://www.sec.gov/edgar/search/#/q=${encodeURIComponent(code)}`;
+        const newsUrl = `https://news.google.com/search?q=${encodeURIComponent(s.name + " 주식")}&hl=ko&gl=KR&ceid=KR:ko`;
+        const naverUrl = isKrx
+          ? `https://finance.naver.com/item/main.naver?code=${encodeURIComponent(code)}`
+          : `https://finance.yahoo.com/quote/${encodeURIComponent(code)}`;
+        return `
+          <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-800 bg-slate-900/70 px-3 py-2.5">
+            <div>
+              <div class="text-xs font-bold text-white"><span class="mr-1 rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-sky-300">${s.group}</span>${escapeHtml(s.name)}</div>
+              <div class="text-[11px] text-slate-400">${escapeHtml(s.symbol)}</div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 text-[11px] font-semibold">
+              <a href="${dartUrl}" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-indigo-500/20 px-2.5 py-1 text-indigo-300 hover:bg-indigo-500/30">${isKrx ? "DART 공시" : "SEC 공시"} ↗</a>
+              <a href="${naverUrl}" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-emerald-500/20 px-2.5 py-1 text-emerald-300 hover:bg-emerald-500/30">${isKrx ? "네이버 증권" : "야후 파이낸스"} ↗</a>
+              <a href="${newsUrl}" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-sky-500/20 px-2.5 py-1 text-sky-300 hover:bg-sky-500/30">구글 뉴스 ↗</a>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const memoSel = document.getElementById("memoTickerSelect");
+      const prevVal = memoSel.value;
+      memoSel.innerHTML = tracked.map(s =>
+        `<option value="${escapeHtml(s.name)}">[${s.group}] ${escapeHtml(s.name)}</option>`
+      ).join("");
+      if (prevVal && tracked.some(s => s.name === prevVal)) {
+        memoSel.value = prevVal;
+      }
+      loadSelectedMemo();
+    }
+
+    function loadSelectedMemo() {
+      const key = document.getElementById("memoTickerSelect").value;
+      document.getElementById("memoTextarea").value = state.memos[key] || "";
+      document.getElementById("memoSavedHint").textContent = "";
+    }
+
+    function parseCsvRows(csvText) {
+      const lines = csvText.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+      return lines.map(line => {
+        const res = [];
+        let cur = "", inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (ch === '"') {
+            inQuotes = !inQuotes;
+          } else if (ch === "," && !inQuotes) {
+            res.push(cur.trim());
+            cur = "";
+          } else {
+            cur += ch;
+          }
+        }
+        res.push(cur.trim());
+        return res;
+      });
+    }
+
+    function cleanNum(s) {
+      return Number(String(s || "0").replace(/[^0-9.-]/g, "")) || 0;
+    }
+
+    // 사용자 시트의 '② 보유종목' 탭 (상단 배너/요약행 자동 건너뛰기) 파싱
+    function parseHoldingsCsv(csvText) {
+      const rows = parseCsvRows(csvText);
+      // 상단 요약행에서 총 예산/예수금 추출 시도
+      rows.slice(0, 7).forEach((r, idx) => {
+        if (r.some(c => c.includes("총 투자 예산")) && rows[idx + 1]) {
+          const b = cleanNum(rows[idx + 1][0]);
+          if (b > 0) state.budget = b;
+          const cashIdx = r.findIndex(c => c.includes("가용 현금"));
+          if (cashIdx >= 0 && rows[idx + 1][cashIdx]) {
+            const cVal = cleanNum(rows[idx + 1][cashIdx]);
+            if (cVal >= 0) state.cash = cVal;
+          }
+        }
+      });
+
+      const headerIdx = rows.findIndex(r => r.some(c => c.includes("종목명")) && r.some(c => c.includes("티커") || c.includes("심볼")));
+      if (headerIdx < 0) return [];
+      const h = rows[headerIdx];
+      const col = (keys) => h.findIndex(c => keys.some(k => c.includes(k)));
+      const iAsset = col(["자산"]);
+      const iSector = col(["섹터", "업종"]);
+      const iName = col(["종목명"]);
+      const iSym = col(["티커", "심볼"]);
+      const iQty = col(["보유수량", "수량"]);
+      const iAvg = col(["평단가", "매수가"]);
+      const iPrice = col(["현재가", "기준가"]);
+      const iTarget = col(["목표 비중"]);
+      const iReb = col(["리밸런싱"]);
+
+      const parsed = [];
+      for (let i = headerIdx + 1; i < rows.length; i++) {
+        const r = rows[i];
+        const name = (iName >= 0 ? r[iName] : "") || "";
+        const sym = (iSym >= 0 ? r[iSym] : "") || "";
+        if (!name || !sym || name.includes("합계") || name.includes("총계")) continue;
+        parsed.push({
+          id: "sync_h_" + i,
+          assetType: iAsset >= 0 ? r[iAsset] : "",
+          sector: iSector >= 0 ? r[iSector] : "",
+          name,
+          symbol: sym.toUpperCase(),
+          qty: cleanNum(iQty >= 0 ? r[iQty] : 0),
+          avgPrice: cleanNum(iAvg >= 0 ? r[iAvg] : 0),
+          price: cleanNum(iPrice >= 0 ? r[iPrice] : 0),
+          targetWeight: cleanNum(iTarget >= 0 ? r[iTarget] : 0),
+          rebalanceQty: cleanNum(iReb >= 0 ? r[iReb] : 0),
+          currency: sym.toUpperCase().startsWith("KRX:") ? "KRW" : "USD"
+        });
+      }
+      return parsed;
+    }
+
+    // 사용자 시트의 '③ 관심종목' 탭 파싱
+    function parseWatchlistCsv(csvText) {
+      const rows = parseCsvRows(csvText);
+      const headerIdx = rows.findIndex(r => r.some(c => c.includes("종목명")) && r.some(c => c.includes("티커") || c.includes("심볼")));
+      if (headerIdx < 0) return [];
+      const h = rows[headerIdx];
+      const col = (keys) => h.findIndex(c => keys.some(k => c.includes(k)));
+      const iSector = col(["섹터", "테마"]);
+      const iName = col(["종목명"]);
+      const iSym = col(["티커", "심볼"]);
+      const iPrice = col(["현재가"]);
+      const iEntry = col(["목표 매수가"]);
+      const iTp = col(["목표가", "Take-Profit"]);
+      const iSl = col(["손절가", "Stop-Loss"]);
+      const iRr = col(["손익비"]);
+      const iStatus = col(["대기 상태"]);
+      const iIdea = col(["아이디어", "전략"]);
+
+      const parsed = [];
+      for (let i = headerIdx + 1; i < rows.length; i++) {
+        const r = rows[i];
+        const name = (iName >= 0 ? r[iName] : "") || "";
+        const sym = (iSym >= 0 ? r[iSym] : "") || "";
+        if (!name || !sym || name.includes("평균") || name.includes("요약")) continue;
+        parsed.push({
+          id: "sync_w_" + i,
+          sector: iSector >= 0 ? r[iSector] : "",
+          name,
+          symbol: sym.toUpperCase(),
+          price: cleanNum(iPrice >= 0 ? r[iPrice] : 0),
+          entryPrice: cleanNum(iEntry >= 0 ? r[iEntry] : 0),
+          tpPrice: cleanNum(iTp >= 0 ? r[iTp] : 0),
+          slPrice: cleanNum(iSl >= 0 ? r[iSl] : 0),
+          rr: cleanNum(iRr >= 0 ? r[iRr] : 0),
+          status: iStatus >= 0 ? r[iStatus] : "관망",
+          idea: iIdea >= 0 ? r[iIdea] : ""
+        });
+      }
+      return parsed;
+    }
+
+    function parseBriefingsCsv(csvText) {
+      const rows = parseCsvRows(csvText);
+      const headerIdx = rows.findIndex(r => r.some(c => c.includes("종목명")) && r.some(c => c.includes("관점") || c.includes("요약")));
+      if (headerIdx < 0) return [];
+      const h = rows[headerIdx];
+      const col = (keys) => h.findIndex(c => keys.some(k => c.includes(k)));
+      const iTime = col(["시각", "일시", "날짜"]);
+      const iGrp = col(["구분"]);
+      const iName = col(["종목명"]);
+      const iSum = col(["관점", "요약"]);
+      const iAct = col(["대응", "포인트"]);
+      const iSrc = col(["출처", "링크"]);
+
+      const parsed = [];
+      for (let i = headerIdx + 1; i < rows.length; i++) {
+        const r = rows[i];
+        const name = (iName >= 0 ? r[iName] : "") || "";
+        const summary = (iSum >= 0 ? r[iSum] : "") || "";
+        if (!name || !summary) continue;
+        parsed.push({
+          updated: iTime >= 0 ? r[iTime] : "",
+          group: iGrp >= 0 ? r[iGrp] : "종목",
+          name,
+          summary,
+          action: iAct >= 0 ? r[iAct] : "",
+          source: iSrc >= 0 ? r[iSrc] : ""
+        });
+      }
+      return parsed;
+    }
+
+    function renderBriefings() {
+      const box = document.getElementById("briefingCards");
+      const list = state.briefings.filter(b => state.briefingFilter === "ALL" || (b.group || "").includes(state.briefingFilter));
+      if (state.briefings.length && state.briefings[0].updated) {
+        document.getElementById("briefingUpdatedText").textContent = `마지막 브리핑 시각: ${state.briefings[0].updated} · 구글 시트 '⑩ AI 관점 브리핑' 자동 연동`;
+      }
+      if (!list.length) {
+        box.innerHTML = `<div class="col-span-2 glass-card rounded-2xl p-6 text-center text-xs text-slate-400">표시할 AI 관점 브리핑이 없습니다.</div>`;
+        return;
+      }
+      box.innerHTML = list.map(b => {
+        const isHold = (b.group || "").includes("보유");
+        const badgeCls = isHold
+          ? "bg-sky-500/20 text-sky-300 border-sky-500/40"
+          : "bg-amber-500/20 text-amber-300 border-amber-500/40";
+        const srcHtml = b.source && b.source.startsWith("http")
+          ? `<a href="${escapeHtml(b.source)}" target="_blank" rel="noopener noreferrer" class="text-[11px] font-semibold text-sky-400 hover:underline">출처 원문 보기 ↗</a>`
+          : "";
+        return `
+          <article class="glass-card rounded-2xl p-4 flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="rounded-full border px-2 py-0.5 text-[11px] font-bold ${badgeCls}">${escapeHtml(b.group)}</span>
+                  <h3 class="text-sm font-bold text-white">${escapeHtml(b.name)}</h3>
+                </div>
+                <span class="text-[11px] text-slate-500">${escapeHtml(b.updated || "")}</span>
+              </div>
+              <p class="mt-2.5 text-xs leading-relaxed text-slate-200">${escapeHtml(b.summary)}</p>
+            </div>
+            <div class="space-y-2 border-t border-slate-800 pt-2.5">
+              <div class="rounded-lg bg-slate-900/90 px-3 py-2 text-xs text-emerald-300">
+                <strong class="text-emerald-200">대응 포인트:</strong> ${escapeHtml(b.action)}
+              </div>
+              <div class="flex justify-end">${srcHtml}</div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function syncGoogleSheet(rawUrl, silent = false) {
+      const sheetId = extractSheetId(rawUrl);
+      const holdingsUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("② 보유종목")}`;
+      const watchlistUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("③ 관심종목")}`;
+      const briefingUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("⑩ AI 관점 브리핑")}`;
+
+      if (!silent) showToast("내 구글 시트(보유·관심·AI 브리핑) 동기화 중...");
+      try {
+        const [resH, resW, resB] = await Promise.all([fetch(holdingsUrl), fetch(watchlistUrl), fetch(briefingUrl)]);
+        if (!resH.ok) throw new Error("시트 접근 권한 없음");
+        const csvH = await resH.text();
+        const holdings = parseHoldingsCsv(csvH);
+        if (!holdings.length) throw new Error("보유종목 파싱 실패");
+
+        state.portfolio = holdings;
+        if (resW.ok) {
+          const csvW = await resW.text();
+          const wl = parseWatchlistCsv(csvW);
+          if (wl.length) state.watchlist = wl;
+        }
+        if (resB.ok) {
+          const csvB = await resB.text();
+          const br = parseBriefingsCsv(csvB);
+          if (br.length) state.briefings = br;
+        }
+
+        state.sheetUrl = rawUrl || DEFAULT_SHEET_URL;
+        state.isLiveSynced = true;
+        saveLocal();
+        safeStorageSet(STORAGE_KEY_SHEET_URL, state.sheetUrl);
+        closeModal("sheetModal");
+        renderAllUI();
+        const nowStr = new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+        document.getElementById("lastSyncText").textContent = `구글 시트 실시간 동기화 완료 (${nowStr})`;
+        if (!silent) showToast(`시트에서 보유 ${state.portfolio.length}종목 · 관심 ${state.watchlist.length}종목을 불러왔습니다!`);
+        fetchLiveNews();
+      } catch (err) {
+        state.isLiveSynced = false;
+        renderKpis();
+        if (!silent) {
+          showToast("구글 시트에서 '링크가 있는 모든 사용자(뷰어)' 공유를 켜야 실시간 동기화가 됩니다.");
+        }
+      }
+    }
+
+    function downloadCsv() {
+      const header = "자산종류,섹터,종목명,티커,보유수량,매수평단가,현재가,통화";
+      const rows = state.portfolio.map(s =>
+        `"${s.assetType || ""}","${s.sector || ""}","${s.name}","${s.symbol}",${s.qty},${s.avgPrice},${s.price},${s.currency}`
+      );
+      const blob = new Blob(["\uFEFF" + [header, ...rows].join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "my_stock_holdings.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("보유종목 CSV를 저장했습니다.");
+    }
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      el.classList.remove("hidden");
+      el.classList.add("flex");
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      el.classList.add("hidden");
+      el.classList.remove("flex");
+    }
+
+    function openStockModal(editId) {
+      const titleEl = document.getElementById("stockModalTitle");
+      if (editId) {
+        const item = state.portfolio.find(x => x.id === editId);
+        if (!item) return;
+        titleEl.textContent = "보유종목 수정";
+        document.getElementById("editStockId").value = item.id;
+        document.getElementById("fName").value = item.name;
+        document.getElementById("fSector").value = item.sector || "";
+        document.getElementById("fSymbol").value = item.symbol;
+        document.getElementById("fCurrency").value = item.currency;
+        document.getElementById("fQty").value = item.qty;
+        document.getElementById("fAvg").value = item.avgPrice;
+        document.getElementById("fPrice").value = item.price;
+      } else {
+        titleEl.textContent = "보유종목 추가";
+        document.getElementById("editStockId").value = "";
+        document.getElementById("stockForm").reset();
+      }
+      openModal("stockModal");
+    }
+
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+      ["briefing", "news", "portfolio", "chart", "memo"].forEach(t => {
+        document.getElementById(`panel-${t}`).classList.toggle("hidden", t !== tabName);
+      });
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        const isActive = btn.dataset.tab === tabName;
+        btn.classList.toggle("tab-active", isActive);
+        btn.classList.toggle("tab-inactive", !isActive);
+      });
+      if (tabName === "chart") {
+        renderTradingViewChart();
+      } else if (tabName === "portfolio") {
+        renderAllocationChart();
+      }
+    }
+
+    function renderAllUI() {
+      renderKpis();
+      renderBriefings();
+      renderNewsPills();
+      renderNewsList();
+      renderChartSelectors();
+      renderPortfolioTable();
+      renderWatchlistCards();
+      renderQuickLinksAndMemo();
+      if (state.activeTab === "chart") {
+        renderTradingViewChart();
+      }
+    }
+
+    function bindEvents() {
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+      });
+
+      document.getElementById("newsSearchInput").addEventListener("input", renderNewsList);
+
+      document.getElementById("chartTickerSelect").addEventListener("change", (e) => {
+        state.selectedChartSymbol = e.target.value;
+        renderTradingViewChart();
+      });
+      document.getElementById("chartIntervalSelect").addEventListener("change", (e) => {
+        state.selectedInterval = e.target.value;
+        renderTradingViewChart();
+      });
+
+      document.getElementById("openSheetModalBtn").addEventListener("click", () => openModal("sheetModal"));
+      document.getElementById("closeSheetModalBtn").addEventListener("click", () => closeModal("sheetModal"));
+      document.getElementById("syncSheetBtn").addEventListener("click", () => {
+        syncGoogleSheet(document.getElementById("sheetUrlInput").value.trim(), false);
+      });
+      document.getElementById("disconnectSheetBtn").addEventListener("click", () => {
+        state.portfolio = INITIAL_HOLDINGS.map(x => ({ ...x }));
+        state.watchlist = INITIAL_WATCHLIST.map(x => ({ ...x }));
+        state.sheetUrl = DEFAULT_SHEET_URL;
+        document.getElementById("sheetUrlInput").value = DEFAULT_SHEET_URL;
+        saveLocal();
+        renderAllUI();
+        closeModal("sheetModal");
+        showToast("초기 시트 데이터로 복원했습니다.");
+      });
+
+      document.getElementById("csvFileInput").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const rows = parseHoldingsCsv(String(reader.result || ""));
+          if (!rows.length) {
+            showToast("CSV에서 보유종목을 읽지 못했습니다.");
+            return;
+          }
+          state.portfolio = rows;
+          saveLocal();
+          closeModal("sheetModal");
+          renderAllUI();
+          fetchLiveNews();
+          showToast(`CSV에서 ${rows.length}개 종목을 불러왔습니다.`);
+        };
+        reader.readAsText(file, "utf-8");
+        e.target.value = "";
+      });
+
+      document.getElementById("addStockBtn").addEventListener("click", () => openStockModal(null));
+      document.getElementById("closeStockModalBtn").addEventListener("click", () => closeModal("stockModal"));
+      document.getElementById("cancelStockBtn").addEventListener("click", () => closeModal("stockModal"));
+      document.getElementById("downloadCsvBtn").addEventListener("click", downloadCsv);
+
+      document.getElementById("stockForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const editId = document.getElementById("editStockId").value;
+        const entry = {
+          id: editId || "h_" + Date.now(),
+          assetType: "직접 입력",
+          sector: document.getElementById("fSector").value.trim(),
+          name: document.getElementById("fName").value.trim(),
+          symbol: document.getElementById("fSymbol").value.trim().toUpperCase(),
+          currency: document.getElementById("fCurrency").value,
+          qty: Number(document.getElementById("fQty").value) || 0,
+          avgPrice: Number(document.getElementById("fAvg").value) || 0,
+          price: Number(document.getElementById("fPrice").value) || Number(document.getElementById("fAvg").value) || 0,
+          rebalanceQty: 0
+        };
+        if (editId) {
+          state.portfolio = state.portfolio.map(x => x.id === editId ? { ...x, ...entry } : x);
+          showToast("보유종목 정보를 수정했습니다.");
+        } else {
+          state.portfolio.push(entry);
+          showToast("새 보유종목을 추가했습니다.");
+        }
+        saveLocal();
+        closeModal("stockModal");
+        renderAllUI();
+        fetchLiveNews();
+      });
+
+      document.getElementById("memoTickerSelect").addEventListener("change", loadSelectedMemo);
+      document.getElementById("saveMemoBtn").addEventListener("click", () => {
+        const key = document.getElementById("memoTickerSelect").value;
+        if (!key) return;
+        state.memos[key] = document.getElementById("memoTextarea").value;
+        safeStorageSet(STORAGE_KEY_MEMOS, state.memos);
+        document.getElementById("memoSavedHint").textContent = "저장됨 (" + new Date().toLocaleTimeString("ko-KR") + ")";
+        showToast(`${key} 메모를 저장했습니다.`);
+      });
+
+      document.querySelectorAll(".brief-filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.briefingFilter = btn.dataset.bfilter;
+          document.querySelectorAll(".brief-filter-btn").forEach(b => {
+            const active = b.dataset.bfilter === state.briefingFilter;
+            b.className = active
+              ? "brief-filter-btn rounded-full bg-sky-500 px-3 py-1 text-xs font-bold text-slate-950"
+              : "brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300 hover:bg-slate-700";
+          });
+          renderBriefings();
+        });
+      });
+
+      const setupAutoRefresh = () => {
+        if (autoRefreshTimer) {
+          clearInterval(autoRefreshTimer);
+          autoRefreshTimer = null;
+        }
+        if (document.getElementById("autoRefresh30m").checked) {
+          autoRefreshTimer = setInterval(() => {
+            syncGoogleSheet(state.sheetUrl, true);
+          }, 30 * 60 * 1000);
+        }
+      };
+      document.getElementById("autoRefresh30m").addEventListener("change", () => {
+        setupAutoRefresh();
+        showToast(document.getElementById("autoRefresh30m").checked ? "30분 자동 새로고침을 켰습니다." : "30분 자동 새로고침을 껐습니다.");
+      });
+      setupAutoRefresh();
+
+      document.getElementById("refreshAllBtn").addEventListener("click", () => {
+        syncGoogleSheet(state.sheetUrl, false);
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initState();
+      bindEvents();
+      renderAllUI();
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+      fetchLiveNews();
+      syncGoogleSheet(state.sheetUrl, true);
+    });
+  </script>
+</body>
+</html>
