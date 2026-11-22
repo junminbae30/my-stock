@@ -40,29 +40,43 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+    @media (max-width: 640px) {
+      input[type="text"], input[type="number"], input[type="url"], select, textarea {
+        font-size: 16px !important;
+      }
+    }
+    .mobile-nav-active {
+      color: #38bdf8;
+    }
+    .mobile-nav-inactive {
+      color: #94a3b8;
+    }
+    .pb-safe {
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    }
   </style>
 </head>
 <body class="min-h-screen overflow-x-hidden antialiased selection:bg-sky-500/30">
   <!-- 상단 헤더 -->
   <header class="sticky top-0 z-30 border-b border-slate-800/90 bg-slate-950/90 backdrop-blur">
-    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3.5">
-      <div class="flex items-center gap-2.5">
-        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/20 text-sky-400 ring-1 ring-sky-400/30">
-          <i data-lucide="newspaper" class="h-5 w-5"></i>
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3.5">
+      <div class="flex min-w-0 items-center gap-2">
+        <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-sky-500/20 text-sky-400 ring-1 ring-sky-400/30 sm:h-9 sm:w-9">
+          <i data-lucide="newspaper" class="h-4 w-4 sm:h-5 sm:w-5"></i>
         </div>
-        <div>
-          <div class="flex flex-wrap items-center gap-2">
-            <h1 class="text-base font-bold tracking-tight text-white sm:text-lg">MY STOCK TRADING SYSTEM</h1>
-            <span class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-300">
-              내 구글 시트 연동 · 읽기 전용
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <h1 class="truncate text-sm font-bold tracking-tight text-white sm:text-lg">MY STOCK</h1>
+            <span class="hidden rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-300 sm:inline-block">
+              구글 시트 연동 · 읽기 전용
             </span>
           </div>
-          <p id="lastSyncText" class="text-xs text-slate-400">주식 포트폴리오 및 추세 보조지표 대시보드 연결됨</p>
+          <p id="lastSyncText" class="truncate text-[11px] text-slate-400 sm:text-xs">포트폴리오 · AI 브리핑 연결됨</p>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <label class="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-700/80 bg-slate-900 px-2.5 py-2 text-[11px] font-medium text-slate-300">
+      <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
+        <label class="hidden cursor-pointer items-center gap-1.5 rounded-lg border border-slate-700/80 bg-slate-900 px-2.5 py-2 text-[11px] font-medium text-slate-300 md:inline-flex">
           <input id="autoRefresh30m" type="checkbox" checked class="accent-sky-400" />
           <span>30분 자동갱신</span>
         </label>
@@ -70,19 +84,19 @@
           <i data-lucide="external-link" class="h-3.5 w-3.5"></i>
           <span>시트 열기</span>
         </a>
-        <button id="openSheetModalBtn" type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 px-3 py-2 text-xs font-semibold text-emerald-200 transition hover:bg-emerald-500/25">
+        <button id="openSheetModalBtn" type="button" class="inline-flex items-center gap-1 rounded-lg border border-emerald-500/40 bg-emerald-500/15 px-2.5 py-2 text-xs font-semibold text-emerald-200 transition hover:bg-emerald-500/25 sm:px-3">
           <i data-lucide="sheet" class="h-4 w-4"></i>
-          <span>시트 동기화 설정</span>
+          <span class="hidden sm:inline">시트 설정</span>
         </button>
-        <button id="refreshAllBtn" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-sky-500 px-3 py-2 text-xs font-bold text-slate-950 transition hover:bg-sky-400">
+        <button id="refreshAllBtn" type="button" class="inline-flex items-center gap-1 rounded-lg bg-sky-500 px-2.5 py-2 text-xs font-bold text-slate-950 transition hover:bg-sky-400 sm:px-3">
           <i data-lucide="refresh-cw" class="h-4 w-4"></i>
-          <span>새로고침</span>
+          <span>갱신</span>
         </button>
       </div>
     </div>
   </header>
 
-  <main class="mx-auto max-w-6xl space-y-5 px-4 py-5 pb-16">
+  <main class="mx-auto max-w-6xl space-y-4 px-3 py-4 pb-24 sm:space-y-5 sm:px-4 sm:py-5 md:pb-16">
     <!-- 요약 KPI 카드 -->
     <section class="grid grid-cols-2 gap-3 lg:grid-cols-4">
       <div class="glass-card rounded-2xl p-4">
@@ -108,7 +122,9 @@
     </section>
 
     <!-- 메인 네비게이션 탭 -->
-    <nav class="flex flex-wrap gap-1.5 pb-1" aria-label="대시보드 섹션">
+    <div class="space-y-2">
+      <div class="flex items-center justify-between gap-2">
+        <nav id="mainNavTabs" class="flex flex-nowrap gap-1.5 overflow-x-auto no-scrollbar pb-1 md:flex-wrap md:overflow-visible" aria-label="대시보드 섹션">
       <button type="button" data-tab="briefing" class="tab-btn tab-active inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
         <i data-lucide="sparkles" class="h-4 w-4"></i>
         <span>AI 관점 브리핑</span>
@@ -137,7 +153,20 @@
         <i data-lucide="file-text" class="h-4 w-4"></i>
         <span>공시 링크 · 종목 메모</span>
       </button>
-    </nav>
+        </nav>
+        <button id="toggleTabOrderBtn" type="button" class="inline-flex shrink-0 items-center gap-1 rounded-xl border border-slate-700 bg-slate-900/90 px-2.5 py-2 text-[11px] font-semibold text-slate-300 transition hover:border-sky-500/50 hover:text-white" title="상단 탭 순서 변경">
+          <i data-lucide="arrow-left-right" class="h-3.5 w-3.5 text-sky-400"></i>
+          <span>탭 순서</span>
+        </button>
+      </div>
+      <div id="tabOrderBar" class="hidden glass-card rounded-2xl p-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-2">
+          <span class="text-xs font-bold text-slate-200">상단 탭 순서 변경 (◀ ▶ 버튼으로 원하는 메뉴를 맨 앞으로 옮기세요)</span>
+          <button id="resetTabOrderBtn" type="button" class="rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1 text-[11px] font-semibold text-slate-300 hover:bg-slate-700">기본 순서로 복원</button>
+        </div>
+        <div id="tabOrderList" class="flex flex-wrap gap-1.5"></div>
+      </div>
+    </div>
 
     <!-- 탭 0: ⑩ AI 관점 브리핑 (구글 시트 자동 연동) -->
     <section id="panel-briefing" class="space-y-4">
@@ -147,10 +176,12 @@
             <h2 class="text-sm font-bold text-white">AI 관점 브리핑 (평일 07·10·12·14·16시경 프로 5단계 자동 갱신)</h2>
             <p id="briefingUpdatedText" class="text-xs text-slate-400">구글 시트 '⑦ AI 관점 브리핑' 탭 자동 연동</p>
           </div>
-          <div class="flex gap-1.5">
-            <button type="button" data-bfilter="ALL" class="brief-filter-btn rounded-full bg-sky-500 px-3 py-1 text-xs font-bold text-slate-950">전체</button>
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button type="button" data-bfilter="ALL" class="brief-filter-btn rounded-full bg-sky-500 px-3 py-1 text-xs font-bold text-slate-950">전체 (14)</button>
             <button type="button" data-bfilter="보유" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300 hover:bg-slate-700">보유종목</button>
-            <button type="button" data-bfilter="관심" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300 hover:bg-slate-700">관심종목</button>
+            <button type="button" data-bfilter="관심" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300 hover:bg-slate-700">관심·섹터</button>
+            <button type="button" data-bfilter="PINNED" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-amber-300 hover:bg-slate-700">⭐ 고정만</button>
+            <button id="resetBriefingOrderBtn" type="button" class="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[11px] font-semibold text-slate-400 hover:border-slate-500 hover:text-slate-200" title="구글 시트 행 순서대로 복원">시트 순서로 초기화</button>
           </div>
         </div>
       </div>
@@ -217,7 +248,8 @@
             </div>
           </div>
 
-          <div class="overflow-x-auto">
+          <div id="portfolioMobileCards" class="space-y-2.5 md:hidden"></div>
+          <div class="hidden overflow-x-auto md:block">
             <table class="w-full min-w-[660px] text-left text-xs">
               <thead>
                 <tr class="border-b border-slate-700/80 text-slate-400">
@@ -282,7 +314,7 @@
             </select>
           </div>
         </div>
-        <div id="tvChartContainer" class="mt-4 h-[460px] w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950"></div>
+        <div id="tvChartContainer" class="mt-4 h-[360px] sm:h-[460px] w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950"></div>
       </div>
     </section>
 
@@ -322,6 +354,26 @@
                 <option value="SHORT">🔴 약세 (매도 / Short)</option>
               </select>
             </div>
+          </div>
+
+          <!-- 5분봉·15분봉 자동 SMC(OB·FVG) 스캐너 -->
+          <div class="rounded-xl border border-sky-500/30 bg-slate-950/75 p-3 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="text-xs font-bold text-sky-300">🔍 5분봉 · 15분봉 자동 SMC(OB·FVG) 가격 스캔</div>
+                <div id="smcScanStatus" class="text-[11px] text-slate-400">종목을 고르거나 분봉 버튼을 누르면 지연 분봉 캔들에서 OB·FVG 가격대를 자동 계산합니다.</div>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" data-scan-tf="5m" class="smc-scan-btn rounded-lg bg-sky-500 px-2.5 py-1.5 text-[11px] font-bold text-slate-950 hover:bg-sky-400">5분봉 스캔</button>
+                <button type="button" data-scan-tf="15m" class="smc-scan-btn rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-200 hover:bg-slate-700">15분봉 스캔</button>
+                <button type="button" data-scan-tf="60m" class="smc-scan-btn rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-200 hover:bg-slate-700">60분봉</button>
+                <button type="button" data-scan-tf="1d" class="smc-scan-btn rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-200 hover:bg-slate-700">일봉</button>
+              </div>
+            </div>
+            <div id="smcMiniChartWrap" class="hidden rounded-lg border border-slate-800 bg-slate-950 p-2">
+              <canvas id="smcMiniCanvas" class="h-40 w-full"></canvas>
+            </div>
+            <div id="smcDetectedZones" class="grid gap-2 sm:grid-cols-2"></div>
           </div>
 
           <!-- 가격 입력 -->
@@ -548,6 +600,32 @@
   </div>
 
   <!-- 토스트 알림 -->
+  <!-- 모바일 하단 엄지 네비게이션 바 -->
+  <nav class="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-slate-800 bg-slate-950/95 backdrop-blur md:hidden" aria-label="모바일 하단 메뉴">
+    <div class="grid grid-cols-5 pt-1.5">
+      <button type="button" data-tab="briefing" class="mobile-bottom-tab mobile-nav-active flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
+        <i data-lucide="sparkles" class="h-5 w-5"></i>
+        <span>브리핑</span>
+      </button>
+      <button type="button" data-tab="tech" class="mobile-bottom-tab mobile-nav-inactive flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
+        <i data-lucide="activity" class="h-5 w-5"></i>
+        <span>국면</span>
+      </button>
+      <button type="button" data-tab="portfolio" class="mobile-bottom-tab mobile-nav-inactive flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
+        <i data-lucide="pie-chart" class="h-5 w-5"></i>
+        <span>보유·관심</span>
+      </button>
+      <button type="button" data-tab="chart" class="mobile-bottom-tab mobile-nav-inactive flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
+        <i data-lucide="candlestick-chart" class="h-5 w-5"></i>
+        <span>차트</span>
+      </button>
+      <button type="button" data-tab="smc" class="mobile-bottom-tab mobile-nav-inactive flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
+        <i data-lucide="zap" class="h-5 w-5"></i>
+        <span>SMC</span>
+      </button>
+    </div>
+  </nav>
+
   <div id="toast" class="pointer-events-none fixed bottom-5 right-5 z-50 translate-y-4 rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white opacity-0 shadow-xl transition-all duration-200"></div>
 
   <script>
@@ -559,6 +637,19 @@
     const STORAGE_KEY_SHEET_URL = "my_trading_sys_sheet_url_v2";
     const STORAGE_KEY_MEMOS = "my_trading_sys_memos_v2";
     const STORAGE_KEY_SMC = "my_trading_sys_smc_setups_v1";
+    const STORAGE_KEY_TAB_ORDER = "my_trading_sys_tab_order_v1";
+    const STORAGE_KEY_BRIEFING_ORDER = "my_trading_sys_briefing_order_v1";
+    const STORAGE_KEY_BRIEFING_PINS = "my_trading_sys_briefing_pins_v1";
+    const DEFAULT_TAB_ORDER = ["briefing", "tech", "news", "portfolio", "chart", "smc", "memo"];
+    const TAB_LABELS = {
+      briefing: "AI 관점 브리핑",
+      tech: "시장국면 · 5대지표",
+      news: "실시간 뉴스 브리핑",
+      portfolio: "보유종목 · 관심종목",
+      chart: "실시간 차트 · RSI",
+      smc: "SMC (OB·FVG)",
+      memo: "공시 링크 · 종목 메모"
+    };
 
     // 사용자 구글 시트(② 보유종목) 실제 데이터 스냅샷
     const INITIAL_HOLDINGS = [
@@ -578,20 +669,28 @@
       { updated: "2026-11-22 22:45", group: "보유", name: "삼성전자", verdict: "🟡 보유 유지 (20일선 하회, 추격매수 금지)", pros: "애널리스트 35명 적극 매수 컨센서스(평균 목표가 471,857원, 최저 29만 원), 외국인 수급 유입 및 중장기 실적 모멘텀 견조", cons: "단기 급락(-7.11%)으로 20일선(208,065원) 이탈, 글로벌 펀드 반도체 비중 축소 경계감 상존", action: "20일선 회복 전까지 추가 매수 없이 보유 유지", source: "https://kr.investing.com/equities/samsung-electronics-co-ltd-consensus-estimates" },
       { updated: "2026-11-22 22:45", group: "보유", name: "SOL 글로벌DRAM반도체플러스", verdict: "🔴 진입 금지 / 비중 축소 경계 (역배열·20일선 하회)", pros: "메모리 반도체 중장기 수요 스토리 및 기관 저가 순매수 유입", cons: "20일선(7,179원) 하회·역배열 약세 추세, 평가손실(-35.0%) 및 높은 단기 변동성", action: "목표 비중(5%) 이상 확대 금지, 반등 시 분할매도 검토", source: "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" },
       { updated: "2026-11-22 22:45", group: "보유", name: "KODEX 200", verdict: "🟡 눌림 분할 (목표비중 부족분 1주 기계적 대응)", pros: "대표 지수 분산 효과, 목표 비중(25%) 대비 현재 21.4%로 기계적 분할 매수 명분 존재", cons: "단기 급락(-5.48%)으로 20일선(84,886원) 하회, 지수 변동성 확대 구간", action: "야간선물 확인 후 계획대로 소액 분할(1주)만 기계적 대응", source: "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" },
-      { updated: "2026-11-22 22:45", group: "관심", name: "NAVER", verdict: "🟡 바닥 확인 후 분할 (목표가 도달했으나 20일선 하회)", pros: "시트 목표 매수가(185,000원) 하회로 밸류에이션 부담 완화, 증권사 매수 의견(목표가 30만 원) 유지", cons: "2027년 플랫폼 성장 둔화(+8.6%) 우려, 신한투자증권의 보수적 AI 시각 및 개인 위주 수급·20일선 하회", action: "단기 급락 진정 및 지지선 확인 후 소액 분할 접근", source: "https://m.newspim.com/news/view/20261116000781" },
       { updated: "2026-11-22 22:45", group: "관심", name: "현대차", verdict: "🟡 눌림 대기 (외인·기관 쌍끌이나 목표매수가 미도달)", pros: "내년 영업이익 13조 470억 원(+27.3%) 회복 전망, 외인·기관 쌍끌이 수급 유입 및 배당 매력", cons: "증권사 목표가 하향(62만→54만 원) 및 아직 목표 매수가(230,000원) 대비 높은 가격대", action: "목표 매수가(230,000원) 부근 눌림목 도달 전까지 대기 유지", source: "https://www.mk.co.kr/news/stock/12168864" },
-      { updated: "2026-11-22 22:45", group: "관심", name: "알테오젠", verdict: "🟡 관망 (실시간 시세·기준가 재점검 후 판단)", pros: "하나증권 연간 영업이익 3,000억 원 이상 전망, 노바티스 4.4조 기술이전 등 강력한 빅파마 레퍼런스", cons: "바이오 섹터 특유의 높은 변동성 및 단기 주가 약세(173,600원대) 구간", action: "시트 실시간 시세 기준으로 목표매수·손절가 재설정 후 진입 검토", source: "https://www.newspim.com/news/view/20261104000279" }
+      { updated: "2026-11-22 22:45", group: "관심", name: "NAVER", verdict: "🟡 바닥 확인 후 분할 (목표가 도달했으나 20일선 하회)", pros: "시트 목표 매수가(185,000원) 하회로 밸류에이션 부담 완화, 증권사 매수 의견(목표가 30만 원) 유지", cons: "2027년 플랫폼 성장 둔화(+8.6%) 우려, 보수적 AI 시각 및 개인 위주 수급·20일선 하회", action: "단기 급락 진정 및 지지선 확인 후 소액 분할 접근", source: "https://m.newspim.com/news/view/20261116000781" },
+      { updated: "2026-11-22 22:45", group: "관심", name: "알테오젠", verdict: "🟡 관망 (실시간 시세·기준가 재점검 후 판단)", pros: "하나증권 연간 영업이익 3,000억 원 이상 전망, 노바티스 4.4조 기술이전 등 빅파마 레퍼런스", cons: "바이오 섹터 특유의 높은 변동성 및 단기 주가 약세 구간", action: "시트 실시간 시세 기준으로 목표매수·손절가 재설정 후 진입 검토", source: "https://www.newspim.com/news/view/20261104000279" },
+      { updated: "2026-11-22 22:45", group: "관심(섹터)", name: "KODEX 반도체", verdict: "❄️ 약세 경계 (20일선 -14.02% 이격, 거래량 1.21x)", pros: "국내 반도체 대형주 전반에 분산 투자, 과매도 구간 진입 시 기술적 반등 탄력 높음", cons: "당일 -9.52% 급락 및 20일선(98,395원) 큰 폭 이탈, 투매 거래량(1.21x) 동반", action: "칼날 잡기 금지, 일봉 저점 쌍바닥 또는 5일선 안착 확인 후 접근", source: "https://kr.investing.com/etfs/samsung-kodex-banks" },
+      { updated: "2026-11-22 22:45", group: "관심(섹터)", name: "TIGER 미국필라델피아반도체나스닥", verdict: "❄️ 약세 경계 (20일선 -10.43% 이격, 거래량 0.87x)", pros: "글로벌 AI·필라델피아 반도체 지수 핵심 기업 분산, 원화 약세 시 환노출 방어 효과", cons: "당일 -6.94% 하락 및 20일선(35,697원) 이탈로 단기 하락 추세 진행 중", action: "나스닥100(QQQ) 반등 및 20일선 회복 신호 전까지 관망", source: "https://kr.investing.com/etfs/381180" },
+      { updated: "2026-11-22 22:45", group: "관심(섹터)", name: "KODEX 2차전지산업", verdict: "❄️ 약세 경계 (20일선 -10.89% 이격, 거래량 0.63x)", pros: "장기 낙폭 과대에 따른 저가 매수세 유입 가능성", cons: "20일선(12,810원) 하회 및 거래량 위축(0.63x), 업황 반등 촉매 부족", action: "거래량 동반 장대양봉 출현 전까지 신규 진입 보류", source: "https://kr.investing.com/etfs/305720" },
+      { updated: "2026-11-22 22:45", group: "관심(섹터)", name: "KODEX 자동차", verdict: "❄️ 약세 경계 (20일선 -6.24% 이격, 거래량 0.56x)", pros: "완성차·부품주 실적 및 주주환원(배당) 매력으로 타 약세 섹터 대비 낙폭 상대적 양호", cons: "당일 -3.61% 하락 및 20일선(22,205원) 하회, 거래량(0.56x) 감소", action: "20일선(22,205원) 돌파 안착 또는 전저점 지지 확인 후 분할 접근", source: "https://kr.investing.com/etfs/samsung-kodex-banks" },
+      { updated: "2026-11-22 22:45", group: "관심(섹터)", name: "KODEX 은행", verdict: "🟢 강세 우위 (20일선 +1.02% 상회, 8대 섹터 중 유일 강세)", pros: "하락장에서도 -0.31% 선방 및 20일선(14,324원) 상회 유지, 밸류업·배당 방어력 탁월", cons: "지수 급락 지속 시 방어주 동반 차익실현 가능성 점검 필요", action: "8대 섹터 중 최우선 모니터링 대상, 20일선 지지 눌림목 공략 유리", source: "https://kr.investing.com/etfs/samsung-kodex-banks" },
+      { updated: "2026-11-22 22:45", group: "관심(섹터)", name: "KODEX 바이오", verdict: "🟡 중립·순환매 (20일선 -2.79% 이격, 거래량 0.54x)", pros: "은행 다음으로 20일선(7,191원)과 가장 가까운 위치, 기술수출 순환매 기대감", cons: "거래량(0.54x) 부진으로 아직 확실한 추세 전환 신호 부족", action: "거래량 증가와 함께 20일선(7,191원) 회복 시 순환매 대응", source: "https://kr.investing.com/etfs/244580" },
+      { updated: "2026-11-22 22:45", group: "관심(섹터)", name: "SOL 조선TOP3플러스", verdict: "❄️ 약세 경계 (20일선 -8.93% 이격, 거래량 0.83x)", pros: "국내 대형 조선 3사 수주 잔고 및 중장기 슈퍼사이클 펀더멘털 견조", cons: "단기 -5.29% 하락으로 20일선(18,392원) 하회, 단기 조정 국면", action: "급락 진정 및 16,000원대 지지 확인 후 분할 매수 검토", source: "https://alphasquare.co.kr/home/stock-summary?code=466920" },
+      { updated: "2026-11-22 22:45", group: "관심(섹터)", name: "KODEX 건설", verdict: "❄️ 약세 경계 (20일선 -8.87% 이격, 거래량 0.59x)", pros: "인프라·원전·재건 테마 순환 시 단기 반등 모멘텀 가능", cons: "당일 -6.09% 하락 및 20일선(5,838원) 이탈, 수급·거래량(0.59x) 약세", action: "추세 전환 확인 전까지 관망 유지", source: "https://kr.investing.com/etfs/samsung-kodex-banks" }
     ];
 
     const INITIAL_SECTOR_ETFS = [
-      { sector: "국내 반도체", etf: "KODEX 반도체", ticker: "KRX:091160", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
-      { sector: "미국 반도체", etf: "TIGER 미국필라델피아반도체나스닥", ticker: "KRX:381180", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
-      { sector: "2차전지", etf: "KODEX 2차전지산업", ticker: "KRX:305720", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
-      { sector: "자동차", etf: "KODEX 자동차", ticker: "KRX:091180", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
-      { sector: "은행/금융", etf: "KODEX 은행", ticker: "KRX:091170", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
-      { sector: "바이오", etf: "KODEX 바이오", ticker: "KRX:244580", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
-      { sector: "조선", etf: "SOL 조선TOP3플러스", ticker: "KRX:466920", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" },
-      { sector: "건설/인프라", etf: "KODEX 건설", ticker: "KRX:117700", price: "-", change: "-", gap: "-", vol: "-", status: "시트 동기화 대기" }
+      { sector: "은행/금융", etf: "KODEX 은행", ticker: "KRX:091170", price: "₩14,470", change: "-0.31%", gap: "+1.02%", vol: "0.90x", status: "🟢 강세 우위" },
+      { sector: "바이오", etf: "KODEX 바이오", ticker: "KRX:244580", price: "₩6,990", change: "-2.24%", gap: "-2.79%", vol: "0.54x", status: "🟡 중립·순환매" },
+      { sector: "자동차", etf: "KODEX 자동차", ticker: "KRX:091180", price: "₩20,820", change: "-3.61%", gap: "-6.24%", vol: "0.56x", status: "❄️ 약세 경계" },
+      { sector: "건설/인프라", etf: "KODEX 건설", ticker: "KRX:117700", price: "₩5,320", change: "-6.09%", gap: "-8.87%", vol: "0.59x", status: "❄️ 약세 경계" },
+      { sector: "조선", etf: "SOL 조선TOP3플러스", ticker: "KRX:466920", price: "₩16,750", change: "-5.29%", gap: "-8.93%", vol: "0.83x", status: "❄️ 약세 경계" },
+      { sector: "미국 반도체", etf: "TIGER 미국필라델피아반도체나스닥", ticker: "KRX:381180", price: "₩31,975", change: "-6.94%", gap: "-10.43%", vol: "0.87x", status: "❄️ 약세 경계" },
+      { sector: "2차전지", etf: "KODEX 2차전지산업", ticker: "KRX:305720", price: "₩11,415", change: "-3.47%", gap: "-10.89%", vol: "0.63x", status: "❄️ 약세 경계" },
+      { sector: "국내 반도체", etf: "KODEX 반도체", ticker: "KRX:091160", price: "₩84,600", change: "-9.52%", gap: "-14.02%", vol: "1.21x", status: "❄️ 약세 경계" }
     ];
 
     let state = {
@@ -601,6 +700,9 @@
       watchlist: [],
       briefings: INITIAL_BRIEFINGS.map(x => ({ ...x })),
       briefingFilter: "ALL",
+      briefingOrder: [],
+      briefingPins: [],
+      tabOrder: DEFAULT_TAB_ORDER.slice(),
       marketRegime: "시트 동기화 대기 (공유 뷰어 설정 시 자동 표시)",
       techScores: [],
       sectorEtfs: INITIAL_SECTOR_ETFS.map(x => ({ ...x })),
@@ -688,6 +790,14 @@
       state.sheetUrl = safeStorageGet(STORAGE_KEY_SHEET_URL, DEFAULT_SHEET_URL);
       state.memos = safeStorageGet(STORAGE_KEY_MEMOS, {});
       state.smcSetups = safeStorageGet(STORAGE_KEY_SMC, []);
+      const savedTabOrder = safeStorageGet(STORAGE_KEY_TAB_ORDER, null);
+      if (Array.isArray(savedTabOrder) && savedTabOrder.length === DEFAULT_TAB_ORDER.length) {
+        state.tabOrder = savedTabOrder;
+      } else {
+        state.tabOrder = DEFAULT_TAB_ORDER.slice();
+      }
+      state.briefingOrder = safeStorageGet(STORAGE_KEY_BRIEFING_ORDER, []);
+      state.briefingPins = safeStorageGet(STORAGE_KEY_BRIEFING_PINS, []);
       if (state.portfolio.length > 0) {
         state.selectedChartSymbol = state.portfolio[0].symbol;
       }
@@ -971,8 +1081,10 @@
 
     function renderPortfolioTable() {
       const tbody = document.getElementById("portfolioTableBody");
+      const mobBox = document.getElementById("portfolioMobileCards");
       if (!state.portfolio.length) {
         tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">보유종목이 없습니다.</td></tr>`;
+        if (mobBox) mobBox.innerHTML = `<div class="rounded-xl border border-slate-800 bg-slate-900/70 p-4 text-center text-xs text-slate-400">보유종목이 없습니다.</div>`;
         renderAllocationChart();
         return;
       }
@@ -1010,10 +1122,47 @@
         `;
       }).join("");
 
-      tbody.querySelectorAll(".edit-stock-btn").forEach(btn => {
+      if (mobBox) {
+        mobBox.innerHTML = state.portfolio.map(item => {
+          const q = Number(item.qty) || 0;
+          const avg = Number(item.avgPrice) || 0;
+          const cur = Number(item.price) || avg;
+          const pct = avg > 0 ? ((cur - avg) / avg) * 100 : 0;
+          const pctClass = pct > 0 ? "text-rose-400" : pct < 0 ? "text-sky-400" : "text-slate-400";
+          const reb = Number(item.rebalanceQty) || 0;
+          const rebBadge = reb > 0
+            ? `<span class="rounded bg-rose-500/20 px-1.5 py-0.5 text-[11px] font-bold text-rose-300">+${reb}주 매수</span>`
+            : reb < 0
+              ? `<span class="rounded bg-sky-500/20 px-1.5 py-0.5 text-[11px] font-bold text-sky-300">${reb}주 매도</span>`
+              : `<span class="text-[11px] text-slate-500">유지</span>`;
+          return `
+            <div class="rounded-xl border border-slate-800 bg-slate-900/75 p-3">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="text-sm font-bold text-white">${escapeHtml(item.name)}</div>
+                  <div class="text-[11px] text-slate-400">${escapeHtml(item.symbol)} · ${q.toLocaleString()}주</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-sm font-extrabold text-white">${fmtMoney(cur, item.currency)}</div>
+                  <div class="text-xs font-bold ${pctClass}">${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%</div>
+                </div>
+              </div>
+              <div class="mt-2 flex items-center justify-between border-t border-slate-800 pt-2 text-[11px]">
+                <span class="text-slate-400">평단 ${fmtMoney(avg, item.currency)} · ${rebBadge}</span>
+                <div class="flex gap-1.5">
+                  <button type="button" data-edit="${escapeHtml(item.id)}" class="edit-stock-btn rounded-md bg-slate-800 px-2.5 py-1 font-semibold text-sky-300">수정</button>
+                  <button type="button" data-del="${escapeHtml(item.id)}" class="del-stock-btn rounded-md bg-slate-800 px-2.5 py-1 font-semibold text-rose-300">삭제</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      document.querySelectorAll(".edit-stock-btn").forEach(btn => {
         btn.addEventListener("click", () => openStockModal(btn.dataset.edit));
       });
-      tbody.querySelectorAll(".del-stock-btn").forEach(btn => {
+      document.querySelectorAll(".del-stock-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           state.portfolio = state.portfolio.filter(x => x.id !== btn.dataset.del);
           saveLocal();
@@ -1442,36 +1591,128 @@
       }).join("");
     }
 
+    function getOrderedBriefings() {
+      const pins = new Set(state.briefingPins || []);
+      const orderMap = new Map((state.briefingOrder || []).map((name, idx) => [name, idx]));
+      return state.briefings
+        .map((item, origIdx) => ({ item, origIdx }))
+        .sort((a, b) => {
+          const ap = pins.has(a.item.name) ? 0 : 1;
+          const bp = pins.has(b.item.name) ? 0 : 1;
+          if (ap !== bp) return ap - bp;
+          const ao = orderMap.has(a.item.name) ? orderMap.get(a.item.name) : 10000 + a.origIdx;
+          const bo = orderMap.has(b.item.name) ? orderMap.get(b.item.name) : 10000 + b.origIdx;
+          return ao - bo;
+        })
+        .map(x => x.item);
+    }
+
+    function toggleBriefingPin(name) {
+      const set = new Set(state.briefingPins || []);
+      if (set.has(name)) {
+        set.delete(name);
+        showToast(`'${name}' 상단 고정을 해제했습니다.`);
+      } else {
+        set.add(name);
+        showToast(`'${name}' 카드를 맨 위에 고정했습니다.`);
+      }
+      state.briefingPins = Array.from(set);
+      safeStorageSet(STORAGE_KEY_BRIEFING_PINS, state.briefingPins);
+      renderBriefings();
+    }
+
+    function moveBriefingCard(name, delta) {
+      const orderedNames = getOrderedBriefings().map(x => x.name);
+      const idx = orderedNames.indexOf(name);
+      const nextIdx = idx + delta;
+      if (idx < 0 || nextIdx < 0 || nextIdx >= orderedNames.length) return;
+      [orderedNames[idx], orderedNames[nextIdx]] = [orderedNames[nextIdx], orderedNames[idx]];
+      state.briefingOrder = orderedNames;
+      safeStorageSet(STORAGE_KEY_BRIEFING_ORDER, state.briefingOrder);
+      renderBriefings();
+    }
+
+    function applyTabOrder() {
+      const nav = document.getElementById("mainNavTabs");
+      if (!nav) return;
+      state.tabOrder.forEach(tabId => {
+        const btn = nav.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+        if (btn) nav.appendChild(btn);
+      });
+      renderTabOrderBar();
+    }
+
+    function renderTabOrderBar() {
+      const listEl = document.getElementById("tabOrderList");
+      if (!listEl) return;
+      listEl.innerHTML = state.tabOrder.map((tabId, idx) => `
+        <div class="inline-flex items-center gap-1 rounded-xl border border-slate-700 bg-slate-900 px-2.5 py-1.5 text-xs text-slate-200">
+          <span class="text-[10px] font-bold text-sky-400">${idx + 1}</span>
+          <span class="font-semibold">${escapeHtml(TAB_LABELS[tabId] || tabId)}</span>
+          <button type="button" data-move-tab="${tabId}" data-dir="-1" class="ml-1 rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300 hover:bg-slate-700 disabled:opacity-30" ${idx === 0 ? "disabled" : ""}>◀</button>
+          <button type="button" data-move-tab="${tabId}" data-dir="1" class="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300 hover:bg-slate-700 disabled:opacity-30" ${idx === state.tabOrder.length - 1 ? "disabled" : ""}>▶</button>
+        </div>
+      `).join("");
+      listEl.querySelectorAll("button[data-move-tab]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const tabId = btn.dataset.moveTab;
+          const dir = Number(btn.dataset.dir);
+          const idx = state.tabOrder.indexOf(tabId);
+          const nextIdx = idx + dir;
+          if (idx < 0 || nextIdx < 0 || nextIdx >= state.tabOrder.length) return;
+          [state.tabOrder[idx], state.tabOrder[nextIdx]] = [state.tabOrder[nextIdx], state.tabOrder[idx]];
+          safeStorageSet(STORAGE_KEY_TAB_ORDER, state.tabOrder);
+          applyTabOrder();
+        });
+      });
+    }
+
     function renderBriefings() {
       const box = document.getElementById("briefingCards");
-      const list = state.briefings.filter(b => state.briefingFilter === "ALL" || (b.group || "").includes(state.briefingFilter));
+      const pins = new Set(state.briefingPins || []);
+      const orderedAll = getOrderedBriefings();
+      const allBtn = document.querySelector('.brief-filter-btn[data-bfilter="ALL"]');
+      if (allBtn) allBtn.textContent = `전체 (${orderedAll.length})`;
+      const list = orderedAll.filter(b => {
+        if (state.briefingFilter === "ALL") return true;
+        if (state.briefingFilter === "PINNED") return pins.has(b.name);
+        return (b.group || "").includes(state.briefingFilter);
+      });
       if (state.briefings.length && state.briefings[0].updated) {
-        document.getElementById("briefingUpdatedText").textContent = `마지막 브리핑 시각: ${state.briefings[0].updated} · 구글 시트 '⑦ AI 관점 브리핑' 자동 연동`;
+        document.getElementById("briefingUpdatedText").textContent = `마지막 브리핑 시각: ${state.briefings[0].updated} · 총 ${state.briefings.length}종목 자동 연동 (⭐ 고정 · ▲▼ 순서 변경 가능)`;
       }
       if (!list.length) {
-        box.innerHTML = `<div class="col-span-2 glass-card rounded-2xl p-6 text-center text-xs text-slate-400">표시할 AI 관점 브리핑이 없습니다.</div>`;
+        box.innerHTML = `<div class="col-span-2 glass-card rounded-2xl p-6 text-center text-xs text-slate-400">${state.briefingFilter === "PINNED" ? "고정된 종목이 없습니다. 카드 우측 상단의 ☆ 버튼을 눌러 원하는 종목을 맨 위에 고정해 보세요." : "표시할 AI 관점 브리핑이 없습니다."}</div>`;
         return;
       }
-      box.innerHTML = list.map(b => {
+      box.innerHTML = list.map((b, idx) => {
         const isHold = (b.group || "").includes("보유");
+        const isPinned = pins.has(b.name);
         const badgeCls = isHold
           ? "bg-sky-500/20 text-sky-300 border-sky-500/40"
-          : "bg-amber-500/20 text-amber-300 border-amber-500/40";
+          : (b.group || "").includes("섹터")
+            ? "bg-purple-500/20 text-purple-300 border-purple-500/40"
+            : "bg-amber-500/20 text-amber-300 border-amber-500/40";
         const verdictHtml = b.verdict
           ? `<div class="mt-2 inline-block rounded-lg border border-slate-700 bg-slate-900/90 px-2.5 py-1 text-[11px] font-bold text-slate-100">${escapeHtml(b.verdict)}</div>`
           : "";
         const srcHtml = b.source && b.source.startsWith("http")
           ? `<a href="${escapeHtml(b.source)}" target="_blank" rel="noopener noreferrer" class="text-[11px] font-semibold text-sky-400 hover:underline">출처 원문 보기 ↗</a>`
           : "";
+        const cardBorder = isPinned ? "border-amber-400/50 ring-1 ring-amber-400/25" : "";
         return `
-          <article class="glass-card rounded-2xl p-4 flex flex-col justify-between gap-3">
+          <article class="glass-card rounded-2xl p-4 flex flex-col justify-between gap-3 ${cardBorder}">
             <div>
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2">
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-1.5">
                   <span class="rounded-full border px-2 py-0.5 text-[11px] font-bold ${badgeCls}">${escapeHtml(b.group)}</span>
                   <h3 class="text-sm font-bold text-white">${escapeHtml(b.name)}</h3>
                 </div>
-                <span class="text-[11px] text-slate-500">${escapeHtml(b.updated || "")}</span>
+                <div class="flex shrink-0 items-center gap-1">
+                  <button type="button" data-pin-name="${escapeHtml(b.name)}" class="brief-pin-btn rounded-lg border px-1.5 py-0.5 text-xs transition ${isPinned ? "border-amber-400/60 bg-amber-500/20 text-amber-300" : "border-slate-700 bg-slate-900 text-slate-400 hover:text-amber-300"}" title="${isPinned ? "상단 고정 해제" : "맨 위에 고정"}">${isPinned ? "★" : "☆"}</button>
+                  <button type="button" data-move-name="${escapeHtml(b.name)}" data-dir="-1" class="brief-move-btn rounded-lg border border-slate-700 bg-slate-900 px-1.5 py-0.5 text-[10px] text-slate-300 hover:bg-slate-800" title="위로 이동">▲</button>
+                  <button type="button" data-move-name="${escapeHtml(b.name)}" data-dir="1" class="brief-move-btn rounded-lg border border-slate-700 bg-slate-900 px-1.5 py-0.5 text-[10px] text-slate-300 hover:bg-slate-800" title="아래로 이동">▼</button>
+                </div>
               </div>
               ${verdictHtml}
               <div class="mt-2.5 space-y-1.5 text-xs leading-relaxed">
@@ -1487,11 +1728,21 @@
               <div class="rounded-lg bg-slate-900/90 px-3 py-2 text-xs text-emerald-300">
                 <strong class="text-emerald-200">대응 포인트:</strong> ${escapeHtml(b.action)}
               </div>
-              <div class="flex justify-end">${srcHtml}</div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[10px] text-slate-500">${escapeHtml(b.updated || "")}</span>
+                ${srcHtml}
+              </div>
             </div>
           </article>
         `;
       }).join("");
+
+      box.querySelectorAll(".brief-pin-btn").forEach(btn => {
+        btn.addEventListener("click", () => toggleBriefingPin(btn.dataset.pinName));
+      });
+      box.querySelectorAll(".brief-move-btn").forEach(btn => {
+        btn.addEventListener("click", () => moveBriefingCard(btn.dataset.moveName, Number(btn.dataset.dir)));
+      });
     }
 
     async function syncGoogleSheet(rawUrl, silent = false) {
@@ -1525,6 +1776,7 @@
           const br = parseBriefingsCsv(csvB);
           if (br.length) state.briefings = br;
         }
+
 
         state.sheetUrl = rawUrl || DEFAULT_SHEET_URL;
         state.isLiveSynced = true;
@@ -1606,10 +1858,17 @@
         btn.classList.toggle("tab-active", isActive);
         btn.classList.toggle("tab-inactive", !isActive);
       });
+      document.querySelectorAll(".mobile-bottom-tab").forEach(btn => {
+        const isActive = btn.dataset.tab === tabName;
+        btn.classList.toggle("mobile-nav-active", isActive);
+        btn.classList.toggle("mobile-nav-inactive", !isActive);
+      });
       if (tabName === "chart") {
         renderTradingViewChart();
       } else if (tabName === "portfolio") {
         renderAllocationChart();
+      } else if (tabName === "smc" && !lastSmcCandles.length) {
+        runSmcAutoScan(currentSmcScanTf, true);
       }
     }
 
@@ -1675,6 +1934,294 @@
         document.getElementById("smcTpPrice").value = Math.round(cur * 1.08);
         calcSmcSetup();
         if (showNotify) showToast(`${hold.name} 현재가 기준으로 OB/FVG 구간을 자동 세팅했습니다.`);
+      }
+    }
+
+    const KOSDAQ_CODES = new Set(["196170", "247540", "086520", "028300", "277810", "293490", "091990"]);
+    let currentSmcScanTf = "5m";
+    let lastSmcCandles = [];
+    let lastSmcZones = [];
+
+    function toYahooCandidates(rawSym) {
+      const s = String(rawSym || "").trim().toUpperCase();
+      if (s.startsWith("KRX:")) {
+        const code = s.slice(4);
+        return KOSDAQ_CODES.has(code) ? [`${code}.KQ`, `${code}.KS`] : [`${code}.KS`, `${code}.KQ`];
+      }
+      if (s.includes(":")) return [s.split(":")[1]];
+      if (/^[0-9A-Z]{6}$/.test(s)) {
+        return KOSDAQ_CODES.has(s) ? [`${s}.KQ`, `${s}.KS`] : [`${s}.KS`, `${s}.KQ`];
+      }
+      return [s];
+    }
+
+    async function fetchYahooCandles(rawSym, interval = "5m") {
+      const range = interval === "5m" ? "5d" : interval === "15m" ? "5d" : interval === "60m" ? "1mo" : "3mo";
+      const candidates = toYahooCandidates(rawSym);
+      const proxies = [
+        url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+        url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+        url => `https://corsproxy.io/?${encodeURIComponent(url)}`
+      ];
+      for (const ySym of candidates) {
+        const target = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ySym)}?interval=${interval}&range=${range}`;
+        for (const makeProxy of proxies) {
+          try {
+            const res = await fetch(makeProxy(target));
+            if (!res.ok) continue;
+            const json = await res.json();
+            const result = json?.chart?.result?.[0];
+            const ts = result?.timestamp || [];
+            const q = result?.indicators?.quote?.[0];
+            if (!ts.length || !q) continue;
+            const candles = [];
+            for (let i = 0; i < ts.length; i++) {
+              const o = q.open?.[i], h = q.high?.[i], l = q.low?.[i], c = q.close?.[i];
+              if (o == null || h == null || l == null || c == null) continue;
+              candles.push({ time: ts[i] * 1000, open: o, high: h, low: l, close: c, volume: q.volume?.[i] || 0 });
+            }
+            if (candles.length >= 10) {
+              return { candles, currency: result?.meta?.currency || (rawSym.startsWith("KRX:") ? "KRW" : "USD"), ySym };
+            }
+          } catch (e) {}
+        }
+      }
+      return null;
+    }
+
+    function detectSmcZones(candles) {
+      if (!candles || candles.length < 10) return [];
+      const zones = [];
+      const bodies = candles.map(c => Math.abs(c.close - c.open));
+      const avgBody = bodies.reduce((a, b) => a + b, 0) / bodies.length || 1;
+      const lastClose = candles[candles.length - 1].close;
+      const recent20 = candles.slice(-25);
+      const swingHigh = Math.max(...recent20.map(c => c.high));
+      const swingLow = Math.min(...recent20.map(c => c.low));
+
+      for (let i = 2; i < candles.length - 1; i++) {
+        const c0 = candles[i - 2];
+        const c1 = candles[i - 1];
+        const c2 = candles[i];
+
+        // Bullish FVG: c2.low > c0.high
+        if (c2.low > c0.high && (c2.low - c0.high) > avgBody * 0.25) {
+          let mitigated = false;
+          for (let j = i + 1; j < candles.length; j++) {
+            if (candles[j].close < c0.high) { mitigated = true; break; }
+          }
+          zones.push({
+            type: "FVG", dir: "LONG", high: c2.low, low: c0.high,
+            ce: (c2.low + c0.high) / 2, tp: Math.max(swingHigh, c2.low * 1.015),
+            idx: i, time: c1.time, mitigated
+          });
+        }
+        // Bearish FVG: c2.high < c0.low
+        if (c2.high < c0.low && (c0.low - c2.high) > avgBody * 0.25) {
+          let mitigated = false;
+          for (let j = i + 1; j < candles.length; j++) {
+            if (candles[j].close > c0.low) { mitigated = true; break; }
+          }
+          zones.push({
+            type: "FVG", dir: "SHORT", high: c0.low, low: c2.high,
+            ce: (c0.low + c2.high) / 2, tp: Math.min(swingLow, c2.high * 0.985),
+            idx: i, time: c1.time, mitigated
+          });
+        }
+        // Bullish OB: bearish c1 followed by strong bullish displacement c2
+        if (c1.close < c1.open && c2.close > c2.open && (c2.close - c2.open) > avgBody * 1.35 && c2.close > c1.high) {
+          let mitigated = false;
+          for (let j = i + 1; j < candles.length; j++) {
+            if (candles[j].close < c1.low) { mitigated = true; break; }
+          }
+          zones.push({
+            type: "OB", dir: "LONG", high: c1.high, low: c1.low,
+            ce: (c1.high + c1.low) / 2, tp: Math.max(swingHigh, c1.high * 1.02),
+            idx: i - 1, time: c1.time, mitigated
+          });
+        }
+        // Bearish OB: bullish c1 followed by strong bearish displacement c2
+        if (c1.close > c1.open && c2.close < c2.open && (c2.open - c2.close) > avgBody * 1.35 && c2.close < c1.low) {
+          let mitigated = false;
+          for (let j = i + 1; j < candles.length; j++) {
+            if (candles[j].close > c1.high) { mitigated = true; break; }
+          }
+          zones.push({
+            type: "OB", dir: "SHORT", high: c1.high, low: c1.low,
+            ce: (c1.high + c1.low) / 2, tp: Math.min(swingLow, c1.low * 0.98),
+            idx: i - 1, time: c1.time, mitigated
+          });
+        }
+      }
+
+      // Prefer unmitigated zones closest to current price, then most recent
+      const active = zones.filter(z => !z.mitigated);
+      const pool = active.length ? active : zones;
+      pool.sort((a, b) => {
+        const da = Math.abs(lastClose - a.ce) / (lastClose || 1);
+        const db = Math.abs(lastClose - b.ce) / (lastClose || 1);
+        return da - db;
+      });
+
+      const picked = [];
+      const topLong = pool.filter(z => z.dir === "LONG").slice(0, 2);
+      const topShort = pool.filter(z => z.dir === "SHORT").slice(0, 2);
+      picked.push(...topLong, ...topShort);
+      if (!picked.length && candles.length >= 5) {
+        const seg = candles.slice(-15);
+        const lo = Math.min(...seg.map(c => c.low));
+        const hi = Math.max(...seg.map(c => c.high));
+        const band = (hi - lo) * 0.25 || lastClose * 0.01;
+        picked.push({
+          type: "OB", dir: "LONG", high: lo + band, low: lo,
+          ce: lo + band / 2, tp: hi, idx: candles.length - 5,
+          time: candles[candles.length - 1].time, mitigated: false
+        });
+      }
+      return picked;
+    }
+
+    function drawSmcMiniChart(candles, zones) {
+      const wrap = document.getElementById("smcMiniChartWrap");
+      const canvas = document.getElementById("smcMiniCanvas");
+      if (!wrap || !canvas || !candles.length) return;
+      wrap.classList.remove("hidden");
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth || 520;
+      const h = 160;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, w, h);
+
+      const slice = candles.slice(-45);
+      const offset = candles.length - slice.length;
+      let minP = Math.min(...slice.map(c => c.low));
+      let maxP = Math.max(...slice.map(c => c.high));
+      zones.forEach(z => { minP = Math.min(minP, z.low); maxP = Math.max(maxP, z.high); });
+      const pad = (maxP - minP) * 0.08 || 1;
+      minP -= pad; maxP += pad;
+
+      const padL = 8, padR = 54, padT = 10, padB = 14;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      const yOf = p => padT + ((maxP - p) / (maxP - minP)) * plotH;
+      const step = plotW / slice.length;
+
+      // Grid lines
+      ctx.strokeStyle = "rgba(148,163,184,0.12)";
+      ctx.fillStyle = "#64748b";
+      ctx.font = "10px Inter, sans-serif";
+      for (let g = 0; g <= 3; g++) {
+        const p = minP + ((maxP - minP) * g) / 3;
+        const y = yOf(p);
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+        ctx.fillText(Math.round(p).toLocaleString(), w - padR + 4, y + 3);
+      }
+
+      // OB/FVG zones
+      zones.forEach(z => {
+        const startI = Math.max(0, z.idx - offset);
+        const x1 = padL + startI * step;
+        const y1 = yOf(z.high);
+        const y2 = yOf(z.low);
+        const isLong = z.dir === "LONG";
+        ctx.fillStyle = isLong ? "rgba(16,185,129,0.18)" : "rgba(244,63,94,0.18)";
+        ctx.strokeStyle = isLong ? "rgba(52,211,153,0.65)" : "rgba(251,113,133,0.65)";
+        ctx.fillRect(x1, y1, (w - padR) - x1, Math.max(3, y2 - y1));
+        ctx.strokeRect(x1, y1, (w - padR) - x1, Math.max(3, y2 - y1));
+      });
+
+      // Candles
+      slice.forEach((c, i) => {
+        const x = padL + i * step + step * 0.5;
+        const isUp = c.close >= c.open;
+        ctx.strokeStyle = isUp ? "#fb7185" : "#38bdf8";
+        ctx.fillStyle = isUp ? "#fb7185" : "#38bdf8";
+        ctx.beginPath();
+        ctx.moveTo(x, yOf(c.high));
+        ctx.lineTo(x, yOf(c.low));
+        ctx.stroke();
+        const top = yOf(Math.max(c.open, c.close));
+        const bot = yOf(Math.min(c.open, c.close));
+        const bw = Math.max(2, step * 0.58);
+        ctx.fillRect(x - bw / 2, top, bw, Math.max(1.5, bot - top));
+      });
+    }
+
+    function applyDetectedZoneToCalc(z, currency) {
+      const roundP = v => currency === "USD" ? Number(v.toFixed(2)) : Math.round(v);
+      document.getElementById("smcDirection").value = z.dir;
+      document.getElementById("smcZoneType").value = z.type;
+      document.getElementById("smcZoneHigh").value = roundP(z.high);
+      document.getElementById("smcZoneLow").value = roundP(z.low);
+      document.getElementById("smcTpPrice").value = roundP(z.tp);
+      calcSmcSetup();
+    }
+
+    async function runSmcAutoScan(interval = currentSmcScanTf, silent = false) {
+      currentSmcScanTf = interval;
+      document.querySelectorAll(".smc-scan-btn").forEach(btn => {
+        const active = btn.dataset.scanTf === interval;
+        btn.className = active
+          ? "smc-scan-btn rounded-lg bg-sky-500 px-2.5 py-1.5 text-[11px] font-bold text-slate-950 hover:bg-sky-400"
+          : "smc-scan-btn rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-200 hover:bg-slate-700";
+      });
+      const sym = document.getElementById("smcTickerSelect")?.value || "KRX:005930";
+      const statusEl = document.getElementById("smcScanStatus");
+      const zonesEl = document.getElementById("smcDetectedZones");
+      const tfLabel = interval === "5m" ? "5분봉" : interval === "15m" ? "15분봉" : interval === "60m" ? "60분봉" : "일봉";
+      statusEl.textContent = `${sym} ${tfLabel} 캔들 불러오는 중... (무료 시세 약 15분 지연)`;
+      zonesEl.innerHTML = "";
+
+      const data = await fetchYahooCandles(sym, interval);
+      if (!data) {
+        statusEl.textContent = `${sym} ${tfLabel} 지연 시세 연결이 일시 지연되었습니다. 아래 시트 현재가 기준 자동값 또는 수동 입력을 사용해 주세요.`;
+        return;
+      }
+
+      lastSmcCandles = data.candles;
+      lastSmcZones = detectSmcZones(data.candles);
+      const last = data.candles[data.candles.length - 1];
+      const timeStr = new Date(last.time).toLocaleString("ko-KR", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+      statusEl.textContent = `${tfLabel} 스캔 완료 · 마지막 캔들 ${fmtMoney(last.close, data.currency)} (${timeStr} 기준 · 약 15분 지연) · OB/FVG ${lastSmcZones.length}구간 탐지`;
+
+      drawSmcMiniChart(lastSmcCandles, lastSmcZones);
+
+      if (lastSmcZones.length) {
+        applyDetectedZoneToCalc(lastSmcZones[0], data.currency);
+        zonesEl.innerHTML = lastSmcZones.map((z, idx) => {
+          const isLong = z.dir === "LONG";
+          const border = isLong ? "border-emerald-500/35 bg-emerald-500/10" : "border-rose-500/35 bg-rose-500/10";
+          const tag = isLong ? "🟢 강세 매수" : "🔴 약세 저항";
+          const dt = new Date(z.time).toLocaleString("ko-KR", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+          return `
+            <div class="rounded-lg border p-2.5 ${border}">
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[11px] font-bold text-white">${tag} · ${z.type}</span>
+                <button type="button" data-apply-zone="${idx}" class="apply-zone-btn rounded bg-slate-900/90 px-2 py-0.5 text-[10px] font-bold text-sky-300 hover:bg-slate-800">계산기 적용</button>
+              </div>
+              <div class="mt-1.5 text-[11px] text-slate-200">
+                구간: <strong>${fmtMoney(z.low, data.currency)} ~ ${fmtMoney(z.high, data.currency)}</strong>
+              </div>
+              <div class="mt-0.5 flex items-center justify-between text-[10px] text-slate-400">
+                <span>권장 50% CE: <strong class="text-sky-300">${fmtMoney(z.ce, data.currency)}</strong></span>
+                <span>${dt}</span>
+              </div>
+            </div>
+          `;
+        }).join("");
+        zonesEl.querySelectorAll(".apply-zone-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const z = lastSmcZones[Number(btn.dataset.applyZone)];
+            if (z) {
+              applyDetectedZoneToCalc(z, data.currency);
+              showToast(`${z.type} 구간(${fmtMoney(z.ce, data.currency)})을 계산기에 적용했습니다.`);
+            }
+          });
+        });
+        if (!silent) showToast(`${tfLabel} SMC 구간 ${lastSmcZones.length}개를 찾아 계산기에 자동 반영했습니다!`);
       }
     }
 
@@ -1758,8 +2305,11 @@
     }
 
     function bindEvents() {
-      document.querySelectorAll(".tab-btn").forEach(btn => {
-        btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+      document.querySelectorAll(".tab-btn, .mobile-bottom-tab").forEach(btn => {
+        btn.addEventListener("click", () => {
+          switchTab(btn.dataset.tab);
+          if (window.innerWidth < 768) window.scrollTo({ top: 0, behavior: "smooth" });
+        });
       });
 
       document.getElementById("newsSearchInput").addEventListener("input", renderNewsList);
@@ -1887,7 +2437,13 @@
         document.getElementById(id).addEventListener("input", calcSmcSetup);
         document.getElementById(id).addEventListener("change", calcSmcSetup);
       });
-      document.getElementById("smcTickerSelect").addEventListener("change", () => autofillSmcFromStock(true));
+      document.getElementById("smcTickerSelect").addEventListener("change", () => {
+        autofillSmcFromStock(false);
+        runSmcAutoScan(currentSmcScanTf, false);
+      });
+      document.querySelectorAll(".smc-scan-btn").forEach(btn => {
+        btn.addEventListener("click", () => runSmcAutoScan(btn.dataset.scanTf, false));
+      });
 
       document.querySelectorAll(".smc-tf-btn").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -1940,10 +2496,33 @@
       document.getElementById("refreshAllBtn").addEventListener("click", () => {
         syncGoogleSheet(state.sheetUrl, false);
       });
+
+      document.getElementById("toggleTabOrderBtn").addEventListener("click", () => {
+        const bar = document.getElementById("tabOrderBar");
+        bar.classList.toggle("hidden");
+        renderTabOrderBar();
+      });
+
+      document.getElementById("resetTabOrderBtn").addEventListener("click", () => {
+        state.tabOrder = DEFAULT_TAB_ORDER.slice();
+        safeStorageSet(STORAGE_KEY_TAB_ORDER, state.tabOrder);
+        applyTabOrder();
+        showToast("상단 탭 순서를 기본값으로 복원했습니다.");
+      });
+
+      document.getElementById("resetBriefingOrderBtn").addEventListener("click", () => {
+        state.briefingOrder = [];
+        state.briefingPins = [];
+        safeStorageSet(STORAGE_KEY_BRIEFING_ORDER, []);
+        safeStorageSet(STORAGE_KEY_BRIEFING_PINS, []);
+        renderBriefings();
+        showToast("구글 시트 행 순서대로 복원했습니다.");
+      });
     }
 
     window.addEventListener("DOMContentLoaded", () => {
       initState();
+      applyTabOrder();
       bindEvents();
       renderAllUI();
       if (typeof lucide !== "undefined") {
