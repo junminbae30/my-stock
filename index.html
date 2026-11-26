@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>MY STOCK · AI 브리핑 &amp; SMC 트레이딩 대시보드</title>
+  <title>MY STOCK · AI 종목 브리핑 &amp; 투자 도구 (공유용)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -66,10 +66,10 @@
           <div class="flex items-center gap-2">
             <h1 class="truncate text-sm font-extrabold tracking-tight text-white sm:text-base">MY STOCK</h1>
             <span class="hidden rounded-full border border-emerald-500/35 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-300 sm:inline-block">
-              구글 시트 연동 · 읽기 전용
+              지인 공유용 · 개인정보 제외
             </span>
           </div>
-          <p id="lastSyncText" class="truncate text-[11px] text-slate-400">포트폴리오 · AI 브리핑 연결됨</p>
+          <p id="lastSyncText" class="truncate text-[11px] text-slate-400">AI 종목 브리핑 · 자산배분 · SMC 타점</p>
         </div>
       </div>
 
@@ -78,14 +78,6 @@
           <input id="autoRefresh30m" type="checkbox" checked class="accent-sky-400" />
           <span>30분 자동갱신</span>
         </label>
-        <a id="openSheetLink" href="https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit" target="_blank" rel="noopener noreferrer" class="hidden items-center gap-1 rounded-lg border border-slate-700/80 bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-200 transition hover:bg-slate-800 sm:inline-flex">
-          <i data-lucide="external-link" class="h-3.5 w-3.5 text-slate-400"></i>
-          <span>시트 열기</span>
-        </a>
-        <button id="openSheetModalBtn" type="button" class="inline-flex items-center gap-1 rounded-lg border border-emerald-500/35 bg-emerald-500/10 px-2.5 py-1.5 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/20" title="구글 시트 연동 설정">
-          <i data-lucide="sliders-horizontal" class="h-3.5 w-3.5"></i>
-          <span class="hidden sm:inline">시트 설정</span>
-        </button>
         <button id="refreshAllBtn" type="button" class="inline-flex items-center gap-1 rounded-lg bg-sky-500 px-3 py-1.5 text-xs font-bold text-slate-950 transition hover:bg-sky-400">
           <i data-lucide="refresh-cw" class="h-3.5 w-3.5"></i>
           <span>갱신</span>
@@ -98,24 +90,24 @@
     <!-- 핵심 KPI 요약 4카드 -->
     <section class="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
       <div class="panel-card rounded-2xl p-3.5 sm:p-4">
-        <div class="text-[11px] font-medium text-slate-400">보유 · 관심 종목</div>
-        <div id="kpiCount" class="mt-1 text-lg font-extrabold text-white sm:text-2xl">보유 3 · 관심 12</div>
-        <div id="kpiSourceBadge" class="mt-1 text-[11px] text-emerald-400">구글 시트 스냅샷 로드됨</div>
+        <div class="text-[11px] font-medium text-slate-400">AI 브리핑 대상</div>
+        <div id="kpiCount" class="mt-1 text-lg font-extrabold text-white sm:text-2xl">관심 9종목</div>
+        <div id="kpiSourceBadge" class="mt-1 text-[11px] text-emerald-400">공유용 데이터 로드됨</div>
       </div>
       <div class="panel-card rounded-2xl p-3.5 sm:p-4">
-        <div class="text-[11px] font-medium text-slate-400">보유주식 총 평가액</div>
-        <div id="kpiKrwVal" class="mt-1 text-lg font-extrabold text-white sm:text-2xl">1,022,770원</div>
-        <div id="kpiKrwPnl" class="mt-1 text-xs font-semibold text-rose-400">손익 +41,387원 (+4.2%)</div>
+        <div class="text-[11px] font-medium text-slate-400">현재 시장 국면</div>
+        <div id="kpiRegimeShort" class="mt-1 truncate text-base font-extrabold text-amber-300 sm:text-lg">반등 · 순환매</div>
+        <div class="mt-1 text-[11px] text-slate-400">시장국면 · 5대지표 연동</div>
       </div>
       <div class="panel-card rounded-2xl p-3.5 sm:p-4">
-        <div class="text-[11px] font-medium text-slate-400">가용 현금 (예수금)</div>
-        <div id="kpiCashVal" class="mt-1 text-lg font-extrabold text-white sm:text-2xl">1,470,308원</div>
-        <div id="kpiBudgetText" class="mt-1 text-[11px] text-slate-400">총 예산 2,451,691원</div>
+        <div class="text-[11px] font-medium text-slate-400">관심종목 진입 레이더</div>
+        <div id="kpiWatchCount" class="mt-1 text-lg font-extrabold text-white sm:text-2xl">9종목</div>
+        <div class="mt-1 text-[11px] text-slate-400">목표 진입가 · 손익비 추적</div>
       </div>
       <div class="panel-card rounded-2xl p-3.5 sm:p-4">
-        <div class="text-[11px] font-medium text-slate-400">수집된 최신 뉴스</div>
-        <div id="kpiNewsCount" class="mt-1 text-lg font-extrabold text-white sm:text-2xl">0건</div>
-        <div id="kpiNewsStatus" class="mt-1 text-[11px] text-slate-400">Google News RSS</div>
+        <div class="text-[11px] font-medium text-slate-400">자산배분 균형 점수</div>
+        <div id="kpiAllocScore" class="mt-1 text-lg font-extrabold text-sky-300 sm:text-2xl">-</div>
+        <div id="kpiAllocHint" class="mt-1 text-[11px] text-slate-400">내 브라우저 전용 계산기</div>
       </div>
     </section>
 
@@ -127,6 +119,10 @@
             <i data-lucide="sparkles" class="h-3.5 w-3.5"></i>
             <span>AI 관점 브리핑</span>
           </button>
+          <button type="button" data-tab="allocation" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
+            <i data-lucide="scale" class="h-3.5 w-3.5"></i>
+            <span>자산배분 계산기</span>
+          </button>
           <button type="button" data-tab="tech" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
             <i data-lucide="activity" class="h-3.5 w-3.5"></i>
             <span>시장국면 · 5대지표</span>
@@ -137,20 +133,9 @@
           </button>
           <button type="button" data-tab="portfolio" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
             <i data-lucide="pie-chart" class="h-3.5 w-3.5"></i>
-            <span>보유종목 · 관심종목</span>
+            <span>관심종목 레이더</span>
           </button>
-          <button type="button" data-tab="chart" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
-            <i data-lucide="candlestick-chart" class="h-3.5 w-3.5"></i>
-            <span>실시간 차트 · RSI</span>
-          </button>
-          <button type="button" data-tab="news" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
-            <i data-lucide="rss" class="h-3.5 w-3.5"></i>
-            <span>실시간 뉴스</span>
-          </button>
-          <button type="button" data-tab="memo" class="tab-btn tab-inactive inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition">
-            <i data-lucide="file-text" class="h-3.5 w-3.5"></i>
-            <span>공시 · 메모</span>
-          </button>
+
         </nav>
         <button id="toggleTabOrderBtn" type="button" class="inline-flex shrink-0 items-center gap-1 rounded-xl border border-slate-700/80 bg-slate-900 px-2.5 py-2 text-[11px] font-semibold text-slate-300 transition hover:border-sky-500/50 hover:text-white" title="상단 탭 순서 변경">
           <i data-lucide="arrow-left-right" class="h-3.5 w-3.5 text-sky-400"></i>
@@ -169,11 +154,21 @@
     <!-- 1. AI 관점 브리핑 -->
     <section id="panel-briefing" class="space-y-3.5">
       <div class="panel-card rounded-2xl p-3.5 sm:p-4">
-        <div class="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex flex-col gap-2.5">
           <div>
             <h2 class="text-sm font-bold text-white">AI 관점 브리핑 (평일 07·10·12·14·16시경 자동 갱신)</h2>
             <p id="briefingUpdatedText" class="text-xs text-slate-400">총 15종목 자동 연동 · ☆ 고정 및 ▲▼ 순서 변경 가능</p>
           </div>
+          <!-- 시장 시나리오 전환 (상승장 · 하락장 · 동시 비교) -->
+          <div class="mt-2.5 flex flex-wrap items-center gap-1.5 border-t border-slate-800/90 pt-2.5">
+            <span class="mr-1 text-[11px] font-bold text-slate-400">시장 시나리오:</span>
+            <button type="button" data-mscenario="BOTH" class="market-scenario-btn rounded-xl border border-indigo-400/60 bg-indigo-500/20 px-3 py-1.5 text-xs font-extrabold text-indigo-200">🔀 상승·하락 동시</button>
+            <button type="button" data-mscenario="BULL" class="market-scenario-btn rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-300 hover:bg-slate-800">📈 상승장 시나리오</button>
+            <button type="button" data-mscenario="BEAR" class="market-scenario-btn rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-300 hover:bg-slate-800">📉 하락장 시나리오</button>
+            <button id="toggleScenarioGuideBtn" type="button" class="ml-auto rounded-xl border border-slate-700 bg-slate-900 px-2.5 py-1.5 text-[11px] font-semibold text-slate-300 hover:bg-slate-800">📋 장세 가이드 접기</button>
+          </div>
+          <div id="marketScenarioPlaybook" class="mt-2"></div>
+
           <!-- 매매 스타일 전환 (스윙 · 데이트레이딩 · 종가베팅) -->
           <div class="mt-2.5 flex flex-wrap items-center gap-1.5 border-t border-slate-800/90 pt-2.5">
             <span class="mr-1 text-[11px] font-bold text-slate-400">매매 기준:</span>
@@ -187,7 +182,6 @@
           </div>
           <div class="mt-2 flex flex-wrap items-center gap-1.5">
             <button type="button" data-bfilter="ALL" class="brief-filter-btn rounded-full bg-sky-500 px-3 py-1 text-xs font-bold text-slate-950">전체 (15)</button>
-            <button type="button" data-bfilter="보유" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300 hover:bg-slate-700">보유종목</button>
             <button type="button" data-bfilter="관심" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300 hover:bg-slate-700">관심·섹터</button>
             <button type="button" data-bfilter="PINNED" class="brief-filter-btn rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-amber-300 hover:bg-slate-700">★ 고정만</button>
             <button id="briefingPriceModeBtn" type="button" class="rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-1 text-[11px] font-bold text-emerald-200 hover:bg-emerald-500/30">🎯 가격별 대응 ON</button>
@@ -196,6 +190,210 @@
         </div>
       </div>
       <div id="briefingCards" class="grid gap-3 md:grid-cols-2"></div>
+    </section>
+
+    <!-- TAB 1.5: 나이·자산별 이상적 자산배분 계산기 -->
+    <section id="panel-allocation" class="hidden space-y-4">
+      <div class="panel-card rounded-2xl p-4 sm:p-5">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-base font-extrabold text-white">⚖️ 나이·자산별 이상적 자산배분 계산기</h2>
+              <span class="rounded-full border border-sky-500/35 bg-sky-500/15 px-2.5 py-0.5 text-[11px] font-bold text-sky-300">실시간 진단</span>
+            </div>
+            <p class="mt-1 text-xs text-slate-400">나이, 투자 성향, 보유 자산 금액을 입력하면 이상적 배분 기준과 현재 어느 자산이 높고 낮은지 즉시 진단합니다.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5">
+
+            <button id="allocResetBtn" type="button" class="inline-flex items-center gap-1 rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-slate-800">
+              <span>초기화</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 입력 그리드: 좌측 기본 프로필 / 우측 자산별 금액 -->
+        <div class="mt-4 grid gap-4 lg:grid-cols-12">
+          <!-- 좌측: 나이 & 투자성향 -->
+          <div class="space-y-3.5 rounded-2xl border border-slate-800/90 bg-slate-950/60 p-4 lg:col-span-5">
+            <div class="flex items-center justify-between">
+              <label for="allocAgeInput" class="text-xs font-bold text-slate-200">만 나이 입력</label>
+              <div class="flex items-center gap-1.5">
+                <input id="allocAgeInput" type="number" min="18" max="85" value="32" class="w-20 rounded-lg border border-slate-700 bg-slate-900 px-2.5 py-1.5 text-right text-sm font-extrabold text-sky-300 focus:border-sky-400 focus:outline-none" />
+                <span class="text-xs font-semibold text-slate-400">세</span>
+              </div>
+            </div>
+            <input id="allocAgeRange" type="range" min="18" max="85" value="32" class="w-full accent-sky-400 cursor-pointer" />
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>20대 (공격적 성장)</span>
+              <span>40대 (성장·방어 균형)</span>
+              <span>60대+ (안정·현금흐름)</span>
+            </div>
+
+            <div class="pt-1">
+              <div class="text-xs font-bold text-slate-200">자산배분 공식 (투자 성향)</div>
+              <div class="mt-2 grid grid-cols-3 gap-1.5">
+                <button type="button" data-alloc-profile="conservative" class="alloc-profile-btn rounded-xl border border-slate-700 bg-slate-900 px-2 py-2 text-center transition hover:bg-slate-800">
+                  <div class="text-xs font-extrabold text-slate-200">🛡️ 안정형</div>
+                  <div class="mt-0.5 text-[10px] text-slate-400">100 - 나이</div>
+                </button>
+                <button type="button" data-alloc-profile="balanced" class="alloc-profile-btn rounded-xl border border-sky-500/60 bg-sky-500/20 px-2 py-2 text-center transition">
+                  <div class="text-xs font-extrabold text-sky-200">⚖️ 균형형</div>
+                  <div class="mt-0.5 text-[10px] text-sky-300/90">110 - 나이 (권장)</div>
+                </button>
+                <button type="button" data-alloc-profile="aggressive" class="alloc-profile-btn rounded-xl border border-slate-700 bg-slate-900 px-2 py-2 text-center transition hover:bg-slate-800">
+                  <div class="text-xs font-extrabold text-slate-200">🚀 공격형</div>
+                  <div class="mt-0.5 text-[10px] text-slate-400">120 - 나이</div>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/70 px-3 py-2">
+              <span class="text-[11px] font-semibold text-slate-300">금액 입력 단위</span>
+              <div class="flex items-center gap-1">
+                <button type="button" data-alloc-unit="man" class="alloc-unit-btn rounded-lg bg-sky-500 px-2.5 py-1 text-[11px] font-bold text-slate-950">만원 단위</button>
+                <button type="button" data-alloc-unit="won" class="alloc-unit-btn rounded-lg bg-slate-800 px-2.5 py-1 text-[11px] font-semibold text-slate-300 hover:bg-slate-700">원 단위</button>
+              </div>
+            </div>
+
+            <div id="allocRuleSummary" class="rounded-xl border border-sky-500/25 bg-sky-500/10 p-3 text-xs leading-relaxed text-sky-100"></div>
+          </div>
+
+          <!-- 우측: 자산군별 금액 입력 -->
+          <div class="space-y-2.5 rounded-2xl border border-slate-800/90 bg-slate-950/60 p-4 lg:col-span-7">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-1">
+              <span class="text-xs font-bold text-slate-200">현재 보유 자산별 금액 입력</span>
+              <span id="allocTotalDisplay" class="text-sm font-extrabold text-white">총 자산: 0원</span>
+            </div>
+            <div class="grid gap-2.5 sm:grid-cols-2">
+              <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3">
+                <div class="flex items-center justify-between">
+                  <label for="allocAmtStock" class="text-xs font-bold text-sky-300">📈 국내·해외 주식 / ETF</label>
+                  <span class="text-[10px] text-slate-400">위험자산</span>
+                </div>
+                <div class="mt-1.5 flex items-center gap-1.5">
+                  <input id="allocAmtStock" type="number" min="0" step="any" value="2000" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-right text-sm font-bold text-white focus:border-sky-400 focus:outline-none" />
+                  <span class="alloc-unit-label shrink-0 text-xs font-semibold text-slate-400">만원</span>
+                </div>
+              </div>
+              <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3">
+                <div class="flex items-center justify-between">
+                  <label for="allocAmtBond" class="text-xs font-bold text-emerald-300">🏛️ 채권 / 채권 ETF</label>
+                  <span class="text-[10px] text-slate-400">안전자산</span>
+                </div>
+                <div class="mt-1.5 flex items-center gap-1.5">
+                  <input id="allocAmtBond" type="number" min="0" step="any" value="300" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-right text-sm font-bold text-white focus:border-emerald-400 focus:outline-none" />
+                  <span class="alloc-unit-label shrink-0 text-xs font-semibold text-slate-400">만원</span>
+                </div>
+              </div>
+              <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3">
+                <div class="flex items-center justify-between">
+                  <label for="allocAmtCash" class="text-xs font-bold text-slate-200">💵 현금 / 예·적금 / CMA</label>
+                  <span class="text-[10px] text-slate-400">안전자산</span>
+                </div>
+                <div class="mt-1.5 flex items-center gap-1.5">
+                  <input id="allocAmtCash" type="number" min="0" step="any" value="1500" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-right text-sm font-bold text-white focus:border-slate-400 focus:outline-none" />
+                  <span class="alloc-unit-label shrink-0 text-xs font-semibold text-slate-400">만원</span>
+                </div>
+              </div>
+              <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3">
+                <div class="flex items-center justify-between">
+                  <label for="allocAmtAlt" class="text-xs font-bold text-amber-300">🥇 금 / 원자재 / 리츠</label>
+                  <span class="text-[10px] text-slate-400">대체·헤지</span>
+                </div>
+                <div class="mt-1.5 flex items-center gap-1.5">
+                  <input id="allocAmtAlt" type="number" min="0" step="any" value="200" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-right text-sm font-bold text-white focus:border-amber-400 focus:outline-none" />
+                  <span class="alloc-unit-label shrink-0 text-xs font-semibold text-slate-400">만원</span>
+                </div>
+              </div>
+              <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3 sm:col-span-2">
+                <div class="flex items-center justify-between">
+                  <label for="allocAmtCrypto" class="text-xs font-bold text-violet-300">🪙 코인 / 고위험 알파 자산</label>
+                  <span class="text-[10px] text-slate-400">선택적 고위험 (권장 상한 3~10%)</span>
+                </div>
+                <div class="mt-1.5 flex items-center gap-1.5">
+                  <input id="allocAmtCrypto" type="number" min="0" step="any" value="300" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-right text-sm font-bold text-white focus:border-violet-400 focus:outline-none" />
+                  <span class="alloc-unit-label shrink-0 text-xs font-semibold text-slate-400">만원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 종합 진단 KPI 배너 -->
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="panel-card rounded-2xl p-4">
+          <div class="text-[11px] font-semibold text-slate-400">자산배분 균형 점수</div>
+          <div id="allocBalanceScore" class="mt-1 text-2xl font-extrabold text-sky-300">-</div>
+          <div id="allocBalanceGrade" class="mt-1 text-[11px] font-semibold text-slate-300">진단 대기</div>
+        </div>
+        <div class="panel-card rounded-2xl p-4">
+          <div class="text-[11px] font-semibold text-slate-400">위험자산 vs 안전자산 (현재)</div>
+          <div id="allocCurrentSplit" class="mt-1 text-lg font-extrabold text-white">-</div>
+          <div id="allocTargetSplit" class="mt-1 text-[11px] text-sky-300">권장 기준: -</div>
+        </div>
+        <div class="panel-card rounded-2xl p-4">
+          <div class="text-[11px] font-semibold text-rose-300">🔴 기준보다 높은 자산</div>
+          <div id="allocOverList" class="mt-1 text-sm font-extrabold text-rose-300">-</div>
+          <div class="mt-1 text-[11px] text-slate-400">목표 대비 +3%p 초과 구간</div>
+        </div>
+        <div class="panel-card rounded-2xl p-4">
+          <div class="text-[11px] font-semibold text-sky-300">🔵 기준보다 낮은 자산</div>
+          <div id="allocUnderList" class="mt-1 text-sm font-extrabold text-sky-300">-</div>
+          <div class="mt-1 text-[11px] text-slate-400">목표 대비 -3%p 미달 구간</div>
+        </div>
+      </div>
+
+      <!-- 핵심 한줄 진단 & 차트 비교 -->
+      <div id="allocDiagnosisBanner" class="panel-card rounded-2xl border-l-4 border-l-sky-400 p-4 text-xs leading-relaxed text-slate-200"></div>
+
+      <div class="grid gap-4 lg:grid-cols-12">
+        <div class="panel-card rounded-2xl p-4 lg:col-span-7">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-sm font-bold text-white">📊 현재 비중 vs 이상적 목표 비중 (%)</h3>
+            <span class="text-[11px] text-slate-400">막대 비교</span>
+          </div>
+          <div class="relative mt-3 h-72">
+            <canvas id="allocCompareChart"></canvas>
+          </div>
+        </div>
+        <div class="panel-card rounded-2xl p-4 lg:col-span-5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-sm font-bold text-white">🎯 이상적 목표 자산배분</h3>
+            <span id="allocTargetBadge" class="text-[11px] font-semibold text-sky-300">-</span>
+          </div>
+          <div class="relative mt-3 h-72">
+            <canvas id="allocTargetChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 자산군별 상세 높음/낮음 판정 & 리밸런싱 금액 테이블 -->
+      <div class="panel-card rounded-2xl p-4 sm:p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white">🧭 자산별 과부족 판정 및 리밸런싱 가이드</h3>
+            <p class="text-xs text-slate-400">허용 오차 ±3%p를 기준으로 높음(비중 축소) · 적정 · 낮음(비중 확대)을 자동 판정하고 필요 금액을 계산합니다.</p>
+          </div>
+        </div>
+        <div id="allocDetailRows" class="mt-4 space-y-2.5"></div>
+      </div>
+
+      <!-- 연령대별 기준 참고 가이드 -->
+      <div class="grid gap-3 md:grid-cols-3">
+        <div class="panel-card rounded-2xl p-4">
+          <div class="text-xs font-extrabold text-sky-300">20~30대 · 자산 증식기</div>
+          <p class="mt-1.5 text-xs leading-relaxed text-slate-300">근로소득 회복 기간이 길어 주식·ETF 비중을 60~80% 수준으로 높게 가져가고, 현금·채권은 비상금 및 폭락장 분할매수 재원으로 20~35% 유지하는 전략이 유리합니다.</p>
+        </div>
+        <div class="panel-card rounded-2xl p-4">
+          <div class="text-xs font-extrabold text-emerald-300">40~50대 · 균형·방어 전환기</div>
+          <p class="mt-1.5 text-xs leading-relaxed text-slate-300">교육비·주택자금과 은퇴 준비가 겹치는 시기로, 주식 45~65%와 채권·현금·금 등 안전·대체자산 35~55%를 조합해 최대 낙폭(MDD)을 통제하는 것이 핵심입니다.</p>
+        </div>
+        <div class="panel-card rounded-2xl p-4">
+          <div class="text-xs font-extrabold text-amber-300">60대 이상 · 현금흐름·보존기</div>
+          <p class="mt-1.5 text-xs leading-relaxed text-slate-300">원금 방어와 배당·이자 현금흐름이 최우선입니다. 채권·현금성 자산 비중을 55~75% 이상 확보하고 주식은 배당주·저변동성 ETF 중심으로 25~45% 이내로 관리합니다.</p>
+        </div>
+      </div>
     </section>
 
     <!-- 2. 시장국면 · 5대지표 · 8대 섹터 ETF -->
@@ -385,127 +583,20 @@
       </div>
     </section>
 
-    <!-- 4. 보유종목 · 관심종목 -->
+    <!-- 4. 관심종목 진입 대기 레이더 (개인 보유종목·매매일지 제외) -->
     <section id="panel-portfolio" class="hidden space-y-4">
-      <div class="grid gap-4 lg:grid-cols-3">
-        <div class="panel-card rounded-2xl p-4 lg:col-span-2">
-          <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <h2 class="text-sm font-bold text-white">보유종목 및 리밸런싱 현황</h2>
-              <p class="text-xs text-slate-400">구글 시트 보유종목 탭과 실시간 연동됩니다.</p>
-            </div>
-            <div class="flex gap-1.5">
-              <button id="addStockBtn" type="button" class="inline-flex items-center gap-1 rounded-lg bg-sky-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-sky-400">
-                <i data-lucide="plus" class="h-3.5 w-3.5"></i>
-                <span>종목 추가</span>
-              </button>
-              <button id="downloadCsvBtn" type="button" class="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-700">
-                <i data-lucide="download" class="h-3.5 w-3.5"></i>
-                <span>CSV</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 모바일 전용 보유종목 카드 -->
-          <div id="portfolioMobileCards" class="space-y-2.5 md:hidden"></div>
-
-          <!-- 데스크톱 전용 보유종목 테이블 -->
-          <div class="hidden overflow-x-auto md:block">
-            <table class="w-full min-w-[640px] text-left text-xs">
-              <thead>
-                <tr class="border-b border-slate-700/80 text-slate-400">
-                  <th class="py-2.5 pr-3 font-semibold">종목명 / 섹터</th>
-                  <th class="px-2 py-2.5 font-semibold">티커</th>
-                  <th class="px-2 py-2.5 text-right font-semibold">수량</th>
-                  <th class="px-2 py-2.5 text-right font-semibold">평단가</th>
-                  <th class="px-2 py-2.5 text-right font-semibold">현재가</th>
-                  <th class="px-2 py-2.5 text-right font-semibold">수익률</th>
-                  <th class="px-2 py-2.5 text-right font-semibold">리밸런싱</th>
-                  <th class="py-2.5 pl-2 text-right font-semibold">관리</th>
-                </tr>
-              </thead>
-              <tbody id="portfolioTableBody" class="divide-y divide-slate-800/80"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="panel-card flex flex-col justify-between rounded-2xl p-4">
+      <div class="panel-card rounded-2xl p-4 sm:p-5">
+        <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 class="text-sm font-bold text-white">전체 자산(주식+현금) 비중</h2>
-            <p class="text-xs text-slate-400">가용 현금(예수금) 포함 총자산 대비 비중</p>
+            <h2 class="text-sm font-bold text-white">🎯 관심종목 진입 대기 레이더</h2>
+            <p class="text-xs text-slate-400">개별 관심종목의 목표 매수가 · 목표 익절가 · 손절가 및 예상 손익비(R:R)만 공유합니다.</p>
           </div>
-          <div class="relative mt-4 h-56 w-full">
-            <canvas id="allocationChart"></canvas>
-          </div>
-          <div class="mt-3 rounded-xl border border-slate-800 bg-slate-900/80 p-3 text-[11px] text-slate-400">
-            구글 시트에서 수량·평단가를 수정한 뒤 상단 <strong class="text-sky-300">갱신</strong>을 누르면 바로 반영됩니다.
-          </div>
-        </div>
-      </div>
-
-      <div class="panel-card rounded-2xl p-4">
-        <div class="mb-3">
-          <h2 class="text-sm font-bold text-white">관심종목 진입 대기 레이더</h2>
-          <p class="text-xs text-slate-400">목표 매수가 · 목표 익절가 · 손절가 및 예상 손익비(R:R) 추적</p>
+          <span class="rounded-full border border-emerald-500/35 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">개인 매매일지 · 보유계좌 미노출</span>
         </div>
         <div id="watchlistCards" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
       </div>
     </section>
 
-    <!-- 5. 실시간 차트 · RSI -->
-    <section id="panel-chart" class="hidden space-y-4">
-      <div class="panel-card rounded-2xl p-4">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 class="text-sm font-bold text-white">TradingView 실시간 차트 (이평선 · RSI · 볼린저)</h2>
-            <p class="text-xs text-slate-400">보유·관심 전 종목과 8대 섹터 ETF 차트를 분봉·일봉으로 확인합니다.</p>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <select id="chartTickerSelect" class="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none"></select>
-            <select id="chartIntervalSelect" class="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none">
-              <option value="1">1분봉 (1m)</option>
-              <option value="5">5분봉 (5m)</option>
-              <option value="15">15분봉 (15m)</option>
-              <option value="60">60분봉 (1H)</option>
-              <option value="D" selected>일봉 (1D)</option>
-              <option value="W">주봉 (1W)</option>
-            </select>
-          </div>
-        </div>
-        <div id="tvChartContainer" class="mt-4 h-[360px] w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950 sm:h-[460px]"></div>
-      </div>
-    </section>
-
-    <!-- 6. 실시간 뉴스 브리핑 -->
-    <section id="panel-news" class="hidden space-y-4">
-      <div class="panel-card rounded-2xl p-4">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div id="newsTickerPills" class="flex flex-wrap gap-1.5"></div>
-          <input id="newsSearchInput" type="text" placeholder="뉴스 제목·언론사 검색..." class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:border-sky-400 focus:outline-none sm:w-56" />
-        </div>
-      </div>
-      <div id="newsFeedContainer" class="grid gap-3 md:grid-cols-2"></div>
-    </section>
-
-    <!-- 7. 공시 링크 · 종목 메모 -->
-    <section id="panel-memo" class="hidden grid gap-4 lg:grid-cols-2">
-      <div class="panel-card rounded-2xl p-4">
-        <h2 class="text-sm font-bold text-white">원클릭 공시 · 기업정보 바로가기</h2>
-        <p class="mt-0.5 text-xs text-slate-400">DART 전자공시 · 네이버페이 증권 · TradingView</p>
-        <div id="disclosureLinksGrid" class="mt-3.5 space-y-2"></div>
-      </div>
-      <div class="panel-card flex flex-col justify-between rounded-2xl p-4">
-        <div>
-          <div class="flex items-center justify-between gap-2">
-            <h2 class="text-sm font-bold text-white">종목별 매매 복기 메모</h2>
-            <span id="memoSavedHint" class="text-[11px] text-slate-400">브라우저 자동 저장</span>
-          </div>
-          <select id="memoTickerSelect" class="mt-3 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs font-semibold text-white focus:border-sky-400 focus:outline-none"></select>
-          <textarea id="memoTextarea" rows="8" placeholder="진입 근거, 손절가, 지지·저항 라인, 매매 복기 내용을 자유롭게 기록하세요." class="mt-3 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-xs leading-relaxed text-slate-100 placeholder-slate-500 focus:border-sky-400 focus:outline-none"></textarea>
-        </div>
-        <button id="saveMemoBtn" type="button" class="mt-3 w-full rounded-xl bg-sky-500 py-2.5 text-xs font-bold text-slate-950 hover:bg-sky-400">메모 저장</button>
-      </div>
-    </section>
   </main>
 
   <!-- 모바일 하단 엄지 고정 네비게이션 바 -->
@@ -514,6 +605,10 @@
       <button type="button" data-tab="briefing" class="mobile-bottom-tab mobile-nav-active flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
         <i data-lucide="sparkles" class="h-5 w-5"></i>
         <span>브리핑</span>
+      </button>
+      <button type="button" data-tab="allocation" class="mobile-bottom-tab mobile-nav-inactive flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
+        <i data-lucide="scale" class="h-5 w-5"></i>
+        <span>자산배분</span>
       </button>
       <button type="button" data-tab="tech" class="mobile-bottom-tab mobile-nav-inactive flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
         <i data-lucide="activity" class="h-5 w-5"></i>
@@ -525,117 +620,38 @@
       </button>
       <button type="button" data-tab="portfolio" class="mobile-bottom-tab mobile-nav-inactive flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
         <i data-lucide="pie-chart" class="h-5 w-5"></i>
-        <span>보유·관심</span>
+        <span>관심종목</span>
       </button>
-      <button type="button" data-tab="chart" class="mobile-bottom-tab mobile-nav-inactive flex flex-col items-center gap-0.5 py-1 text-[10px] font-bold">
-        <i data-lucide="candlestick-chart" class="h-5 w-5"></i>
-        <span>차트</span>
-      </button>
+
     </div>
   </nav>
 
-  <!-- 모달: 구글 시트 동기화 설정 -->
-  <div id="sheetModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm">
-    <div class="panel-card w-full max-w-md rounded-2xl p-5 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-white">구글 시트 실시간 동기화 설정</h3>
-        <button type="button" data-close="sheetModal" class="text-slate-400 hover:text-white">✕</button>
-      </div>
-      <p class="text-xs leading-relaxed text-slate-300">
-        구글 시트 우측 상단 <strong>공유 → 링크가 있는 모든 사용자(뷰어)</strong>로 설정되어 있으면 수정한 종목과 AI 브리핑이 자동으로 반영됩니다.
-      </p>
-      <input id="sheetUrlInput" type="url" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white focus:border-sky-400 focus:outline-none" />
-      <div class="flex justify-end gap-2">
-        <button type="button" data-close="sheetModal" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-300">닫기</button>
-        <button id="syncSheetConfirmBtn" type="button" class="rounded-lg bg-emerald-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-emerald-400">지금 동기화</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 모달: 보유종목 추가/수정 -->
-  <div id="stockModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm">
-    <form id="stockForm" class="panel-card w-full max-w-md rounded-2xl p-5 space-y-3">
-      <div class="flex items-center justify-between">
-        <h3 id="stockModalTitle" class="text-sm font-bold text-white">보유종목 추가</h3>
-        <button type="button" data-close="stockModal" class="text-slate-400 hover:text-white">✕</button>
-      </div>
-      <input id="editStockId" type="hidden" />
-      <div class="grid grid-cols-2 gap-2.5">
-        <div>
-          <label class="text-[11px] text-slate-400">종목명</label>
-          <input id="fName" required type="text" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white" />
-        </div>
-        <div>
-          <label class="text-[11px] text-slate-400">티커 (예: KRX:105560)</label>
-          <input id="fSymbol" required type="text" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white" />
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-2.5">
-        <div>
-          <label class="text-[11px] text-slate-400">섹터</label>
-          <input id="fSector" type="text" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white" />
-        </div>
-        <div>
-          <label class="text-[11px] text-slate-400">통화</label>
-          <select id="fCurrency" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white">
-            <option value="KRW">KRW (원)</option>
-            <option value="USD">USD ($)</option>
-          </select>
-        </div>
-      </div>
-      <div class="grid grid-cols-3 gap-2">
-        <div>
-          <label class="text-[11px] text-slate-400">수량</label>
-          <input id="fQty" required type="number" step="any" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white" />
-        </div>
-        <div>
-          <label class="text-[11px] text-slate-400">평단가</label>
-          <input id="fAvg" required type="number" step="any" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white" />
-        </div>
-        <div>
-          <label class="text-[11px] text-slate-400">현재가</label>
-          <input id="fPrice" required type="number" step="any" class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-xs text-white" />
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 pt-2">
-        <button type="button" data-close="stockModal" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-300">취소</button>
-        <button type="submit" class="rounded-lg bg-sky-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-sky-400">저장</button>
-      </div>
-    </form>
-  </div>
-
-  <!-- 토스트 알림 -->
   <div id="toast" class="pointer-events-none fixed bottom-20 left-1/2 z-50 -translate-x-1/2 rounded-xl border border-sky-500/40 bg-slate-900/95 px-4 py-2.5 text-xs font-semibold text-white opacity-0 shadow-xl transition-opacity duration-200 md:bottom-6"></div>
 
   <script>
     const DEFAULT_SHEET_URL = "https://docs.google.com/spreadsheets/d/1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs/edit";
     const STORAGE_KEYS = {
-      portfolio: "mystock_v3_holdings",
-      watchlist: "mystock_v3_watchlist",
-      sheetUrl: "mystock_v3_sheet_url",
-      memos: "mystock_v3_memos",
-      smc: "mystock_v3_smc_setups",
-      tabOrder: "mystock_v3_tab_order",
-      briefOrder: "mystock_v3_brief_order",
-      briefPins: "mystock_v3_brief_pins"
+      portfolio: "mystock_share_v1_holdings",
+      watchlist: "mystock_share_v1_watchlist",
+      sheetUrl: "mystock_share_v1_sheet_url",
+      memos: "mystock_share_v1_memos",
+      smc: "mystock_share_v1_smc_setups",
+      tabOrder: "mystock_share_v1_tab_order",
+      briefOrder: "mystock_share_v1_brief_order",
+      briefPins: "mystock_share_v1_brief_pins",
+      allocCalc: "mystock_share_v1_alloc_calc"
     };
-    const DEFAULT_TAB_ORDER = ["briefing", "tech", "smc", "portfolio", "chart", "news", "memo"];
+    const DEFAULT_TAB_ORDER = ["briefing", "allocation", "tech", "smc", "portfolio"];
     const TAB_LABELS = {
       briefing: "AI 관점 브리핑",
+      allocation: "자산배분 계산기",
       tech: "시장국면 · 5대지표",
       smc: "SMC · 스윙 타점",
-      portfolio: "보유종목 · 관심종목",
-      chart: "실시간 차트 · RSI",
-      news: "실시간 뉴스",
-      memo: "공시 · 메모"
+      portfolio: "관심종목 레이더"
     };
     const KOSDAQ_CODES = new Set(["196170", "247540", "086520", "028300", "277810", "293490", "091990"]);
 
-    const INITIAL_HOLDINGS = [
-      { id: "h1", assetType: "국내주식", sector: "반도체", name: "삼성전자", symbol: "KRX:005930", qty: 2, avgPrice: 73750, price: 177500, rebalanceQty: 0, currency: "KRW" },
-      { id: "h2", assetType: "국내ETF", sector: "반도체 ETF", name: "SOL 글로벌DRAM반도체플러스", symbol: "KRX:0246X0", qty: 20, avgPrice: 9470, price: 6155, rebalanceQty: 0, currency: "KRW" },
-      { id: "h3", assetType: "국내ETF", sector: "지수 ETF", name: "KODEX 200", symbol: "KRX:069500", qty: 7, avgPrice: 92069, price: 73645, rebalanceQty: 1, currency: "KRW" }
-    ];
+    const INITIAL_HOLDINGS = [];
 
     const INITIAL_WATCHLIST = [
       { id: "w1", sector: "자동차 / 모빌리티", name: "현대차", symbol: "KRX:005380", price: 247500, entryPrice: 230000, tpPrice: 270000, slPrice: 218000, rr: 3.33, status: "⏳ 대기중", idea: "230,000원 눌림목 도달 시 분할 매수" },
@@ -649,129 +665,86 @@
       { id: "w9", sector: "은행 ETF", name: "KODEX 은행", symbol: "KRX:091170", price: 13890, entryPrice: 13800, tpPrice: 15800, slPrice: 13200, rr: 3.3, status: "👀 지지 테스트", idea: "20일선(14,324원) 근접 방어 섹터" },
       { id: "w10", sector: "바이오 ETF", name: "KODEX 바이오", symbol: "KRX:244580", price: 6900, entryPrice: 6750, tpPrice: 7800, slPrice: 6450, rr: 3.5, status: "👀 반등 관찰", idea: "오후장 급반등 2위 섹터" },
       { id: "w11", sector: "조선 ETF", name: "SOL 조선TOP3플러스", symbol: "KRX:466920", price: 16085, entryPrice: 15800, tpPrice: 18800, slPrice: 14900, rr: 3.3, status: "⏳ 대기중", idea: "시가(16,060원) 지지 및 수주 모멘텀 관찰" },
-      { id: "w12", sector: "건설 ETF", name: "KODEX 건설", symbol: "KRX:117700", price: 4940, entryPrice: 4800, tpPrice: 5800, slPrice: 4500, rr: 3.3, status: "🔴 진입 금지", idea: "5,000원 회복 및 수급 전환 전 매수 보류" }
+      { id: "w12", sector: "건설 ETF", name: "KODEX 건설", symbol: "KRX:117700", price: 4940, entryPrice: 4800, tpPrice: 5800, slPrice: 4500, rr: 3.3, status: "🔴 진입 금지", idea: "5,000원 회복 및 수급 전환 전 매수 보류" },
+      { id: "w13", sector: "AI 반도체 (HBM 대장주)", name: "SK하이닉스", symbol: "KRX:000660", price: 1158000, entryPrice: 1100000, tpPrice: 1350000, slPrice: 1020000, rr: 3.13, status: "👀 눌림 대기", idea: "PER 4.38배·이익잉여금 267조, 엔비디아 조정 눌림목 분할 접근" },
+      { id: "w14", sector: "2차전지 · ESS 대장주", name: "삼성SDI", symbol: "KRX:006400", price: 450000, entryPrice: 430000, tpPrice: 520000, slPrice: 395000, rr: 2.57, status: "🎯 수급 주도", idea: "기관 순매수 2위(1,031억), 430,000원 눌림목 지지 확인 후 스윙" },
+      { id: "w15", sector: "조선 대장주", name: "HD현대중공업", symbol: "KRX:329180", price: 248500, entryPrice: 240000, tpPrice: 300000, slPrice: 220000, rr: 3.0, status: "🎯 매수 우위", idea: "경영진 자사주 매입·2027E 영업이익 4.67조, 미 기술주 무풍지대" },
+      { id: "w16", sector: "방산 대장주", name: "한화에어로스페이스", symbol: "KRX:012450", price: 612000, entryPrice: 595000, tpPrice: 730000, slPrice: 550000, rr: 3.0, status: "🎯 장전 최선호", idea: "창원 10조 국방 AIDC 구축·중동 수주 모멘텀, 갭 메우기 눌림 진입" },
+      { id: "w17", sector: "로봇 · 피지컬AI 대장주", name: "레인보우로보틱스", symbol: "KRX:277810", price: 472000, entryPrice: 445000, tpPrice: 550000, slPrice: 405000, rr: 2.63, status: "👀 과열 주의", idea: "기관 8일 연속 순매수, 급등 직후 추격 금지 및 445,000원 눌림 대기" }
     ];
 
     const INITIAL_BRIEFINGS = [
       {
-        updated: "2026-11-24 16:41", group: "보유종목", name: "삼성전자",
-        verdict: "🟡 관망 / 눌림대기 (191,600원 +7.94%)",
-        pros: "14:30 현재 191,600원(+7.94%)으로 외인(+6,876억)·기관(+2,402억) 쌍끌이 순매수 유입. 13:05 장중 192,900원 재상승 후 191,000원대 후반 탄탄히 지지(PER 5.99배, 배당 3.09%).",
-        cons: "시초가(193,200원)~고가(193,700원) 구간 단기 차익 매물 소화 중. 20일선(196,685원) 아래 위치해 종가 기준 192,000원 회복 및 추세 안착 확인 필요.",
-        action: "① 보유 2주(평단 200,500원) 홀딩 유지 ② 장중 190,000원 지지선 방어 확인 ③ 20일선(196,685원) 종가 돌파·안착 시에만 추가 매수 검토",
-        source: "https://www.yna.co.kr/view/AKR20261124079000008"
+        updated: "2026-11-25 07:53", group: "관심종목", name: "현대차",
+        verdict: "🟡 눌림목·관망 (종가 275,000원 +11.11% · 단기 이격 과열)",
+        pros: "11/24 +11.11% 장대양봉 및 기관 순매수 4위(548억 원) 유입. 500대 기업 이익잉여금 66조 7,663억 원(국내 3위)으로 재무 체력과 배당(3.64%)·저PER(9.49배) 매력 재확인.",
+        cons: "단 하루 만에 시트 목표 익절가(270,000원)를 돌파해 단기 과열권 진입. 간밤 나스닥 -1.48% 조정 및 반등 시 개인 본전 매물 출회 가능성 부담.",
+        action: "① 280,000원 이상 시초가 추격 매수 금지 및 단기 차익실현 구간 ② 260,000원~265,000원 장중 눌림목 지지 확인 시 1차 분할 진입 ③ 252,500원(전일 시가) 이탈 시 단기 관망 전환",
+        source: "https://www.yna.co.kr/amp/view/AKR20261124163200003"
       },
       {
-        updated: "2026-11-24 16:41", group: "보유종목", name: "SOL 글로벌DRAM반도체플러스",
-        verdict: "🔴 진입 금지 (역배열 기술적 반등)",
-        pros: "삼성전자(+7.94%)·SK하이닉스·마이크론 등 글로벌 메모리 반도체 강세로 직전 기준가(6,155원) 대비 큰 폭의 갭상승 반등 유지.",
-        cons: "평단가(9,470원) 및 20일선(7,179원)·60일선(8,463원) 아래 깊은 역배열 구간으로 저항대 매물 출회 주의.",
-        action: "① 추가 물타기(매수) 금지 ② 1차 저항선인 20일선(7,179원) 도달·돌파 여부 점검 ③ 반등 구간에서 단계적 비중 축소 대응",
-        source: "https://www.mt.co.kr/index.php/stock/2026/10/02/2026100209512464220"
-      },
-      {
-        updated: "2026-11-24 16:41", group: "보유종목", name: "KODEX 200",
-        verdict: "🟢 매수 타점 (79,260원 +7.44%, 평단 턱밑)",
-        pros: "외인(+6,876억)·기관(+2,402억) 쌍끌이로 코스피 5,020선 회복. 장중 79,830원 터치 후 79,260원에서 본인 평단(80,020원) 바로 아래 강하게 지지.",
-        cons: "하루 +7.44% 급등 피로감으로 80,000원 라운드 피겨 및 20일선(80,141원) 직전 마감 숨고르기 진행.",
-        action: "① 보유 8주(평단 80,020원) 홀딩 유지 ② 78,500원 지지선 방어 확인 ③ 20일선(80,141원) 돌파·안착 시 수익 전환 확정",
-        source: "https://www.2news.co.kr/news/articleView.html?idxno=33748"
-      },
-      {
-        updated: "2026-11-24 16:41", group: "관심종목", name: "현대차",
-        verdict: "🟢 목표가 초과 달성 (276,000원 +11.52%, 1위)",
-        pros: "14:30 현재 276,000원(+11.52%, 고가 279,000원)으로 전체 15종목 상승률 1위. 20일선(263,750원)과 시트 목표 익절가(270,000원)를 모두 돌파하며 60일선(279,308원) 직행.",
-        cons: "하루 +11.52% 급등으로 60일선(279,308원) 저항대에 맞닿아 신규 추격 매수 시 단기 고점 조정 리스크 큼.",
-        action: "① 기존 보유자는 276,000~279,000원 분할 익절 영역 ② 신규 추격 매수 금지 ③ 268,000~270,000원 또는 20일선(263,750원) 눌림 대기",
-        source: "https://www.mk.co.kr/news/stock/12168864"
-      },
-      {
-        updated: "2026-11-24 16:41", group: "관심종목", name: "NAVER",
-        verdict: "🔴 진입 금지 (157,100원 +4.73%, 역배열)",
-        pros: "시초가(155,100원) 지지 유지하며 157,100원(+4.73%)으로 오후장 반등 폭 소폭 회복(PER 14.10배).",
-        cons: "코스피(+6.6~7.4%) 대비 상대 약세 지속. 20일선(176,120원)·60일선(200,828원) 아래 깊은 역배열.",
-        action: "① 신규 매수 보류 ② 155,000원 시초가 지지 여부만 관찰 ③ 20일선(176,120원) 회복 전까지 관망 유지",
+        updated: "2026-11-25 07:53", group: "관심종목", name: "NAVER",
+        verdict: "🔴 관망/진입금지 (종가 156,100원 +4.07% · 20일선 하회 역배열)",
+        pros: "PER 14.03배 저평가 영역에서 전일 +4.07% 반등하며 바닥 다지기 시도. 미국 반도체 중심 조정 속에 내수 플랫폼주로서 상대적 하방 경직성 기대.",
+        cons: "20일선(176,120원) 아래 역배열 상태가 지속 중이며, 반등 시 개인 대기 매물 소화 과정이 필요해 추세 전환까지 시간 소요.",
+        action: "① 160,000원 안착 및 20일선 이격 축소 전까지 추격 매수 보류 ② 150,000원~153,000원 바닥 지지 테스트 확인 후 소액 분할 관찰 ③ 148,000원 이탈 시 손절 및 재관망",
         source: "https://m.newspim.com/news/view/20261116000781"
       },
       {
-        updated: "2026-11-24 16:41", group: "관심종목", name: "알테오젠",
-        verdict: "🔴 진입 금지 (164,400원 -2.43%, 나홀로 약세)",
-        pros: "코스닥 지수(+4.84%) 외국인·기관 쌍끌이 매수로 시장 전반 유동성은 개선됨.",
-        cons: "163,700~164,400원(-2.43%)으로 전일 저가(166,400원)를 이탈하며 15종목 중 유일하게 마이너스 역행 하락.",
-        action: "① 절대 매수 금지 ② 163,000~165,000원 바닥 형성 여부만 원거리 관찰 ③ 20일선(225,000원) 회복 전까지 철저히 배제",
-        source: "https://www.tossinvest.com/stocks/A196170/order"
+        updated: "2026-11-25 07:53", group: "관심종목", name: "알테오젠",
+        verdict: "🔴 관망/진입금지 (종가 162,200원 -4.02% · 수급 이탈 약세)",
+        pros: "코스닥 바이오 시총 대장주 지위는 유지 중이며, 연속 하락에 따른 단기 과매도권 진입으로 155,000원 부근 기술적 자율 반등 여지 존재.",
+        cons: "전일 코스피 +6.32% 급등장에서도 홀로 -4.02% 역행 하락했고, 외국인 3일 연속 매도 및 신규 상장 바이오 급락 여파로 투심 위축 심각.",
+        action: "① 173,000원(전일 고가) 탈환 및 외국인 수급 전환 전까지 신규 매수 금지 ② 155,000원 부근 단기 바닥 지지 여부만 관찰 ③ 150,000원 이탈 시 하락 가속화 주의 및 관망 유지",
+        source: "https://www.mt.co.kr/stock/2026/11/24/2026112320381426302"
       },
       {
-        updated: "2026-11-24 16:41", group: "관심종목 (섹터 ETF)", name: "KODEX 반도체",
-        verdict: "🟢 매수 타점 (89,625원 +7.52%, 20일선 공방)",
-        pros: "장중 고가 91,550원 터치 후 당일 저가(88,875원) 위에서 20일선(89,704원)과 맞닿은 채 탄탄한 하방 경직성 유지.",
-        cons: "오후 자동차(+9.78%)·2차전지(+9.38%) 수급 분산으로 시초가(91,500원) 대비 단기 매물 소화 중.",
-        action: "① 89,500~89,700원(20일선) 눌림목 종가베팅·분할 매수 유효 ② 91,550원 돌파 시 1차 스윙 목표 60일선(96,281원) 설정",
-        source: "https://www.newspim.com/news/view/20261124000062"
+        updated: "2026-11-25 07:53", group: "관심종목", name: "KB금융",
+        verdict: "🟢 매수우위·분할익절 (종가 151,400원 +5.36% · 1차 익절권 도달)",
+        pros: "전일 장중 152,300원까지 오르며 1차 익절 타점(152,000원) 도달. 국민은행 이익잉여금 31조 1,067억 원과 PER 8.73배·배당 3.35%로 기술주 조정 장세에서 방어주 우위 부각.",
+        cons: "신임 회장 첫 행보로 상생금융 지원이 강조되며 사회적 비용 우려 일부 존재, 152,000원~155,000원 단기 매물대 소화 필요.",
+        action: "① 152,500원~155,000원 저항 구간에서 보유 물량(평단 145,000원) 일부 분할 익절 ② 148,000원(전일 시가) 눌림 지지 시 잔여 물량 홀딩 및 신규 진입 ③ 144,000원(전일 저가) 이탈 시 본전 방어선 관리",
+        source: "https://news.ifm.kr/news/articleViewAmp.html?idxno=485371"
       },
       {
-        updated: "2026-11-24 16:41", group: "관심종목 (섹터 ETF)", name: "TIGER 미국필라델피아반도체나스닥",
-        verdict: "🟢 매수 타점 (33,265원 +7.97%, 시초가 지지)",
-        pros: "간밤 필라델피아 반도체(+13.4%) 폭등 반영해 장중 33,910원 터치 후 시초가(33,280원) 부근 안정적 지지.",
-        cons: "20일선(33,441원) 바로 아래(-0.5%) 횡보 중이며 오늘 밤 미 본장 차익실현 여부에 연동 가능.",
-        action: "① 33,100~33,300원 지지 구간 분할 접근 ② 종가 20일선(33,441원) 탈환 확인 시 1차 목표 60일선(35,519원)",
-        source: "https://markets.hankyung.com/stock/381180"
+        updated: "2026-11-25 07:53", group: "관심종목", name: "SK하이닉스",
+        verdict: "🟡 눌림목 대기 (종가 1,158,000원 +6.73% · 미 반도체 조정 경계)",
+        pros: "3분기 이익잉여금 267조 2,594억 원(9개월 새 2.5배 급증, 국내 증가액 1위)과 PER 4.38배·자사주 35만 주 매입 신청으로 펀더멘털 국내 최강 수준.",
+        cons: "간밤 엔비디아 -5.86% 급락 및 마이크론·AMD 조정이 겹치며 금일 시초가 갭하락과 외국인 단기 차익실현 매물 출회 압력 높음.",
+        action: "① 1,212,000원(전일 고가) 돌파 전 시초가 추격 금지 및 목표 익절가 1,350,000원 유지 ② 1,100,000원 부근 갭하락 눌림목 지지 확인 후 1차 분할 매수 ③ 1,020,000원 이탈 시 단기 스윙 손절",
+        source: "https://www.yna.co.kr/amp/view/AKR20261124163200003"
       },
       {
-        updated: "2026-11-24 16:41", group: "관심종목 (섹터 ETF)", name: "KODEX 2차전지산업",
-        verdict: "🟡 관망 / 눌림대기 (12,075원 +9.38%, 12,000원 돌파)",
-        pros: "에코프로비엠(+11.46%)·에코프로(+10.28%) 급등에 힘입어 12,000원 저항선 강하게 돌파(고가 12,095원, 섹터 2위).",
-        cons: "급등에도 20일선(12,732원)·60일선(14,840원) 아래 역배열 구간이 남아 있음.",
-        action: "① 12,000원 추격 매수 자제 ② 12,000원 지지 안착 확인 ③ 20일선(12,732원) 돌파 시 본격 진입 검토",
-        source: "https://kr.investing.com/etfs/305720"
+        updated: "2026-11-25 07:53", group: "관심종목", name: "삼성SDI",
+        verdict: "🟢 눌림목 매수우위 (종가 450,000원 +13.64% · 기관 수급 2위)",
+        pros: "전일 코스피 기관 순매수 2위(1,031억 원)로 +13.64% 급등. 경쟁사(LG엔솔·SK온) 대규모 결손금 보도로 삼성SDI로의 기관 수급 압축 및 반도체 조정 반사수혜 기대.",
+        cons: "단 하루 +13.64% 폭등에 따른 단기 차익실현 욕구와 PER 59.98배 밸류에이션 부담이 공존하며 전일 고가(458,000원) 매물 소화 필요.",
+        action: "① 458,000원 이상 시초가 추격 자제 및 중기 목표 익절가 520,000원 설정 ② 430,000원 부근 장중 눌림목 지지 확인 시 분할 매수 진입 ③ 395,000원 이탈 시 단기 손절 대응",
+        source: "https://kbthink.com/investment/today-pick/2611/261124-2.html"
       },
       {
-        updated: "2026-11-24 16:41", group: "관심종목 (섹터 ETF)", name: "KODEX 자동차",
-        verdict: "🟢 매수 타점 (22,165원 +9.78%, 60일선 돌파 1위)",
-        pros: "현대차(+11.52%) 폭등으로 20일선(20,564원)에 이어 상위 60일선(22,068원)까지 하루 만에 동시 돌파(고가 22,200원, 섹터 1위).",
-        cons: "하루 +9.78% 급등으로 단기 이격 확대에 따른 마감 소폭 차익 매물 가능성.",
-        action: "① 돌파된 60일선(22,000~22,070원)을 새 지지선으로 삼아 눌림목 분할 매수 유효 ② 추세 보유 지속",
-        source: "https://kr.investing.com/news/stock-market-news/article-2186528"
+        updated: "2026-11-25 07:53", group: "관심종목", name: "HD현대중공업",
+        verdict: "🟢 매수우위 (종가 248,500원 +4.19% · 미 기술주 무풍지대)",
+        pros: "11/20 경영진 자사주 매입과 2027E 영업이익 4.67조 원 전망(상상인 목표가 500,000원)으로 상승 여력 충분. 간밤 미국 AI 반도체 조정 영향에서 자유로운 대표 순환매 대안주.",
+        cons: "250,000원 라운드 피겨 부근 단기 매물대 소화가 필요하며, 시장 전반의 관망세 속 거래량 동반 돌파 여부 확인 필수.",
+        action: "① 255,000원 거래량 동반 돌파 시 추세 홀딩 및 목표 익절가 300,000원 ② 240,000원 부근 장중 눌림목 지지 시 1차 분할 매수 ③ 220,000원 이탈 시 스윙 손절",
+        source: "https://m.newspim.com/news/view/20261118000369"
       },
       {
-        updated: "2026-11-24 16:41", group: "관심종목 (섹터 ETF)", name: "KODEX 은행",
-        verdict: "🟢 매수 타점 (14,390원 +3.71%, 전일 고가 돌파)",
-        pros: "20일선(13,440원)·60일선(12,994원) 정배열 유지 속 오후 14,415원 경신하며 전일 고가(14,385원) 장악형 양봉 완성.",
-        cons: "단기 저항 돌파 직후여서 종가 기준 14,380~14,400원 안착 확인 필요.",
-        action: "① 14,150~14,250원 눌림목 및 종가 14,380원 안착 시 분할 매수 유효 ② 정배열 추세 보유",
-        source: "https://kr.investing.com/etfs/samsung-kodex-banks"
+        updated: "2026-11-25 07:53", group: "관심종목", name: "한화에어로스페이스",
+        verdict: "🟢 장전 최선호·눌림매수 (종가 612,000원 +6.43% · 10조 국방AIDC 촉매)",
+        pros: "창원 180MW급 국방 AI 데이터센터(1단계 10조 원, 군 소유통제·한화 수탁운용)와 미 해군 함정·K9 본토 사업 집중으로 장전 최강 모멘텀 및 미래에셋 목표가 1,150,000원 확보.",
+        cons: "대형 호재 보도로 시초가 과도한 갭상승 출발 시 장 초반 단기 차익실현(뉴스에 매도) 물량 출회 위험.",
+        action: "① 630,000원 이상 시초가 과열 갭상승 추격 금지 및 목표 익절가 730,000원 설정 ② 595,000원~605,000원 시초 갭 메우기·눌림 지지 확인 후 분할 진입 ③ 550,000원 이탈 시 손절 대응",
+        source: "https://m.segye.com/daumview/20261124518990"
       },
       {
-        updated: "2026-11-24 16:41", group: "관심종목 (섹터 ETF)", name: "KODEX 바이오",
-        verdict: "🔴 진입 금지 (7,085원 +3.13%, 섹터 최하위)",
-        pros: "7,000원 선 방어 후 오후 7,085원(고가 7,090원)으로 소폭 회복.",
-        cons: "알테오젠(-2.43%) 부진으로 8대 섹터 ETF 중 상승률 최하위(+3.13%) 및 20일선(7,687원) 아래 역배열 지속.",
-        action: "① 매수 진입 금지 ② 20일선(7,687원) 회복 전까지 포트폴리오 편입 보류",
-        source: "https://kr.investing.com/etfs/244580"
-      },
-      {
-        updated: "2026-11-24 16:41", group: "관심종목 (섹터 ETF)", name: "SOL 조선TOP3플러스",
-        verdict: "🔴 진입 금지 (16,915원 +6.12%, 역배열 반등)",
-        pros: "오후 상승폭 확대(고가 16,930원)로 전일 하락분(-4.84%)을 완전히 만회하며 17,000원 회복 시도.",
-        cons: "아직 20일선(17,843원)·60일선(19,656원) 아래 역배열 구간에 머무름.",
-        action: "① 신규 추격 매수 보류 ② 17,000원 안착 및 20일선(17,843원) 돌파 확인 후 접근",
-        source: "https://alphasquare.co.kr/home/stock-summary?code=466920"
-      },
-      {
-        updated: "2026-11-24 16:41", group: "관심종목 (섹터 ETF)", name: "KODEX 건설",
-        verdict: "🔴 진입 금지 (5,255원 +5.63%, 탄력 둔화)",
-        pros: "전일 급락(-6.48%, 4,975원) 이후 5,255원(고가 5,280원)으로 기술적 되돌림 진행.",
-        cons: "정오(5,275원) 대비 탄력 둔화 및 20일선(5,568원) 아래 역배열, 11/26 금통위 금리 인상 부담 상존.",
-        action: "① 매수 진입 금지 ② 20일선(5,568원) 회복 전까지 편입 제외 유지",
-        source: "https://www.newspim.com/news/view/20261123000978"
-      },
-      {
-        updated: "2026-11-24 16:41", group: "관심종목", name: "KB금융",
-        verdict: "🟢 1차 익절 200원 근접 (151,400원 +5.36%, 보유 14주 +4.4%)",
-        pros: "개장 저가 144,400원 지지 후 기관·연기금 매수로 151,800원(+5.64%) 터치. 20일선(138,500원) 정배열·PER 8.73배·배당 3.35% 견고(보유 14주·평단 145,000원 기준 +89,600원 수익).",
-        cons: "152,000~153,100원(전일 시가) 단기 매물대 직전 저항 소화 중. 기존 자사주(7,000억) 여력 소진으로 즉각 자사주 매수 유입은 제한.",
-        action: "① 152,000~153,000원 도달(또는 151,400~151,800원 마감 전 선제) 시 4주(30%) 1차 분할 익절 ② 잔여 10주 수익 보존 스탑 148,000원 상향 고정 ③ 2차 목표 160,000~162,000원(5주) / 종가 140,000원 이탈 7주 축소 · 138,000원 전량 손절",
-        source: "https://m.newspim.com/news/view/20261120000502"
+        updated: "2026-11-25 07:53", group: "관심종목", name: "레인보우로보틱스",
+        verdict: "🟡 단기과열·눌림대기 (종가 472,000원 +17.41% · 8일 연속 기관매수)",
+        pros: "기관 8거래일 연속 순매수(누적 21.49만 주)와 삼성 휴머노이드 기대감으로 전일 +17.41% 급등하며 코스닥 피지컬AI 대장주 수급 확인.",
+        cons: "전일 +17% 급등 이격 과열 상태에서 간밤 나스닥 -1.48% 하락 및 로봇 스타트업 투자 철회 소식이 겹쳐 장 초반 차익실현 변동성 주의.",
+        action: "① 480,000원 이상 시초가 추격 매수 엄금 및 목표 익절가 550,000원 ② 445,000원 부근 충분한 눌림목 지지 확인 시에만 소액 분할 접근 ③ 405,000원 이탈 시 추세 훼손으로 손절",
+        source: "https://m.newspim.com/news/view/20261124000898"
       }
     ];
 
@@ -787,18 +760,21 @@
     ];
 
     let state = {
-      budget: 2451691,
-      cash: 1470308,
+      budget: 10000000,
+      cash: 0,
       portfolio: [],
       watchlist: [],
       briefings: INITIAL_BRIEFINGS.map(x => ({ ...x })),
       briefingFilter: "ALL",
       briefingPriceMode: true,
       briefingStyle: "SWING",
+      marketScenario: "BOTH",
+      showScenarioGuide: true,
       briefingSortByScore: false,
       briefingOrder: [],
       briefingPins: [],
       tabOrder: DEFAULT_TAB_ORDER.slice(),
+      allocCalc: { age: 32, profile: "balanced", unit: "man", stock: 2000, bond: 300, cash: 1500, alt: 200, crypto: 300 },
       marketRegime: "강한 반등·순환매 장세 (양 시장 매수 사이드카 · 코스피 5,020선 회복 · 외인·기관 쌍끌이)",
       techScores: [],
       sectorEtfs: INITIAL_SECTOR_ETFS.map(x => ({ ...x })),
@@ -866,8 +842,10 @@
       state.tabOrder = Array.isArray(savedTabs) && savedTabs.length === DEFAULT_TAB_ORDER.length ? savedTabs : DEFAULT_TAB_ORDER.slice();
       state.briefingOrder = safeGet(STORAGE_KEYS.briefOrder, []);
       state.briefingPins = safeGet(STORAGE_KEYS.briefPins, []);
-      document.getElementById("sheetUrlInput").value = state.sheetUrl;
-      document.getElementById("openSheetLink").href = state.sheetUrl;
+      const savedAlloc = safeGet(STORAGE_KEYS.allocCalc, null);
+      if (savedAlloc && typeof savedAlloc === "object") {
+        state.allocCalc = { ...state.allocCalc, ...savedAlloc };
+      }
     }
 
     function saveLocal() {
@@ -907,25 +885,16 @@
     }
 
     function renderKpis() {
-      let stockVal = 0, stockCost = 0;
-      state.portfolio.forEach(p => {
-        const q = Number(p.qty) || 0, avg = Number(p.avgPrice) || 0, cur = Number(p.price) || avg;
-        const mult = p.currency === "USD" ? 1350 : 1;
-        stockVal += q * cur * mult;
-        stockCost += q * avg * mult;
-      });
-      const pnl = stockVal - stockCost;
-      const pct = stockCost > 0 ? (pnl / stockCost) * 100 : 0;
-      document.getElementById("kpiCount").textContent = `보유 ${state.portfolio.length} · 관심 ${state.watchlist.length}`;
-      document.getElementById("kpiSourceBadge").textContent = state.isLiveSynced ? "구글 시트 실시간 동기화됨" : "구글 시트 스냅샷 로드됨";
-      document.getElementById("kpiKrwVal").textContent = fmtMoney(stockVal, "KRW");
-      const pnlEl = document.getElementById("kpiKrwPnl");
-      pnlEl.textContent = `손익 ${pnl >= 0 ? "+" : ""}${fmtMoney(pnl, "KRW")} (${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%)`;
-      pnlEl.className = `mt-1 text-xs font-semibold ${pnl >= 0 ? "text-rose-400" : "text-sky-400"}`;
-      document.getElementById("kpiCashVal").textContent = fmtMoney(state.cash, "KRW");
-      document.getElementById("kpiBudgetText").textContent = `총 예산 ${fmtMoney(state.budget, "KRW")}`;
+      const wlCount = (state.watchlist || []).filter(w => !String(w.name || "").includes("KODEX") && !String(w.name || "").includes("TIGER")).length || state.watchlist.length;
+      document.getElementById("kpiCount").textContent = `관심 ${state.briefings.length || wlCount}종목`;
+      const regEl = document.getElementById("kpiRegimeShort");
+      if (regEl) {
+        const reg = String(state.marketRegime || "중립 · 탐색").split("(")[0].trim();
+        regEl.textContent = reg || "중립 · 탐색";
+      }
+      const wcEl = document.getElementById("kpiWatchCount");
+      if (wcEl) wcEl.textContent = `${wlCount}종목`;
     }
-
     function getOrderedBriefings() {
       const pins = new Set(state.briefingPins || []);
       const orderMap = new Map((state.briefingOrder || []).map((n, i) => [n, i]));
@@ -1023,7 +992,12 @@
       "KODEX 바이오": { score: 28, entry: "신규 진입 금지 (20일선 7,687원 회복 대기)" },
       "SOL 조선TOP3플러스": { score: 40, entry: "신규 진입 보류 (20일선 17,843원 돌파 대기)" },
       "KODEX 건설": { score: 24, entry: "신규 진입 금지 (20일선 5,568원 회복 대기)" },
-      "KB금융": { score: 86, entry: "148,000원 눌림 분할 (보유 14주 평단 145,000원)" }
+      "KB금융": { score: 86, entry: "148,000원 눌림 분할 (보유 14주 평단 145,000원)" },
+      "SK하이닉스": { score: 74, entry: "1,100,000원 시초 갭하락 눌림 지지 시 분할" },
+      "삼성SDI": { score: 82, entry: "430,000원 장중 눌림목 지지 확인 시 분할" },
+      "HD현대중공업": { score: 80, entry: "240,000원 눌림 분할 / 255,000원 돌파 추세" },
+      "한화에어로스페이스": { score: 88, entry: "595,000~605,000원 갭 메우기 눌림 분할" },
+      "레인보우로보틱스": { score: 66, entry: "445,000원 충분한 눌림 지지 확인 시 소액 진입" }
     };
 
     function getRefPriceForBriefing(b) {
@@ -1065,25 +1039,139 @@
       return Math.max(0, Math.min(100, Math.round(score)));
     }
 
-    function computeBriefingScore(b, style = state.briefingStyle) {
+    function computeBriefingScore(b, style = state.briefingStyle, scenario = state.marketScenario) {
       const base = computeSwingScore(b);
-      if (style === "SWING") return base;
       const text = `${b.verdict || ""} ${b.pros || ""} ${b.cons || ""}`;
+      let s = base;
       if (style === "DAY") {
-        let s = base;
-        if (/거래량|쌍끌이|급등|돌파|반등 1위|고가/.test(text)) s += 6;
-        if (/반도체|현대차|KB금융|삼성전자|2차전지/.test(b.name)) s += 5;
+        if (/거래량|쌍끌이|급등|돌파|반등 1위|고가|국방|순매수/.test(text)) s += 6;
+        if (/반도체|하이닉스|현대차|KB금융|삼성전자|삼성SDI|한화에어로|레인보우/.test(b.name)) s += 5;
         if (/음봉|둔화|소외|역행|마이너스|나홀로/.test(text)) s -= 12;
         if (/SOL 글로벌DRAM/.test(b.name)) s -= 10;
-        return Math.max(10, Math.min(98, Math.round(s)));
+      } else if (style === "CLOSE") {
+        if (/고가 마감|장악형 양봉|전일 고가|60일선|안착|1위|순매수|국방/.test(text)) s += 8;
+        if (/외국인|기관|연기금|쌍끌이/.test(text)) s += 4;
+        if (/음봉|시초가.*하회|탄력 둔화|위꼬리|차익 매물/.test(text)) s -= 14;
+        if (/나홀로|마이너스|최하위|신저가|역행/.test(text)) s -= 18;
       }
-      // CLOSE (종가베팅: 고가 마감 + 양봉 장악 + 외인·기관 수급 + 정배열 우선)
-      let s = base;
-      if (/고가 마감|장악형 양봉|전일 고가|60일선|안착|1위/.test(text)) s += 8;
-      if (/외국인|기관|연기금|쌍끌이/.test(text)) s += 4;
-      if (/음봉|시초가.*하회|탄력 둔화|위꼬리|차익 매물/.test(text)) s -= 14;
-      if (/나홀로|마이너스|최하위|신저가/.test(text)) s -= 18;
+      // Market scenario adjustment (BULL favors high-beta leaders; BEAR favors defensive/low-PER value)
+      if (scenario === "BULL") {
+        if (/SK하이닉스|한화에어로|삼성SDI|레인보우|현대차|반도체/.test(b.name)) s += 6;
+        if (/급등|돌파|순매수|모멘텀|AIDC/.test(text)) s += 4;
+        if (/역배열|역행/.test(text)) s -= 6;
+      } else if (scenario === "BEAR") {
+        if (/KB금융|HD현대중공업|은행|조선/.test(b.name)) s += 8;
+        if (/배당|저PER|방어|자사주|무풍지대|이익잉여금/.test(text)) s += 4;
+        if (/레인보우|알테오젠|삼성SDI|SK하이닉스/.test(b.name)) s -= 10;
+        if (/과열|역배열|역행|엔비디아|나스닥|고PER/.test(text)) s -= 7;
+      }
       return Math.max(8, Math.min(98, Math.round(s)));
+    }
+
+    function renderMarketScenarioPlaybook(scenario) {
+      const el = document.getElementById("marketScenarioPlaybook");
+      if (!el) return;
+      if (!state.showScenarioGuide) {
+        el.innerHTML = "";
+        return;
+      }
+      const bullCard = `
+        <div class="rounded-xl border border-emerald-500/35 bg-emerald-950/25 p-3">
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
+            <span class="text-xs font-extrabold text-emerald-300">📈 상승장 시나리오 (Risk-On · 추세 추종)</span>
+            <span class="rounded-full border border-emerald-400/40 bg-emerald-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-emerald-200">주식 70~85% · 현금 15~30%</span>
+          </div>
+          <ul class="mt-2 space-y-1 text-[11px] leading-relaxed text-slate-200">
+            <li><strong class="text-emerald-300">발동 조건:</strong> 코스피 20일선 상회 · 외인+기관 동반 순매수 · 주도 섹터 거래대금 쏠림</li>
+            <li><strong class="text-emerald-300">진입·비중:</strong> 대장주 5·10일선/VWAP 눌림목 2~3분할 진입 (종목당 20~25%) · 전고점 돌파 시 불타기 허용</li>
+            <li><strong class="text-emerald-300">청산·우선주:</strong> 3단계 분할 익절(+4% / +8% / +15% 트레일링) · 우선주 <span class="font-semibold text-white">한화에어로 · SK하이닉스 · 삼성SDI · 현대차 · 레인보우</span></li>
+          </ul>
+        </div>`;
+      const bearCard = `
+        <div class="rounded-xl border border-rose-500/35 bg-rose-950/25 p-3">
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
+            <span class="text-xs font-extrabold text-rose-300">📉 하락장 시나리오 (Risk-Off · 원금 방어)</span>
+            <span class="rounded-full border border-rose-400/40 bg-rose-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-200">주식 20~35% · 현금 65~80%</span>
+          </div>
+          <ul class="mt-2 space-y-1 text-[11px] leading-relaxed text-slate-200">
+            <li><strong class="text-rose-300">발동 조건:</strong> 코스피 20일선 이탈 · 미 나스닥/엔비디아 급락 · 외인 선물·현물 동반 매도</li>
+            <li><strong class="text-rose-300">진입·비중:</strong> 시초가 갭하락 투매 추격 금지 · 역배열/급등 과열주 관망 · 방어주만 소액 분할(5~10%)</li>
+            <li><strong class="text-rose-300">청산·방어주:</strong> 반등 시 +2~3% 빠른 칼익절 · -2.5~3.5% 기계적 손절 · 방어주 <span class="font-semibold text-white">KB금융 · HD현대중공업 · 현금 확보</span></li>
+          </ul>
+        </div>`;
+      if (scenario === "BULL") {
+        el.innerHTML = bullCard;
+      } else if (scenario === "BEAR") {
+        el.innerHTML = bearCard;
+      } else {
+        el.innerHTML = `<div class="grid gap-2.5 md:grid-cols-2">${bullCard}${bearCard}</div>`;
+      }
+    }
+
+    function buildBullBearScenarios(b, style, score) {
+      const { price, cur } = getRefPriceForBriefing(b);
+      const wl = (state.watchlist || []).find(w => w.name === b.name);
+      const isWeak = /🔴|진입금지|역배열|역행/.test(String(b.verdict || ""));
+      const isDefensive = /KB금융|HD현대중공업|은행|조선/.test(b.name || "");
+      const fmtP = v => v > 0 ? (cur === "USD" ? `$${roundTick(v, cur).toLocaleString()}` : `${roundTick(v, cur).toLocaleString()}원`) : "-";
+
+      const entryRef = (wl && wl.entryPrice > 0) ? wl.entryPrice : (price > 0 ? roundTick(price * 0.97, cur) : 0);
+      const tpRef = (wl && wl.tpPrice > 0) ? wl.tpPrice : (price > 0 ? roundTick(price * (style === "DAY" ? 1.032 : style === "CLOSE" ? 1.035 : 1.15), cur) : 0);
+      const slRef = (wl && wl.slPrice > 0) ? wl.slPrice : (price > 0 ? roundTick(price * 0.93, cur) : 0);
+
+      const bullBreak = price > 0 ? roundTick(price * (style === "DAY" ? 1.015 : 1.025), cur) : 0;
+      const bullPullback = price > 0 ? roundTick(Math.min(price * 0.985, entryRef > 0 && entryRef < price * 1.02 ? entryRef : price * 0.975), cur) : 0;
+      const bullTp1 = price > 0 ? roundTick(price * (style === "DAY" ? 1.025 : style === "CLOSE" ? 1.032 : 1.08), cur) : 0;
+      const bullTp2 = tpRef > bullTp1 ? tpRef : (price > 0 ? roundTick(price * 1.15, cur) : 0);
+      const bullWeight = isWeak ? "소액 5~10% (추세 전환 확인 후)" : (score >= 78 ? "적극 20~25% (2~3분할)" : "표준 10~15% (눌림 분할)");
+
+      const bearSupport = price > 0 ? roundTick(price * (isDefensive ? 0.965 : 0.935), cur) : 0;
+      const bearBounceTp = price > 0 ? roundTick(price * (isDefensive ? 1.025 : 1.015), cur) : 0;
+      const bearHardSl = price > 0 ? roundTick(Math.max(slRef * 0.98 || 0, price * (isDefensive ? 0.945 : 0.91)), cur) : 0;
+      const bearWeight = isDefensive ? "방어 분할 10~15% (배당·수주 지지)" : (isWeak ? "현금 100% 관망 (진입 금지)" : "축소 0~5% (투매 진정 후 소액)");
+
+      return {
+        bull: {
+          weight: bullWeight,
+          trigger: isWeak
+            ? `${fmtP(bullBreak)} 돌파·안착 + 외인 수급 전환 확인 시에만 진입`
+            : `${fmtP(bullPullback)} 눌림 지지 분할 매수 · ${fmtP(bullBreak)} 돌파 시 추세 홀딩`,
+          target: `1차 익절 ${fmtP(bullTp1)} (40%) → 2차 목표 ${fmtP(bullTp2)} (트레일링)`
+        },
+        bear: {
+          weight: bearWeight,
+          trigger: isDefensive
+            ? `지수 급락 시 ${fmtP(bearSupport)} 지지 방어 확인 후 저점 분할`
+            : `시초가 갭하락 추격 금지 · ${fmtP(bearSupport)} 바닥 지지 전 관망`,
+          target: `반등 시 ${fmtP(bearBounceTp)} 칼청산 · ${fmtP(bearHardSl)} 이탈 즉시 기계적 손절`
+        }
+      };
+    }
+
+    function renderBullBearScenarioHtml(b, style, score) {
+      const scenario = state.marketScenario || "BOTH";
+      const sc = buildBullBearScenarios(b, style, score);
+      const bullBox = `
+        <div class="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-1">
+            <span class="text-[11px] font-extrabold text-emerald-300">📈 상승장 시나리오</span>
+            <span class="rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold text-emerald-200">${escapeHtml(sc.bull.weight)}</span>
+          </div>
+          <p class="mt-1.5 text-[11px] leading-relaxed text-slate-200"><strong class="text-emerald-300">진입:</strong> ${highlightPriceTokens(escapeHtml(sc.bull.trigger))}</p>
+          <p class="mt-1 text-[11px] leading-relaxed text-slate-200"><strong class="text-emerald-300">목표:</strong> ${highlightPriceTokens(escapeHtml(sc.bull.target))}</p>
+        </div>`;
+      const bearBox = `
+        <div class="rounded-xl border border-rose-500/30 bg-rose-950/20 p-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-1">
+            <span class="text-[11px] font-extrabold text-rose-300">📉 하락장 시나리오</span>
+            <span class="rounded-md bg-rose-500/15 px-1.5 py-0.5 text-[10px] font-bold text-rose-200">${escapeHtml(sc.bear.weight)}</span>
+          </div>
+          <p class="mt-1.5 text-[11px] leading-relaxed text-slate-200"><strong class="text-rose-300">방어:</strong> ${highlightPriceTokens(escapeHtml(sc.bear.trigger))}</p>
+          <p class="mt-1 text-[11px] leading-relaxed text-slate-200"><strong class="text-rose-300">청산:</strong> ${highlightPriceTokens(escapeHtml(sc.bear.target))}</p>
+        </div>`;
+      if (scenario === "BULL") return bullBox;
+      if (scenario === "BEAR") return bearBox;
+      return `<div class="grid gap-2 sm:grid-cols-2">${bullBox}${bearBox}</div>`;
     }
 
     function getScoreBadge(score, style = state.briefingStyle) {
@@ -1229,10 +1317,13 @@
           `).join("")}</div>`
         : `<div class="mt-1 text-xs text-emerald-300">${escapeHtml(fallbackText || "")}</div>`;
 
+      const isBearCard = titleLabel.includes("하락장");
+      const wrapBorder = isBearCard ? "border-rose-500/35" : "border-emerald-500/25";
+      const titleCls = isBearCard ? "text-rose-300" : "text-emerald-300";
       return `
-        <div class="rounded-xl border border-emerald-500/25 bg-slate-950/90 p-2.5">
+        <div class="rounded-xl border ${wrapBorder} bg-slate-950/90 p-2.5">
           <div class="flex items-center justify-between gap-2">
-            <span class="text-[11px] font-bold text-emerald-300">${escapeHtml(titleLabel)}</span>
+            <span class="text-[11px] font-bold ${titleCls}">${escapeHtml(titleLabel)}</span>
             <span class="text-[10px] text-slate-500">높은 가격 → 낮은 가격</span>
           </div>
           ${hdrHtml}
@@ -1240,6 +1331,118 @@
           ${rowsHtml}
         </div>
       `;
+    }
+
+    function buildScenarioActionPlan(b, style, score, scenario) {
+      const { price, cur } = getRefPriceForBriefing(b);
+      const wl = (state.watchlist || []).find(w => w.name === b.name);
+      const fmtP = v => v > 0 ? (cur === "USD" ? `$${roundTick(v, cur).toLocaleString()}` : `${roundTick(v, cur).toLocaleString()}원`) : "-";
+      const isWeak = /🔴|진입금지|역배열|역행/.test(String(b.verdict || ""));
+      const isDefensive = /KB금융|HD현대중공업|은행|조선/.test(b.name || "");
+      const styleLbl = style === "DAY" ? "데이트레이딩" : style === "CLOSE" ? "종가베팅" : "스윙";
+
+      if (price <= 0) {
+        const { header, rows } = parseActionByPrice(b.action || "");
+        const entryInfo = resolveEntryPriceText(b, rows);
+        return {
+          title: `🎯 가격별 대응 포인트 (${styleLbl} · ${scenario === "BULL" ? "📈 상승장" : "📉 하락장"})`,
+          header, entryInfo, rows, fallback: b.action || ""
+        };
+      }
+
+      if (scenario === "BULL") {
+        // 상승장(Risk-On): 얕은 눌림 적극 진입 · 상단 목표 확장 · 추세 트레일링
+        const tp2Mult = style === "DAY" ? 1.045 : style === "CLOSE" ? 1.050 : 1.16;
+        const tp1Mult = style === "DAY" ? 1.024 : style === "CLOSE" ? 1.028 : 1.08;
+        const brkMult = style === "DAY" ? 1.012 : style === "CLOSE" ? 1.015 : 1.025;
+        const dipMult = style === "DAY" ? 0.990 : style === "CLOSE" ? 0.992 : 0.978;
+        const slMult  = style === "DAY" ? 0.982 : style === "CLOSE" ? 0.975 : 0.940;
+
+        const tp2P = roundTick(Math.max(price * tp2Mult, (wl && wl.tpPrice > 0 && style === "SWING") ? wl.tpPrice : 0), cur);
+        const tp1P = roundTick(price * tp1Mult, cur);
+        const brkP = roundTick(price * brkMult, cur);
+        const dipP = roundTick(price * dipMult, cur);
+        const slP  = roundTick(price * slMult, cur);
+
+        const rows = [
+          {
+            sortPrice: tp2P, tone: "emerald", tagText: `2차 목표 · ${fmtP(tp2P)}`,
+            clause: `상승장 추세 확장 목표가(${fmtP(tp2P)}) 도달 시 잔여 물량 트레일링 익절`
+          },
+          {
+            sortPrice: tp1P, tone: "emerald", tagText: `1차 익절 · ${fmtP(tp1P)}`,
+            clause: `${fmtP(tp1P)} 부근 1차 분할 익절(40%) 후 본전 스탑 상향`
+          },
+          {
+            sortPrice: brkP, tone: "sky", tagText: `돌파 추종 · ${fmtP(brkP)}`,
+            clause: isWeak
+              ? `${fmtP(brkP)} 거래량 동반 돌파·안착 확인 시에만 추세 전환 소액 진입`
+              : `${fmtP(brkP)} 돌파 안착 시 주도주 추세 홀딩 및 피라미딩 검토`
+          },
+          {
+            sortPrice: dipP, tone: "sky", tagText: `눌림 매수 · ${fmtP(dipP)}`,
+            clause: isWeak
+              ? `${fmtP(dipP)} 단기 지지 테스트 확인(역배열 종목은 성급한 선진입 주의)`
+              : `상승장 얕은 눌림(${fmtP(dipP)}) 지지 확인 시 1차 적극 분할 매수(20~25%)`
+          },
+          {
+            sortPrice: slP, tone: "rose", tagText: `추세 손절 · ${fmtP(slP)}`,
+            clause: `${fmtP(slP)} 이탈 시 상승 추세 훼손으로 판단해 기계적 손절`
+          }
+        ];
+        const entryInfo = isWeak
+          ? { isForbidden: false, text: `${fmtP(brkP)} 돌파 안착 시 소액 진입 (상승장 조건부)` }
+          : { isForbidden: false, text: `${fmtP(dipP)} 눌림 분할 / ${fmtP(brkP)} 돌파 추종 (상승장)` };
+        return {
+          title: `🎯 가격별 대응 포인트 (${styleLbl} · 📈 상승장 반영)`,
+          header: `상승장(Risk-On) 기준 · 목표 상향 + 얕은 눌림 적극 분할`,
+          entryInfo, rows, fallback: ""
+        };
+      }
+
+      // BEAR (하락장 Risk-Off): 추격 금지 · 깊은 지지선 방어 · 반등 칼익절 · 타이트 손절
+      const bounceMult = style === "DAY" ? 1.015 : style === "CLOSE" ? 1.018 : (isDefensive ? 1.030 : 1.020);
+      const guardMult  = 0.995;
+      const supMult    = style === "DAY" ? 0.978 : style === "CLOSE" ? 0.975 : (isDefensive ? 0.965 : 0.935);
+      const hardSlMult = style === "DAY" ? 0.985 : style === "CLOSE" ? 0.980 : (isDefensive ? 0.945 : 0.915);
+
+      const bounceP = roundTick(price * bounceMult, cur);
+      const guardP  = roundTick(price * guardMult, cur);
+      const supP    = roundTick(price * supMult, cur);
+      const hardSlP = roundTick(price * hardSlMult, cur);
+
+      const rows = [
+        {
+          sortPrice: bounceP, tone: "emerald", tagText: `반등 청산 · ${fmtP(bounceP)}`,
+          clause: `하락장 기술적 반등(${fmtP(bounceP)}) 출회 시 욕심내지 않고 빠른 칼익절·현금화`
+        },
+        {
+          sortPrice: guardP, tone: "amber", tagText: `비중 축소 · ${fmtP(guardP)}`,
+          clause: isDefensive
+            ? `현재가 부근(${fmtP(guardP)}) 변동성 방어 확인, 추격 매수 없이 보유분 리스크 관리`
+            : `${fmtP(guardP)} 부근 반등 시 보유 비중 축소 및 신규 매수 보류(현금 65~80% 유지)`
+        },
+        {
+          sortPrice: supP, tone: isDefensive ? "sky" : "slate", tagText: `방어 지지 · ${fmtP(supP)}`,
+          clause: isDefensive
+            ? `지수 급락 시 ${fmtP(supP)} 핵심 지지 방어 확인 후 방어주 소액 분할(10~15%)`
+            : `시초가 갭하락 투매 추격 금지 · ${fmtP(supP)} 바닥 지지 및 투매 진정 여부만 관찰`
+        },
+        {
+          sortPrice: hardSlP, tone: "rose", tagText: `칼손절 · ${fmtP(hardSlP)}`,
+          clause: `${fmtP(hardSlP)} 이탈 즉시 미련 없이 기계적 손절(하락장 물타기 절대 금지)`
+        }
+      ];
+      rows.sort((a, b) => b.sortPrice - a.sortPrice);
+
+      const entryInfo = isDefensive
+        ? { isForbidden: false, text: `${fmtP(supP)} 저점 지지 시 방어 소액 분할 (하락장)` }
+        : { isForbidden: true, text: `하락장 신규 진입 금지 (${fmtP(supP)} 투매 진정 대기)` };
+      return {
+        title: `🎯 가격별 대응 포인트 (${styleLbl} · 📉 하락장 방어)`,
+        header: `하락장(Risk-Off) 기준 · 반등 칼청산 + 손절폭 축소 + 현금 방어`,
+        entryInfo, rows, fallback: ""
+      };
     }
 
     function renderPriceActionHtml(b) {
@@ -1253,6 +1456,23 @@
       const box = document.getElementById("briefingCards");
       const pins = new Set(state.briefingPins || []);
       let ordered = getOrderedBriefings();
+
+      // Update market scenario buttons & playbook
+      const scenario = state.marketScenario || "BOTH";
+      document.querySelectorAll(".market-scenario-btn").forEach(btn => {
+        const on = btn.dataset.mscenario === scenario;
+        const onCls = scenario === "BULL"
+          ? "market-scenario-btn rounded-xl border border-emerald-400/60 bg-emerald-500/20 px-3 py-1.5 text-xs font-extrabold text-emerald-200"
+          : scenario === "BEAR"
+            ? "market-scenario-btn rounded-xl border border-rose-400/60 bg-rose-500/20 px-3 py-1.5 text-xs font-extrabold text-rose-200"
+            : "market-scenario-btn rounded-xl border border-indigo-400/60 bg-indigo-500/20 px-3 py-1.5 text-xs font-extrabold text-indigo-200";
+        btn.className = on ? onCls : "market-scenario-btn rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-300 hover:bg-slate-800";
+      });
+      const guideBtn = document.getElementById("toggleScenarioGuideBtn");
+      if (guideBtn) {
+        guideBtn.textContent = state.showScenarioGuide ? "📋 장세 가이드 접기" : "📋 장세 가이드 펼치기";
+      }
+      renderMarketScenarioPlaybook(scenario);
 
       // Update trading style buttons & banner
       const style = state.briefingStyle || "SWING";
@@ -1335,19 +1555,34 @@
           verdictText = dp.verdict;
           prosText = dp.pros;
           consText = dp.cons;
-          actionBlock = renderActionCardHtml("⚡ 가격별 대응 포인트 (데이트레이딩)", dp.header, dp.entryInfo, dp.rows, "");
+          if (scenario === "BULL" || scenario === "BEAR") {
+            const sp = buildScenarioActionPlan(b, style, score, scenario);
+            actionBlock = renderActionCardHtml(sp.title, sp.header, sp.entryInfo, sp.rows, sp.fallback);
+          } else {
+            actionBlock = renderActionCardHtml("⚡ 가격별 대응 포인트 (데이트레이딩)", dp.header, dp.entryInfo, dp.rows, "");
+          }
         } else if (style === "CLOSE") {
           const cp = buildClosingBetPlan(b, score);
           verdictText = cp.verdict;
           prosText = cp.pros;
           consText = cp.cons;
-          actionBlock = renderActionCardHtml("🌇 가격별 대응 포인트 (종가베팅)", cp.header, cp.entryInfo, cp.rows, "");
+          if (scenario === "BULL" || scenario === "BEAR") {
+            const sp = buildScenarioActionPlan(b, style, score, scenario);
+            actionBlock = renderActionCardHtml(sp.title, sp.header, sp.entryInfo, sp.rows, sp.fallback);
+          } else {
+            actionBlock = renderActionCardHtml("🌇 가격별 대응 포인트 (종가베팅)", cp.header, cp.entryInfo, cp.rows, "");
+          }
         } else {
-          actionBlock = state.briefingPriceMode
-            ? renderPriceActionHtml(b)
-            : `<div class="rounded-lg bg-slate-950/90 px-3 py-2 text-xs text-emerald-300">
-                 <strong class="text-emerald-200">대응 포인트:</strong> ${escapeHtml(b.action || "")}
-               </div>`;
+          if (state.briefingPriceMode && (scenario === "BULL" || scenario === "BEAR")) {
+            const sp = buildScenarioActionPlan(b, style, score, scenario);
+            actionBlock = renderActionCardHtml(sp.title, sp.header, sp.entryInfo, sp.rows, sp.fallback);
+          } else {
+            actionBlock = state.briefingPriceMode
+              ? renderPriceActionHtml(b)
+              : `<div class="rounded-lg bg-slate-950/90 px-3 py-2 text-xs text-emerald-300">
+                   <strong class="text-emerald-200">대응 포인트:</strong> ${escapeHtml(b.action || "")}
+                 </div>`;
+          }
         }
 
         return `
@@ -1376,6 +1611,7 @@
               </div>
             </div>
             <div class="space-y-2 border-t border-slate-800 pt-2.5">
+              ${renderBullBearScenarioHtml(b, style, score)}
               ${actionBlock}
               <div class="flex items-center justify-between text-[10px] text-slate-500">
                 <span>${escapeHtml(b.updated || "")}</span>
@@ -1458,136 +1694,42 @@
     }
 
     function renderPortfolio() {
-      const tbody = document.getElementById("portfolioTableBody");
-      const mobBox = document.getElementById("portfolioMobileCards");
-      if (!state.portfolio.length) {
-        tbody.innerHTML = `<tr><td colspan="8" class="py-6 text-center text-slate-400">보유종목이 없습니다.</td></tr>`;
-        mobBox.innerHTML = `<div class="rounded-xl border border-slate-800 p-4 text-center text-xs text-slate-400">보유종목이 없습니다.</div>`;
-      } else {
-        tbody.innerHTML = state.portfolio.map(item => {
-          const q = Number(item.qty) || 0, avg = Number(item.avgPrice) || 0, cur = Number(item.price) || avg;
-          const pct = avg > 0 ? ((cur - avg) / avg) * 100 : 0;
-          const pctCls = pct > 0 ? "text-rose-400" : pct < 0 ? "text-sky-400" : "text-slate-400";
-          const reb = Number(item.rebalanceQty) || 0;
-          const rebHtml = reb > 0 ? `<span class="rounded bg-rose-500/20 px-1.5 py-0.5 text-[11px] font-bold text-rose-300">+${reb}주</span>` : reb < 0 ? `<span class="rounded bg-sky-500/20 px-1.5 py-0.5 text-[11px] font-bold text-sky-300">${reb}주</span>` : `<span class="text-slate-500">유지</span>`;
-          return `
-            <tr class="hover:bg-slate-800/40">
-              <td class="py-2.5 pr-3"><div class="font-semibold text-white">${escapeHtml(item.name)}</div><div class="text-[11px] text-slate-400">${escapeHtml(item.sector || "")}</div></td>
-              <td class="px-2 py-2.5 text-slate-400">${escapeHtml(item.symbol)}</td>
-              <td class="px-2 py-2.5 text-right">${q.toLocaleString()}주</td>
-              <td class="px-2 py-2.5 text-right text-slate-300">${fmtMoney(avg, item.currency)}</td>
-              <td class="px-2 py-2.5 text-right font-semibold text-white">${fmtMoney(cur, item.currency)}</td>
-              <td class="px-2 py-2.5 text-right font-bold ${pctCls}">${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%</td>
-              <td class="px-2 py-2.5 text-right">${rebHtml}</td>
-              <td class="py-2.5 pl-2 text-right">
-                <button type="button" data-edit="${escapeHtml(item.id)}" class="edit-stock-btn mr-1 text-[11px] font-semibold text-sky-400">수정</button>
-                <button type="button" data-del="${escapeHtml(item.id)}" class="del-stock-btn text-[11px] font-semibold text-rose-400">삭제</button>
-              </td>
-            </tr>`;
-        }).join("");
-
-        mobBox.innerHTML = state.portfolio.map(item => {
-          const q = Number(item.qty) || 0, avg = Number(item.avgPrice) || 0, cur = Number(item.price) || avg;
-          const pct = avg > 0 ? ((cur - avg) / avg) * 100 : 0;
-          const pctCls = pct > 0 ? "text-rose-400" : pct < 0 ? "text-sky-400" : "text-slate-400";
-          return `
-            <div class="sub-card rounded-xl p-3">
-              <div class="flex items-start justify-between gap-2">
-                <div><div class="text-sm font-bold text-white">${escapeHtml(item.name)}</div><div class="text-[11px] text-slate-400">${escapeHtml(item.symbol)} · ${q.toLocaleString()}주</div></div>
-                <div class="text-right"><div class="text-sm font-extrabold text-white">${fmtMoney(cur, item.currency)}</div><div class="text-xs font-bold ${pctCls}">${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%</div></div>
-              </div>
-              <div class="mt-2 flex items-center justify-between border-t border-slate-800 pt-2 text-[11px] text-slate-400">
-                <span>평단 ${fmtMoney(avg, item.currency)}</span>
-                <div class="flex gap-2">
-                  <button type="button" data-edit="${escapeHtml(item.id)}" class="edit-stock-btn font-semibold text-sky-400">수정</button>
-                  <button type="button" data-del="${escapeHtml(item.id)}" class="del-stock-btn font-semibold text-rose-400">삭제</button>
-                </div>
-              </div>
-            </div>`;
-        }).join("");
-      }
-
-      document.querySelectorAll(".edit-stock-btn").forEach(btn => btn.addEventListener("click", () => openStockModal(btn.dataset.edit)));
-      document.querySelectorAll(".del-stock-btn").forEach(btn => btn.addEventListener("click", () => {
-        state.portfolio = state.portfolio.filter(x => x.id !== btn.dataset.del);
-        saveLocal(); renderAllUI(); showToast("종목을 삭제했습니다.");
-      }));
-
-      renderAllocationChart();
-      renderWatchlist();
-    }
-
-    function renderAllocationChart() {
-      const ctx = document.getElementById("allocationChart");
-      if (!ctx || typeof Chart === "undefined") return;
-      const labels = [], data = [];
-      state.portfolio.forEach(p => {
-        const val = (Number(p.qty) || 0) * (Number(p.price) || Number(p.avgPrice) || 0) * (p.currency === "USD" ? 1350 : 1);
-        if (val > 0) { labels.push(p.name); data.push(Math.round(val)); }
-      });
-      if (state.cash > 0) { labels.push("가용 현금"); data.push(Math.round(state.cash)); }
-      if (allocationChartInstance) allocationChartInstance.destroy();
-      allocationChartInstance = new Chart(ctx, {
-        type: "doughnut",
-        data: { labels, datasets: [{ data, backgroundColor: ["#38bdf8", "#a855f7", "#34d399", "#fbbf24", "#64748b", "#fb7185"], borderColor: "#0f172a", borderWidth: 2 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: "64%", plugins: { legend: { position: "bottom", labels: { color: "#cbd5e1", font: { size: 11 }, boxWidth: 10 } } } }
-      });
-    }
-
-    function renderWatchlist() {
-      const box = document.getElementById("watchlistCards");
-      box.innerHTML = state.watchlist.map(w => {
-        const isBuy = (w.status || "").includes("진입");
-        const cur = w.symbol.startsWith("KRX:") ? "KRW" : "USD";
+      const wlBox = document.getElementById("watchlistCards");
+      if (!wlBox) return;
+      const list = (state.watchlist || []).filter(w => !String(w.name || "").includes("KODEX") && !String(w.name || "").includes("TIGER"));
+      wlBox.innerHTML = list.map(w => {
+        const rr = w.entryPrice > w.stopPrice && w.targetPrice > w.entryPrice
+          ? ((w.targetPrice - w.entryPrice) / (w.entryPrice - w.stopPrice)).toFixed(2)
+          : "-";
         return `
-          <div class="sub-card rounded-xl p-3 flex flex-col justify-between gap-2 ${isBuy ? "border-emerald-500/45 ring-1 ring-emerald-500/20" : ""}">
-            <div class="flex items-start justify-between gap-2">
+          <div class="rounded-xl border border-slate-800/90 bg-slate-950/65 p-3.5 space-y-2">
+            <div class="flex items-center justify-between gap-2">
               <div>
-                <div class="text-[10px] text-slate-400">${escapeHtml(w.sector)}</div>
-                <div class="text-sm font-bold text-white">${escapeHtml(w.name)}</div>
+                <div class="text-sm font-extrabold text-white">${escapeHtml(w.name)}</div>
+                <div class="text-[11px] text-slate-400">${escapeHtml(w.sector || "관심종목")} · ${escapeHtml(w.symbol)}</div>
               </div>
-              <span class="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-bold text-slate-200">${escapeHtml(w.status)}</span>
+              <span class="rounded-full border border-sky-500/35 bg-sky-500/15 px-2.5 py-0.5 text-[11px] font-bold text-sky-300">R:R ${rr}:1</span>
             </div>
-            <div class="grid grid-cols-3 gap-1.5 rounded-lg bg-slate-950/90 p-2 text-center text-[11px]">
-              <div><div class="text-[10px] text-slate-500">현재가</div><div class="font-bold text-white">${fmtMoney(w.price, cur)}</div></div>
-              <div><div class="text-[10px] text-slate-500">목표매수</div><div class="font-bold text-sky-300">${fmtMoney(w.entryPrice, cur)}</div></div>
-              <div><div class="text-[10px] text-slate-500">손절 / 익절</div><div class="font-bold text-emerald-300">${w.rr ? Number(w.rr).toFixed(1) + ":1" : "-"}</div></div>
+            <div class="grid grid-cols-3 gap-1.5 rounded-lg bg-slate-900/80 p-2 text-center text-[11px]">
+              <div><div class="text-[10px] text-slate-400">목표 매수가</div><div class="mt-0.5 font-bold text-sky-300">${w.entryPrice ? fmtMoney(w.entryPrice, "KRW") : "-"}</div></div>
+              <div><div class="text-[10px] text-slate-400">목표 익절가</div><div class="mt-0.5 font-bold text-emerald-300">${w.targetPrice ? fmtMoney(w.targetPrice, "KRW") : "-"}</div></div>
+              <div><div class="text-[10px] text-slate-400">손절 기준</div><div class="mt-0.5 font-bold text-rose-400">${w.stopPrice ? fmtMoney(w.stopPrice, "KRW") : "-"}</div></div>
             </div>
-            <div class="text-[11px] text-slate-400">${escapeHtml(w.idea || "")}</div>
           </div>`;
       }).join("");
     }
+    function renderAllocationChart() {}
 
     function populateSelects() {
       const stocks = allTrackedStocks();
-      ["chartTickerSelect", "smcTickerSelect", "memoTickerSelect"].forEach(id => {
-        const sel = document.getElementById(id);
+      const sel = document.getElementById("smcTickerSelect");
+      if (sel) {
         const prev = sel.value;
         sel.innerHTML = stocks.map(s => `<option value="${escapeHtml(s.symbol)}">${escapeHtml(s.name)} (${escapeHtml(s.symbol)})</option>`).join("");
         if (prev && stocks.some(s => s.symbol === prev)) sel.value = prev;
         else if (stocks.some(s => s.symbol === "KRX:105560")) sel.value = "KRX:105560";
-      });
-      renderDisclosureLinks();
-      loadSelectedMemo();
+      }
       autofillSmcFromStock();
-    }
-
-    function renderTradingViewChart() {
-      const box = document.getElementById("tvChartContainer");
-      const sym = document.getElementById("chartTickerSelect").value || state.selectedChartSymbol;
-      const interval = document.getElementById("chartIntervalSelect").value || state.selectedInterval;
-      box.innerHTML = "";
-      const wrap = document.createElement("div");
-      wrap.className = "tradingview-widget-container h-full w-full";
-      const s = document.createElement("script");
-      s.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-      s.async = true;
-      s.innerHTML = JSON.stringify({
-        autosize: true, symbol: sym, interval, timezone: "Asia/Seoul", theme: "dark", style: "1", locale: "kr",
-        allow_symbol_change: true, studies: ["STD;RSI", "STD;SMA", "STD;Bollinger_Bands"], support_host: "https://www.tradingview.com"
-      });
-      wrap.appendChild(s);
-      box.appendChild(wrap);
     }
 
     function toYahooCandidates(rawSym) {
@@ -1865,86 +2007,320 @@
       `).join("");
     }
 
-    async function fetchLiveNews() {
-      const queries = ["삼성전자 OR 현대차 OR NAVER OR KB금융 주식", "알테오젠 OR 코스피 OR 반도체 ETF 주식"];
-      const statusEl = document.getElementById("kpiNewsStatus");
-      statusEl.textContent = "뉴스 수집 중...";
-      const articles = [];
-      for (const q of queries) {
-        const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=ko&gl=KR&ceid=KR:ko`;
-        let xml = "";
-        for (const px of [
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(rss)}`,
-          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rss)}`
-        ]) {
-          try { const r = await fetch(px); if (r.ok) { xml = await r.text(); break; } } catch {}
+    let allocCompareChartInst = null;
+    let allocTargetChartInst = null;
+
+    const ALLOC_ASSETS = [
+      { key: "stock", label: "국내·해외 주식 / ETF", shortLabel: "주식/ETF", riskType: "risk", color: "#38bdf8", inputId: "allocAmtStock" },
+      { key: "bond", label: "채권 / 채권 ETF", shortLabel: "채권", riskType: "safe", color: "#34d399", inputId: "allocAmtBond" },
+      { key: "cash", label: "현금 / 예·적금 / CMA", shortLabel: "현금/예금", riskType: "safe", color: "#94a3b8", inputId: "allocAmtCash" },
+      { key: "alt", label: "금 / 원자재 / 리츠", shortLabel: "금/대체", riskType: "risk", color: "#fbbf24", inputId: "allocAmtAlt" },
+      { key: "crypto", label: "코인 / 고위험 자산", shortLabel: "코인/알파", riskType: "risk", color: "#a78bfa", inputId: "allocAmtCrypto" }
+    ];
+
+    function formatKoreanMoney(won) {
+      const abs = Math.abs(Math.round(won));
+      const sign = won < 0 ? "-" : "";
+      if (abs >= 100000000) {
+        const eok = Math.floor(abs / 100000000);
+        const man = Math.round((abs % 100000000) / 10000);
+        return sign + eok.toLocaleString("ko-KR") + "억" + (man > 0 ? " " + man.toLocaleString("ko-KR") + "만원" : "원");
+      }
+      if (abs >= 10000) {
+        return sign + Math.round(abs / 10000).toLocaleString("ko-KR") + "만원";
+      }
+      return sign + abs.toLocaleString("ko-KR") + "원";
+    }
+
+    function computeIdealAllocation(age, profile) {
+      const clampedAge = Math.max(18, Math.min(85, Number(age) || 32));
+      const base = profile === "conservative" ? 100 : profile === "aggressive" ? 120 : 110;
+      const riskTarget = Math.max(20, Math.min(85, Math.round(base - clampedAge)));
+      const safeTarget = 100 - riskTarget;
+
+      const cryptoCap = profile === "conservative" ? 3 : profile === "aggressive" ? 10 : 6;
+      const crypto = Math.min(cryptoCap, Math.max(0, Math.round(riskTarget * 0.08)));
+      const alt = Math.min(15, Math.max(5, Math.round(riskTarget * 0.14)));
+      const stock = Math.max(10, riskTarget - alt - crypto);
+
+      const cashMin = clampedAge >= 60 ? 20 : 10;
+      const bond = Math.max(5, Math.round(safeTarget * 0.60));
+      let cash = safeTarget - bond;
+      let adjBond = bond;
+      if (cash < cashMin) {
+        cash = cashMin;
+        adjBond = Math.max(0, safeTarget - cash);
+      }
+
+      return {
+        age: clampedAge,
+        base,
+        riskTarget,
+        safeTarget,
+        targets: { stock, bond: adjBond, cash, alt, crypto }
+      };
+    }
+
+    function syncAllocInputsFromState() {
+      const a = state.allocCalc;
+      document.getElementById("allocAgeInput").value = a.age;
+      document.getElementById("allocAgeRange").value = a.age;
+      ALLOC_ASSETS.forEach(item => {
+        const el = document.getElementById(item.inputId);
+        if (el) el.value = a[item.key];
+      });
+      document.querySelectorAll(".alloc-profile-btn").forEach(btn => {
+        const on = btn.dataset.allocProfile === a.profile;
+        btn.className = on
+          ? "alloc-profile-btn rounded-xl border border-sky-500/60 bg-sky-500/20 px-2 py-2 text-center transition"
+          : "alloc-profile-btn rounded-xl border border-slate-700 bg-slate-900 px-2 py-2 text-center transition hover:bg-slate-800";
+      });
+      document.querySelectorAll(".alloc-unit-btn").forEach(btn => {
+        const on = btn.dataset.allocUnit === a.unit;
+        btn.className = on
+          ? "alloc-unit-btn rounded-lg bg-sky-500 px-2.5 py-1 text-[11px] font-bold text-slate-950"
+          : "alloc-unit-btn rounded-lg bg-slate-800 px-2.5 py-1 text-[11px] font-semibold text-slate-300 hover:bg-slate-700";
+      });
+      document.querySelectorAll(".alloc-unit-label").forEach(sp => {
+        sp.textContent = a.unit === "man" ? "만원" : "원";
+      });
+    }
+
+    function renderAllocCalc() {
+      if (!document.getElementById("allocAgeInput")) return;
+      syncAllocInputsFromState();
+      const a = state.allocCalc;
+      const mult = a.unit === "man" ? 10000 : 1;
+      const ideal = computeIdealAllocation(a.age, a.profile);
+
+      const amountsWon = {};
+      let totalWon = 0;
+      ALLOC_ASSETS.forEach(item => {
+        const val = Math.max(0, Number(a[item.key]) || 0) * mult;
+        amountsWon[item.key] = val;
+        totalWon += val;
+      });
+
+      document.getElementById("allocTotalDisplay").textContent = `총 자산: ${formatKoreanMoney(totalWon)}`;
+      const profileName = a.profile === "conservative" ? "안정형 (100 - 나이)" : a.profile === "aggressive" ? "공격형 (120 - 나이)" : "균형형 (110 - 나이)";
+      document.getElementById("allocRuleSummary").innerHTML = `만 <strong>${ideal.age}세</strong> · <strong>${profileName}</strong> 기준: <span class="font-bold text-sky-300">성장·위험자산 ${ideal.riskTarget}%</span> (주식 ${ideal.targets.stock}% · 금/대체 ${ideal.targets.alt}% · 코인 ${ideal.targets.crypto}%) / <span class="font-bold text-emerald-300">안전자산 ${ideal.safeTarget}%</span> (채권 ${ideal.targets.bond}% · 현금 ${ideal.targets.cash}%) 배분을 권장합니다.`;
+      document.getElementById("allocTargetBadge").textContent = `${ideal.age}세 · ${profileName}`;
+
+      let currentRiskWon = amountsWon.stock + amountsWon.alt + amountsWon.crypto;
+      let currentSafeWon = amountsWon.bond + amountsWon.cash;
+      const curRiskPct = totalWon > 0 ? (currentRiskWon / totalWon) * 100 : 0;
+      const curSafePct = totalWon > 0 ? (currentSafeWon / totalWon) * 100 : 0;
+
+      document.getElementById("allocCurrentSplit").textContent = totalWon > 0
+        ? `위험 ${curRiskPct.toFixed(1)}% : 안전 ${curSafePct.toFixed(1)}%`
+        : "금액 입력 필요";
+      document.getElementById("allocTargetSplit").textContent = `권장 기준: 위험 ${ideal.riskTarget}% : 안전 ${ideal.safeTarget}%`;
+
+      const rows = ALLOC_ASSETS.map(item => {
+        const curWon = amountsWon[item.key];
+        const curPct = totalWon > 0 ? (curWon / totalWon) * 100 : 0;
+        const targetPct = ideal.targets[item.key];
+        const targetWon = totalWon * (targetPct / 100);
+        const diffPct = curPct - targetPct;
+        const diffWon = targetWon - curWon; // positive = need to buy more
+        let status = "적정";
+        let statusType = "ok";
+        if (totalWon === 0) {
+          status = "미입력";
+          statusType = "none";
+        } else if (diffPct > 3) {
+          status = "기준보다 높음";
+          statusType = "high";
+        } else if (diffPct < -3) {
+          status = "기준보다 낮음";
+          statusType = "low";
         }
-        if (xml) {
-          const doc = new DOMParser().parseFromString(xml, "text/xml");
-          doc.querySelectorAll("item").forEach(it => {
-            articles.push({
-              title: it.querySelector("title")?.textContent || "",
-              link: it.querySelector("link")?.textContent || "#",
-              pubDate: it.querySelector("pubDate")?.textContent || "",
-              source: it.querySelector("source")?.textContent || "Google News"
-            });
+        return { ...item, curWon, curPct, targetPct, targetWon, diffPct, diffWon, status, statusType };
+      });
+
+      // Balance Score (0~100): 100 minus sum of absolute deviations / 1.5
+      const totalAbsDev = rows.reduce((acc, r) => acc + Math.abs(r.diffPct), 0);
+      const score = totalWon > 0 ? Math.max(0, Math.min(100, Math.round(100 - totalAbsDev * 0.85))) : 0;
+      const scoreEl = document.getElementById("allocBalanceScore");
+      const gradeEl = document.getElementById("allocBalanceGrade");
+      if (totalWon === 0) {
+        scoreEl.textContent = "-";
+        gradeEl.textContent = "자산 금액을 입력해 주세요";
+      } else {
+        scoreEl.textContent = `${score}점`;
+        scoreEl.className = "mt-1 text-2xl font-extrabold " + (score >= 80 ? "text-emerald-300" : score >= 55 ? "text-amber-300" : "text-rose-400");
+        gradeEl.textContent = score >= 85 ? "🟢 매우 이상적인 균형" : score >= 70 ? "🟡 양호 (소폭 리밸런싱 권장)" : score >= 50 ? "🟠 편중 주의 (비중 조정 필요)" : "🔴 쏠림 심화 (적극 리밸런싱 권장)";
+      }
+      const kpiScoreEl = document.getElementById("kpiAllocScore");
+      const kpiHintEl = document.getElementById("kpiAllocHint");
+      if (kpiScoreEl && kpiHintEl) {
+        kpiScoreEl.textContent = totalWon > 0 ? `${score}점` : "-";
+        kpiHintEl.textContent = totalWon > 0 ? `${ideal.age}세 기준 · 총 ${formatKoreanMoney(totalWon)}` : "자산배분 계산기 연동";
+      }
+
+      const overItems = rows.filter(r => r.statusType === "high").sort((x, y) => y.diffPct - x.diffPct);
+      const underItems = rows.filter(r => r.statusType === "low").sort((x, y) => x.diffPct - y.diffPct);
+
+      document.getElementById("allocOverList").textContent = overItems.length
+        ? overItems.map(r => `${r.shortLabel}(+${r.diffPct.toFixed(1)}%p)`).join(", ")
+        : (totalWon > 0 ? "없음 (적정)" : "-");
+      document.getElementById("allocUnderList").textContent = underItems.length
+        ? underItems.map(r => `${r.shortLabel}(${r.diffPct.toFixed(1)}%p)`).join(", ")
+        : (totalWon > 0 ? "없음 (적정)" : "-");
+
+      // Diagnosis summary banner
+      const diagBanner = document.getElementById("allocDiagnosisBanner");
+      if (totalWon === 0) {
+        diagBanner.innerHTML = `💡 위 입력란에 보유 중인 자산 금액을 입력하거나 <strong>'내 보유종목·현금 불러오기'</strong>를 누르면 어느 자산의 비중이 기준보다 높고 낮은지 자동으로 진단해 드립니다.`;
+      } else if (!overItems.length && !underItems.length) {
+        diagBanner.innerHTML = `✅ <strong>훌륭한 포트폴리오 균형입니다!</strong> 모든 자산군이 만 ${ideal.age}세(${profileName}) 권장 기준의 ±3%p 오차 범위 내에 잘 맞춰져 있습니다. 분기 1회 정기 리밸런싱만 유지하세요.`;
+      } else {
+        const overTxt = overItems.length
+          ? `<span class="font-bold text-rose-300">${overItems.map(r => `${r.shortLabel} (+${r.diffPct.toFixed(1)}%p)`).join(", ")}</span> 비중이 기준보다 높고`
+          : `과도하게 높은 자산은 없으며`;
+        const underTxt = underItems.length
+          ? `<span class="font-bold text-sky-300">${underItems.map(r => `${r.shortLabel} (${r.diffPct.toFixed(1)}%p)`).join(", ")}</span> 비중이 기준보다 낮습니다.`
+          : `부족한 자산은 없습니다.`;
+        const topOver = overItems[0];
+        const topUnder = underItems[0];
+        const tip = topOver && topUnder
+          ? ` 우선 <strong>${topOver.shortLabel}</strong>의 초과분(${formatKoreanMoney(Math.abs(topOver.diffWon))}) 중 일부를 <strong>${topUnder.shortLabel}</strong>(${formatKoreanMoney(topUnder.diffWon)} 부족)으로 분할 이동하면 균형 점수가 크게 개선됩니다.`
+          : "";
+        diagBanner.innerHTML = `🔍 <strong>AI 배분 진단:</strong> 현재 ${overTxt}, ${underTxt}${tip}`;
+      }
+
+      // Render detail rows
+      const detailContainer = document.getElementById("allocDetailRows");
+      detailContainer.innerHTML = rows.map(r => {
+        const badgeCls = r.statusType === "high"
+          ? "border-rose-500/40 bg-rose-500/15 text-rose-300"
+          : r.statusType === "low"
+            ? "border-sky-500/40 bg-sky-500/15 text-sky-300"
+            : r.statusType === "ok"
+              ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300"
+              : "border-slate-700 bg-slate-800 text-slate-400";
+        const badgeIcon = r.statusType === "high" ? "🔺 높음" : r.statusType === "low" ? "🔻 낮음" : r.statusType === "ok" ? "✅ 적정" : "-";
+        const actionText = r.statusType === "high"
+          ? `<span class="font-bold text-rose-300">${formatKoreanMoney(Math.abs(r.diffWon))} 축소 권장</span>`
+          : r.statusType === "low"
+            ? `<span class="font-bold text-sky-300">+${formatKoreanMoney(r.diffWon)} 추가 확대 권장</span>`
+            : r.statusType === "ok"
+              ? `<span class="font-semibold text-emerald-300">현재 비중 유지</span>`
+              : `<span class="text-slate-500">-</span>`;
+        const diffLabel = totalWon > 0 ? `${r.diffPct >= 0 ? "+" : ""}${r.diffPct.toFixed(1)}%p` : "-";
+        const curBarW = Math.min(100, Math.max(0, r.curPct)).toFixed(1);
+        const targetLeft = Math.min(98, Math.max(1, r.targetPct)).toFixed(1);
+        return `
+          <div class="rounded-xl border border-slate-800/90 bg-slate-950/65 p-3.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="h-2.5 w-2.5 rounded-full" style="background:${r.color}"></span>
+                <span class="text-xs font-extrabold text-white">${r.label}</span>
+                <span class="rounded-full border px-2 py-0.5 text-[10px] font-bold ${badgeCls}">${badgeIcon} (${diffLabel})</span>
+              </div>
+              <div class="text-xs">${actionText}</div>
+            </div>
+            <div class="mt-2 grid grid-cols-2 gap-2 text-[11px] sm:grid-cols-4">
+              <div><span class="text-slate-400">현재 금액:</span> <strong class="text-slate-100">${formatKoreanMoney(r.curWon)}</strong></div>
+              <div><span class="text-slate-400">현재 비중:</span> <strong class="text-white">${r.curPct.toFixed(1)}%</strong></div>
+              <div><span class="text-slate-400">이상적 기준:</span> <strong class="text-sky-300">${r.targetPct}%</strong></div>
+              <div><span class="text-slate-400">목표 금액:</span> <strong class="text-emerald-300">${formatKoreanMoney(r.targetWon)}</strong></div>
+            </div>
+            <div class="relative mt-2.5 h-2.5 w-full overflow-hidden rounded-full bg-slate-800">
+              <div class="h-full rounded-full transition-all duration-300" style="width:${curBarW}%; background:${r.color}; opacity:0.85;"></div>
+              <div class="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_6px_#fff]" style="left:${targetLeft}%;" title="이상적 기준 ${r.targetPct}%"></div>
+            </div>
+            <div class="mt-1 flex justify-between text-[10px] text-slate-500">
+              <span>0%</span>
+              <span>흰색 세로선 = 이상적 기준 (${r.targetPct}%)</span>
+              <span>100%</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // Update Charts (only when panel is visible or canvas exists)
+      if (typeof Chart !== "undefined") {
+        const cmpCtx = document.getElementById("allocCompareChart");
+        if (cmpCtx) {
+          if (allocCompareChartInst) allocCompareChartInst.destroy();
+          allocCompareChartInst = new Chart(cmpCtx, {
+            type: "bar",
+            data: {
+              labels: rows.map(r => r.shortLabel),
+              datasets: [
+                {
+                  label: "현재 비중 (%)",
+                  data: rows.map(r => Number(r.curPct.toFixed(1))),
+                  backgroundColor: "rgba(56, 189, 248, 0.78)",
+                  borderRadius: 6
+                },
+                {
+                  label: "이상적 기준 (%)",
+                  data: rows.map(r => r.targetPct),
+                  backgroundColor: "rgba(52, 211, 153, 0.72)",
+                  borderRadius: 6
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { labels: { color: "#cbd5e1", font: { size: 11 } } }
+              },
+              scales: {
+                x: { ticks: { color: "#cbd5e1", font: { size: 11 } }, grid: { display: false } },
+                y: { beginAtZero: true, max: 100, ticks: { color: "#94a3b8", callback: v => v + "%" }, grid: { color: "rgba(51,65,85,0.4)" } }
+              }
+            }
+          });
+        }
+
+        const tgtCtx = document.getElementById("allocTargetChart");
+        if (tgtCtx) {
+          if (allocTargetChartInst) allocTargetChartInst.destroy();
+          allocTargetChartInst = new Chart(tgtCtx, {
+            type: "doughnut",
+            data: {
+              labels: rows.map(r => `${r.shortLabel} (${r.targetPct}%)`),
+              datasets: [{
+                data: rows.map(r => r.targetPct),
+                backgroundColor: rows.map(r => r.color),
+                borderColor: "#0f172a",
+                borderWidth: 2
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: "60%",
+              plugins: {
+                legend: { position: "bottom", labels: { color: "#cbd5e1", boxWidth: 12, font: { size: 11 } } }
+              }
+            }
           });
         }
       }
-      state.newsArticles = articles.slice(0, 24);
-      document.getElementById("kpiNewsCount").textContent = `${state.newsArticles.length}건`;
-      statusEl.textContent = state.newsArticles.length ? "실시간 RSS 수집 완료" : "일시적 RSS 지연";
-      renderNews();
     }
 
-    function renderNews() {
-      const pills = document.getElementById("newsTickerPills");
-      const filters = ["ALL", "삼성전자", "KB금융", "현대차", "NAVER", "알테오젠", "반도체"];
-      pills.innerHTML = filters.map(f => `
-        <button type="button" data-nf="${f}" class="nf-btn rounded-full px-3 py-1 text-xs font-semibold ${state.selectedNewsFilter === f ? "bg-sky-500 text-slate-950 font-bold" : "bg-slate-800 text-slate-300"}">${f === "ALL" ? "전체" : f}</button>
-      `).join("");
-      pills.querySelectorAll(".nf-btn").forEach(b => b.addEventListener("click", () => { state.selectedNewsFilter = b.dataset.nf; renderNews(); }));
-
-      const q = (document.getElementById("newsSearchInput").value || "").toLowerCase();
-      const filtered = state.newsArticles.filter(a => {
-        const okF = state.selectedNewsFilter === "ALL" || a.title.includes(state.selectedNewsFilter);
-        const okQ = !q || a.title.toLowerCase().includes(q) || a.source.toLowerCase().includes(q);
-        return okF && okQ;
+    function syncPortfolioToAllocCalc() {
+      const fx = state.fxRate || 1400;
+      let stockWon = 0;
+      (state.portfolio || []).forEach(p => {
+        const val = (Number(p.qty) || 0) * (Number(p.price) || 0);
+        stockWon += p.currency === "USD" ? val * fx : val;
       });
-      const box = document.getElementById("newsFeedContainer");
-      if (!filtered.length) {
-        box.innerHTML = `<div class="col-span-2 panel-card rounded-2xl p-6 text-center text-xs text-slate-400">표시할 뉴스가 없습니다.</div>`;
-        return;
-      }
-      box.innerHTML = filtered.map(a => `
-        <a href="${escapeHtml(a.link)}" target="_blank" rel="noopener noreferrer" class="panel-card block rounded-2xl p-4 transition hover:border-sky-500/50">
-          <div class="text-xs font-bold leading-snug text-white">${escapeHtml(a.title)}</div>
-          <div class="mt-2 flex items-center justify-between text-[11px] text-slate-400">
-            <span>${escapeHtml(a.source)}</span>
-            <span>${a.pubDate ? new Date(a.pubDate).toLocaleString("ko-KR", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }) : ""}</span>
-          </div>
-        </a>
-      `).join("");
-    }
-
-    function renderDisclosureLinks() {
-      const box = document.getElementById("disclosureLinksGrid");
-      box.innerHTML = allTrackedStocks().slice(0, 10).map(s => {
-        const code = s.symbol.replace(/^KRX:/, "");
-        return `
-          <div class="sub-card flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-xs">
-            <div><span class="font-bold text-white">${escapeHtml(s.name)}</span> <span class="text-[11px] text-slate-400">${escapeHtml(s.symbol)}</span></div>
-            <div class="flex gap-1.5">
-              <a href="https://dart.fss.or.kr/dsab007/main.do?option=corp&textCrpNm=${encodeURIComponent(s.name)}" target="_blank" rel="noopener noreferrer" class="rounded bg-slate-800 px-2 py-1 text-[11px] font-semibold text-sky-300 hover:bg-slate-700">DART</a>
-              <a href="https://finance.naver.com/item/main.naver?code=${encodeURIComponent(code)}" target="_blank" rel="noopener noreferrer" class="rounded bg-slate-800 px-2 py-1 text-[11px] font-semibold text-emerald-300 hover:bg-slate-700">네이버</a>
-            </div>
-          </div>`;
-      }).join("");
-    }
-
-    function loadSelectedMemo() {
-      const k = document.getElementById("memoTickerSelect").value;
-      document.getElementById("memoTextarea").value = state.memos[k] || "";
+      const cashWon = Number(state.cash) || 0;
+      const div = state.allocCalc.unit === "man" ? 10000 : 1;
+      state.allocCalc.stock = Math.round(stockWon / div);
+      state.allocCalc.cash = Math.round(cashWon / div);
+      state.allocCalc.bond = 0;
+      state.allocCalc.alt = 0;
+      state.allocCalc.crypto = 0;
+      safeSet(STORAGE_KEYS.allocCalc, state.allocCalc);
+      renderAllocCalc();
+      showToast("보유종목 평가액과 가용 현금을 계산기에 반영했습니다.");
     }
 
     function parseCsvRows(csv) {
@@ -1971,31 +2347,24 @@
       return m ? m[1] : "1zPwe1mKgFLkoT3aUgGCatbM5q5jCw1N4vB3PiTTNaCs";
     }
 
+    function scrubPersonalText(txt) {
+      return String(txt || "")
+        .replace(/사용자\s*보유\s*평단\([^)]*\)/g, "주요 지지 구간(145,000원)")
+        .replace(/보유\s*평단\([^)]*\)/g, "주요 지지선(145,000원)")
+        .replace(/보유\s*14주[^,.)]*/g, "핵심 지지 구간 대응")
+        .replace(/\s*·\s*보유연계/g, "");
+    }
+
     async function syncGoogleSheet(rawUrl, silent = false) {
       const id = extractSheetId(rawUrl);
       const base = s => `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(s)}`;
-      if (!silent) showToast("구글 시트 전체 데이터 동기화 중...");
+      if (!silent) showToast("최신 종목 브리핑 및 지표 동기화 중...");
       try {
-        const [rH, rW, rT, rB] = await Promise.all([
-          fetch(base("② 보유종목")), fetch(base("③ 관심종목")), fetch(base("⑥ 기술적 진입 판정")), fetch(base("⑦ AI 관점 브리핑"))
+        const [rW, rT, rB] = await Promise.all([
+          fetch(base("③ 관심종목")), fetch(base("⑥ 기술적 진입 판정")), fetch(base("⑦ AI 관점 브리핑"))
         ]);
-        if (!rH.ok) throw new Error("시트 접근 실패");
-        const hRows = parseCsvRows(await rH.text());
-        const hIdx = hRows.findIndex(r => r.some(c => c.includes("종목명")) && r.some(c => c.includes("티커") || c.includes("심볼")));
-        if (hIdx >= 0) {
-          const h = hRows[hIdx], col = ks => h.findIndex(c => ks.some(k => c.includes(k)));
-          const parsed = [];
-          for (let i = hIdx + 1; i < hRows.length; i++) {
-            const r = hRows[i], name = r[col(["종목명"])] || "", sym = r[col(["티커", "심볼"])] || "";
-            if (!name || !sym || name.includes("소계") || name.includes("총계")) continue;
-            parsed.push({
-              id: "sh_" + i, sector: r[col(["섹터", "테마"])] || "", name, symbol: sym.toUpperCase(),
-              qty: cleanNum(r[col(["수량"])]), avgPrice: cleanNum(r[col(["평단"])]), price: cleanNum(r[col(["현재가"])]),
-              rebalanceQty: cleanNum(r[col(["리밸런싱"])]), currency: sym.toUpperCase().startsWith("KRX:") ? "KRW" : "USD"
-            });
-          }
-          if (parsed.length) state.portfolio = parsed;
-        }
+        if (!rW.ok && !rB.ok) throw new Error("데이터 접근 실패");
+        state.portfolio = [];
         if (rW.ok) {
           const wRows = parseCsvRows(await rW.text());
           const wIdx = wRows.findIndex(r => r.some(c => c.includes("종목명")) && r.some(c => c.includes("티커") || c.includes("심볼")));
@@ -2054,8 +2423,7 @@
         state.isLiveSynced = true;
         saveLocal();
         safeSet(STORAGE_KEYS.sheetUrl, state.sheetUrl);
-        document.getElementById("openSheetLink").href = state.sheetUrl;
-        closeModal("sheetModal");
+        
         renderAllUI();
         document.getElementById("lastSyncText").textContent = `실시간 동기화 완료 (${new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })})`;
         if (!silent) showToast(`보유 ${state.portfolio.length} · 관심 ${state.watchlist.length} · 브리핑 ${state.briefings.length}건 동기화 완료!`);
@@ -2068,27 +2436,6 @@
 
     function openModal(id) { const e = document.getElementById(id); e.classList.remove("hidden"); e.classList.add("flex"); }
     function closeModal(id) { const e = document.getElementById(id); e.classList.add("hidden"); e.classList.remove("flex"); }
-    function openStockModal(editId) {
-      const f = document.getElementById("stockForm");
-      if (editId) {
-        const it = state.portfolio.find(x => x.id === editId); if (!it) return;
-        document.getElementById("stockModalTitle").textContent = "보유종목 수정";
-        document.getElementById("editStockId").value = it.id;
-        document.getElementById("fName").value = it.name;
-        document.getElementById("fSymbol").value = it.symbol;
-        document.getElementById("fSector").value = it.sector || "";
-        document.getElementById("fCurrency").value = it.currency || "KRW";
-        document.getElementById("fQty").value = it.qty;
-        document.getElementById("fAvg").value = it.avgPrice;
-        document.getElementById("fPrice").value = it.price;
-      } else {
-        document.getElementById("stockModalTitle").textContent = "보유종목 추가";
-        document.getElementById("editStockId").value = "";
-        f.reset();
-      }
-      openModal("stockModal");
-    }
-
     function switchTab(tab) {
       state.activeTab = tab;
       DEFAULT_TAB_ORDER.forEach(t => document.getElementById(`panel-${t}`).classList.toggle("hidden", t !== tab));
@@ -2102,8 +2449,8 @@
         b.classList.toggle("mobile-nav-active", on);
         b.classList.toggle("mobile-nav-inactive", !on);
       });
-      if (tab === "chart") renderTradingViewChart();
       if (tab === "portfolio") renderAllocationChart();
+      if (tab === "allocation") renderAllocCalc();
       if (tab === "smc" && lastSmcScanSym !== (document.getElementById("smcTickerSelect").value || "KRX:105560")) runSmcAutoScan(true);
     }
 
@@ -2114,7 +2461,6 @@
       renderPortfolio();
       populateSelects();
       renderSmcSavedList();
-      renderNews();
     }
 
     function bindEvents() {
@@ -2144,6 +2490,18 @@
           renderBriefings();
         });
       });
+      document.querySelectorAll(".market-scenario-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.marketScenario = btn.dataset.mscenario;
+          renderBriefings();
+          const label = state.marketScenario === "BULL" ? "📈 상승장 시나리오" : state.marketScenario === "BEAR" ? "📉 하락장 시나리오" : "🔀 상승·하락 동시 비교";
+          showToast(`${label} 모드로 전환했습니다.`);
+        });
+      });
+      document.getElementById("toggleScenarioGuideBtn").addEventListener("click", () => {
+        state.showScenarioGuide = !state.showScenarioGuide;
+        renderBriefings();
+      });
       document.querySelectorAll(".brief-style-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           state.briefingStyle = btn.dataset.bstyle;
@@ -2167,32 +2525,8 @@
         safeSet(STORAGE_KEYS.briefOrder, []); safeSet(STORAGE_KEYS.briefPins, []);
         renderBriefings(); showToast("구글 시트 행 순서로 초기화했습니다.");
       });
-      document.getElementById("openSheetModalBtn").addEventListener("click", () => openModal("sheetModal"));
-      document.getElementById("syncSheetConfirmBtn").addEventListener("click", () => syncGoogleSheet(document.getElementById("sheetUrlInput").value, false));
       document.getElementById("refreshAllBtn").addEventListener("click", () => syncGoogleSheet(state.sheetUrl, false));
       document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", () => closeModal(b.dataset.close)));
-      document.getElementById("addStockBtn").addEventListener("click", () => openStockModal(null));
-      document.getElementById("stockForm").addEventListener("submit", e => {
-        e.preventDefault();
-        const editId = document.getElementById("editStockId").value;
-        const entry = {
-          id: editId || "loc_" + Date.now(), name: document.getElementById("fName").value.trim(),
-          symbol: document.getElementById("fSymbol").value.trim().toUpperCase(), sector: document.getElementById("fSector").value.trim(),
-          currency: document.getElementById("fCurrency").value, qty: Number(document.getElementById("fQty").value) || 0,
-          avgPrice: Number(document.getElementById("fAvg").value) || 0, price: Number(document.getElementById("fPrice").value) || 0, rebalanceQty: 0
-        };
-        if (editId) state.portfolio = state.portfolio.map(x => x.id === editId ? entry : x);
-        else state.portfolio.push(entry);
-        saveLocal(); closeModal("stockModal"); renderAllUI(); showToast("보유종목을 저장했습니다.");
-      });
-      document.getElementById("downloadCsvBtn").addEventListener("click", () => {
-        const rows = ["종목명,티커,수량,평단가,현재가,통화", ...state.portfolio.map(p => `"${p.name}","${p.symbol}",${p.qty},${p.avgPrice},${p.price},${p.currency}`)];
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(new Blob(["\uFEFF" + rows.join("\n")], { type: "text/csv;charset=utf-8;" }));
-        a.download = "my_stock_holdings.csv"; a.click(); showToast("CSV를 내려받았습니다.");
-      });
-      document.getElementById("chartTickerSelect").addEventListener("change", renderTradingViewChart);
-      document.getElementById("chartIntervalSelect").addEventListener("change", renderTradingViewChart);
       document.getElementById("smcTickerSelect").addEventListener("change", () => { autofillSmcFromStock(); runSmcAutoScan(false); });
       document.getElementById("smcRescanAllBtn").addEventListener("click", () => runSmcAutoScan(false));
       ["smcZoneHigh", "smcZoneLow", "smcTpPrice", "smcRiskPct", "smcDirection", "smcZoneType"].forEach(id => {
@@ -2200,9 +2534,8 @@
         document.getElementById(id).addEventListener("change", calcSmcSetup);
       });
       document.querySelectorAll(".smc-tf-btn").forEach(b => b.addEventListener("click", () => {
-        document.getElementById("chartTickerSelect").value = document.getElementById("smcTickerSelect").value;
-        document.getElementById("chartIntervalSelect").value = b.dataset.tf;
-        switchTab("chart");
+        const sym = document.getElementById("smcTickerSelect").value || "KRX:105560";
+        window.open(`https://www.tradingview.com/chart/?symbol=${encodeURIComponent(sym)}&interval=${encodeURIComponent(b.dataset.tf)}`, "_blank", "noopener,noreferrer");
       }));
       document.querySelectorAll(".smc-chk").forEach(chk => chk.addEventListener("change", () => {
         const n = document.querySelectorAll(".smc-chk:checked").length;
@@ -2218,15 +2551,55 @@
       document.getElementById("clearSmcListBtn").addEventListener("click", () => {
         state.smcSetups = []; safeSet(STORAGE_KEYS.smc, []); renderSmcSavedList(); showToast("시나리오를 비웠습니다.");
       });
-      document.getElementById("newsSearchInput").addEventListener("input", renderNews);
-      document.getElementById("memoTickerSelect").addEventListener("change", loadSelectedMemo);
-      document.getElementById("saveMemoBtn").addEventListener("click", () => {
-        const k = document.getElementById("memoTickerSelect").value;
-        state.memos[k] = document.getElementById("memoTextarea").value;
-        safeSet(STORAGE_KEYS.memos, state.memos);
-        document.getElementById("memoSavedHint").textContent = "저장됨 " + new Date().toLocaleTimeString("ko-KR");
-        showToast("메모를 저장했습니다.");
+      // 자산배분 계산기 이벤트
+      const saveAndRenderAlloc = () => {
+        safeSet(STORAGE_KEYS.allocCalc, state.allocCalc);
+        renderAllocCalc();
+      };
+      document.getElementById("allocAgeInput").addEventListener("input", e => {
+        state.allocCalc.age = Math.max(18, Math.min(85, Number(e.target.value) || 32));
+        document.getElementById("allocAgeRange").value = state.allocCalc.age;
+        saveAndRenderAlloc();
       });
+      document.getElementById("allocAgeRange").addEventListener("input", e => {
+        state.allocCalc.age = Number(e.target.value) || 32;
+        document.getElementById("allocAgeInput").value = state.allocCalc.age;
+        saveAndRenderAlloc();
+      });
+      document.querySelectorAll(".alloc-profile-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.allocCalc.profile = btn.dataset.allocProfile;
+          saveAndRenderAlloc();
+        });
+      });
+      document.querySelectorAll(".alloc-unit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const nextUnit = btn.dataset.allocUnit;
+          if (state.allocCalc.unit === nextUnit) return;
+          const factor = nextUnit === "won" ? 10000 : 0.0001;
+          ALLOC_ASSETS.forEach(item => {
+            const cur = Number(state.allocCalc[item.key]) || 0;
+            state.allocCalc[item.key] = nextUnit === "won" ? Math.round(cur * factor) : Number((cur * factor).toFixed(1));
+          });
+          state.allocCalc.unit = nextUnit;
+          saveAndRenderAlloc();
+        });
+      });
+      ALLOC_ASSETS.forEach(item => {
+        const el = document.getElementById(item.inputId);
+        if (el) {
+          el.addEventListener("input", e => {
+            state.allocCalc[item.key] = Math.max(0, Number(e.target.value) || 0);
+            saveAndRenderAlloc();
+          });
+        }
+      });
+      document.getElementById("allocResetBtn").addEventListener("click", () => {
+        state.allocCalc = { age: 32, profile: "balanced", unit: "man", stock: 2000, bond: 300, cash: 1500, alt: 200, crypto: 300 };
+        saveAndRenderAlloc();
+        showToast("자산배분 계산기를 기본값으로 초기화했습니다.");
+      });
+
       const setupAuto = () => {
         if (autoRefreshTimer) clearInterval(autoRefreshTimer);
         if (document.getElementById("autoRefresh30m").checked) {
@@ -2243,7 +2616,6 @@
       bindEvents();
       renderAllUI();
       if (typeof lucide !== "undefined") lucide.createIcons();
-      fetchLiveNews();
       syncGoogleSheet(state.sheetUrl, true);
     });
   </script>
